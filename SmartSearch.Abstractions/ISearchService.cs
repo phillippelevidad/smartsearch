@@ -2,6 +2,6 @@
 {
     public interface ISearchService
     {
-        object Search(ISearchRequest request);
+        ISearchResult Search(ISearchDomain domain, ISearchRequest request);
     }
 }

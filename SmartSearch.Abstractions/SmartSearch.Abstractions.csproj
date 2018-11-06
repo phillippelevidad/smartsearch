@@ -49,6 +49,7 @@
     <Compile Include="IField.cs" />
     <Compile Include="IIndexService.cs" />
     <Compile Include="ISearchRequest.cs" />
+    <Compile Include="ISearchResult.cs" />
     <Compile Include="ISearchService.cs" />
     <Compile Include="ISortOption.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

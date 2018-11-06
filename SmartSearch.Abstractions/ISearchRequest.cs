@@ -2,9 +2,11 @@
 {
     public interface ISearchRequest
     {
-        string DomainName { get; }
-
         string Query { get; }
+
+        int StartIndex { get; }
+
+        int PageSize { get; }
 
         ISortOption[] SortOptions { get; }
     }

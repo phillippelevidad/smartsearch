@@ -1,6 +1,5 @@
 ﻿using Lucene.Net.Index;
 using Lucene.Net.Store;
-using Lucene.Net.Util;
 using SmartSearch.Abstractions;
 using System;
 using System.IO;
@@ -33,18 +32,18 @@ namespace SmartSearch.LuceneNet
         {
             try
             {
-                var path = GetIndexDirectoryPath(domain.Name);
+                var path = IndexDirectoryHelper.GetDirectoryPath(options.IndexDirectory, domain.Name);
 
                 if (!System.IO.Directory.Exists(path))
                     System.IO.Directory.CreateDirectory(path);
 
-                var indexDirectory = FSDirectory.Open(path);
                 var analyzer = options.AnalyzerFactory.Invoke();
-                var config = new IndexWriterConfig(LuceneVersion.LUCENE_48, analyzer)
+                var config = new IndexWriterConfig(Definitions.LuceneVersion, analyzer)
                 {
                     OpenMode = options.ForceCreate ? OpenMode.CREATE : OpenMode.CREATE_OR_APPEND
                 };
 
+                using (var indexDirectory = FSDirectory.Open(path))
                 using (var indexWriter = new IndexWriter(indexDirectory, config))
                 using (var documentReader = documentProvider.GetDocumentReader())
                 {
@@ -58,7 +57,7 @@ namespace SmartSearch.LuceneNet
 
                         else
                             indexWriter.UpdateDocument(
-                                new Term(options.DocumentIdFieldName, document.Id), luceneDocument);
+                                new Term(Definitions.DocumentIdFieldName, document.Id), luceneDocument);
                     }
                 }
             }
@@ -67,7 +66,5 @@ namespace SmartSearch.LuceneNet
                 throw new ErrorCreatingLuceneIndexException(ex);
             }
         }
-
-        string GetIndexDirectoryPath(string domainName) => Path.Combine(options.IndexDirectory, domainName);
     }
 }

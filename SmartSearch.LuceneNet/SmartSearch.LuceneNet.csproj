@@ -37,6 +37,15 @@
     <Reference Include="Lucene.Net.Analysis.Common, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lucene.Net.Analysis.Common.4.8.0-beta00005\lib\net45\Lucene.Net.Analysis.Common.dll</HintPath>
     </Reference>
+    <Reference Include="Lucene.Net.Queries, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lucene.Net.Queries.4.8.0-beta00005\lib\net45\Lucene.Net.Queries.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.QueryParser, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lucene.Net.QueryParser.4.8.0-beta00005\lib\net45\Lucene.Net.QueryParser.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Sandbox, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lucene.Net.Sandbox.4.8.0-beta00005\lib\net45\Lucene.Net.Sandbox.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -47,11 +56,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IDocumentConverter.Default.ToIDocument.cs" />
+    <Compile Include="IDocumentConverter.Default.ToLuceneDocument.cs" />
+    <Compile Include="IDocumentConverter.Default.cs" />
+    <Compile Include="Definitions.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="IDocumentConverter.cs" />
-    <Compile Include="IFieldConverter.cs" />
+    <Compile Include="IndexDirectoryHelper.cs" />
     <Compile Include="LuceneIndexOptions.cs" />
     <Compile Include="LuceneIndexService.cs" />
+    <Compile Include="LuceneSearchService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
