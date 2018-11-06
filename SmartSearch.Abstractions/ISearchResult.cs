@@ -4,6 +4,6 @@
     {
         int TotalCount { get; }
 
-        IDocument[] Results { get; }
+        IDocument[] Documents { get; }
     }
 }

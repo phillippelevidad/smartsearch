@@ -10,7 +10,6 @@ namespace SmartSearch.LuceneNet
     {
         public IDocument Convert(ISearchDomain domain, LuceneDocument luceneDocument)
         {
-            var fieldValues = new Dictionary<string, object>();
             var result = new Document
             {
                 Id = luceneDocument.Get(Definitions.DocumentIdFieldName),
@@ -20,7 +19,7 @@ namespace SmartSearch.LuceneNet
             foreach (var field in domain.Fields)
             {
                 var value = IsArrayField(field) ? ParseArrayField(field, luceneDocument) : ParseCommonField(field, luceneDocument);
-                fieldValues.Add(field.Name, value);
+                result.Fields.Add(field.Name, value);
             }
 
             return result;

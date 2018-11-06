@@ -12,6 +12,14 @@ namespace SmartSearch.LuceneNet
         readonly LuceneIndexOptions options;
         readonly IDocumentConverter documentConverter;
 
+        public LuceneSearchService() : this(new LuceneIndexOptions(), new DefaultDocumentConverter())
+        {
+        }
+
+        public LuceneSearchService(LuceneIndexOptions options) : this(options, new DefaultDocumentConverter())
+        {
+        }
+
         public LuceneSearchService(LuceneIndexOptions options, IDocumentConverter documentConverter)
         {
             this.options = options;
@@ -43,8 +51,9 @@ namespace SmartSearch.LuceneNet
 
             int start = request.StartIndex;
             int end = Math.Min(results.TotalHits, request.StartIndex + request.PageSize);
+            int resultSize = Math.Min(request.PageSize, results.TotalHits);
 
-            var items = new IDocument[request.PageSize];
+            var items = new IDocument[resultSize];
             var itemIndex = 0;
 
             for (int i = start; i < end; i++)

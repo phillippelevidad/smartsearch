@@ -10,18 +10,9 @@ namespace ConsoleApp
         {
             public static void CreateIndex()
             {
-                var domain = new SearchDomain("testindex", new[]
-                {
-                    new Field("Id", FieldType.Literal, enableSearching: true, enableReturning: true),
-                    new Field("Name", FieldType.Text, enableSearching: true, enableReturning: true),
-                    new Field("Color", FieldType.Literal, enableFaceting: true, enableSearching: true, enableReturning: true),
-                    new Field("Sizes", FieldType.LiteralArray, enableFaceting: true, enableSearching: true, enableReturning: true)
-                });
-
-                var indexService = new LuceneIndexService(new LuceneIndexOptions
-                {
-                    IndexDirectory = @"C:\Temp\SmartSearchIndexes\"
-                });
+                var domain = Configuration.SearchDomain;
+                var options = Configuration.LuceneIndexOptions;
+                var indexService = new LuceneIndexService(options);
 
                 using (var provider = new MockDocumentProvider())
                 {

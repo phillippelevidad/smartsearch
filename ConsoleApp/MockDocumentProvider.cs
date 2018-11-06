@@ -1,4 +1,6 @@
-﻿using SmartSearch.Abstractions;
+﻿using SmartSearch;
+using SmartSearch.Abstractions;
+using System.Collections.Generic;
 
 namespace ConsoleApp
 {

@@ -8,7 +8,7 @@ namespace SmartSearch
 
         public int StartIndex { get; set; }
 
-        public int PageSize { get; set; }
+        public int PageSize { get; set; } = 100;
 
         public ISortOption[] SortOptions { get; set; }
     }

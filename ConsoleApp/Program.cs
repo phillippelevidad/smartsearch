@@ -7,13 +7,5 @@
             Indexer.CreateIndex();
             Searcher.SearchIndex();
         }
-
-        static class Searcher
-        {
-            public static void SearchIndex()
-            {
-
-            }
-        }
     }
 }
