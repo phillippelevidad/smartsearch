@@ -29,7 +29,7 @@ namespace SmartSearch.LuceneNet
                 throw new ArgumentNullException(nameof(documentConverter));
         }
 
-        public void CreateIndex(IDomain domain, IDocumentProvider documentProvider)
+        public void CreateIndex(ISearchDomain domain, IDocumentProvider documentProvider)
         {
             try
             {

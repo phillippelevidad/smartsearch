@@ -1,6 +1,6 @@
 ﻿namespace SmartSearch.Abstractions
 {
-    public interface IDomain
+    public interface ISearchDomain
     {
         string Name { get; }
 

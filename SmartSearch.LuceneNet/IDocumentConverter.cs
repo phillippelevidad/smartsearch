@@ -9,7 +9,7 @@ namespace SmartSearch.LuceneNet
 {
     public interface IDocumentConverter
     {
-        LuceneDocument Convert(IDomain domain, IDocument sourceDocument);
+        LuceneDocument Convert(ISearchDomain domain, IDocument sourceDocument);
     }
 
     public class DefaultDocumentConverter : IDocumentConverter
@@ -25,7 +25,7 @@ namespace SmartSearch.LuceneNet
             this.fieldConverter = fieldConverter;
         }
 
-        public LuceneDocument Convert(IDomain domain, IDocument sourceDocument)
+        public LuceneDocument Convert(ISearchDomain domain, IDocument sourceDocument)
         {
             var luceneDocument = new LuceneDocument();
 

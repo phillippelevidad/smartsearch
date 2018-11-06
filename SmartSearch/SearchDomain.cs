@@ -2,7 +2,7 @@
 
 namespace SmartSearch
 {
-    public class Domain : IDomain
+    public class SearchDomain : ISearchDomain
     {
         public string Name { get; set; }
 
@@ -10,25 +10,25 @@ namespace SmartSearch
 
         public IAnalysisSettings AnalysisSettings { get; set; }
 
-        public Domain()
+        public SearchDomain()
         {
             Fields = new Field[0];
         }
 
-        public Domain(string name, IAnalysisSettings analysisSettings = null)
+        public SearchDomain(string name, IAnalysisSettings analysisSettings = null)
         {
             Name = name;
             AnalysisSettings = analysisSettings;
             Fields = new Field[0];
         }
 
-        public Domain(string name, params IField[] fields)
+        public SearchDomain(string name, params IField[] fields)
         {
             Name = name;
             Fields = fields;
         }
 
-        public Domain(string name, IAnalysisSettings analysisSettings, params IField[] fields)
+        public SearchDomain(string name, IAnalysisSettings analysisSettings, params IField[] fields)
         {
             Name = name;
             AnalysisSettings = analysisSettings;
