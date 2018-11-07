@@ -14,13 +14,13 @@ namespace ConsoleApp
             Name = "promonet";
             Fields = new IField[]
             {
-                new Field("Id", FieldType.Literal, enableReturning: true),
-                new Field("FullName", FieldType.Text, enableSearching: true, enableReturning: true, enableSorting: true),
-                new Field("Email", FieldType.Literal, enableSearching: true, enableReturning: true),
-                new Field("AddressStreet", FieldType.Text, enableSearching: true, enableReturning: true, enableSorting: true),
-                new Field("AddressNumber", FieldType.Literal, enableSearching: true, enableReturning: true),
-                new Field("AddressNeighborhood", FieldType.Text, enableSearching: true, enableReturning: true, enableSorting: true),
-                new Field("AddressCityAndState", FieldType.Text, enableSearching: true, enableReturning: true, enableSorting: true)
+                new Field("Id", FieldType.Literal, FieldRelevance.Normal),
+                new Field("FullName", FieldType.Text, FieldRelevance.Higher, enableSearching: true, enableSorting: true),
+                new Field("Email", FieldType.Literal, FieldRelevance.Normal, enableSearching: true),
+                new Field("AddressStreet", FieldType.Text, FieldRelevance.Normal, enableSearching: true, enableSorting: true),
+                new Field("AddressNumber", FieldType.Literal, FieldRelevance.Normal, enableSearching: true),
+                new Field("AddressNeighborhood", FieldType.Text, FieldRelevance.Normal, enableSearching: true, enableSorting: true),
+                new Field("AddressCityAndState", FieldType.Text, FieldRelevance.Normal, enableSearching: true, enableSorting: true)
             };
         }
     }

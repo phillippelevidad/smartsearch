@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace SmartSearch.LuceneNet
+namespace SmartSearch.LuceneNet.Internals
 {
     static class IndexDirectoryHelper
     {

@@ -60,14 +60,17 @@
     <Compile Include="IDocumentConverter.Default.ToIDocument.cs" />
     <Compile Include="IDocumentConverter.Default.ToLuceneDocument.cs" />
     <Compile Include="IDocumentConverter.Default.cs" />
-    <Compile Include="Definitions.cs" />
+    <Compile Include="Internals\Definitions.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="IDocumentConverter.cs" />
-    <Compile Include="IndexDirectoryHelper.cs" />
+    <Compile Include="Internals\IndexDirectoryHelper.cs" />
+    <Compile Include="Internals\QueryExpressionHelper.cs" />
+    <Compile Include="Internals\SortHelper.cs" />
     <Compile Include="LuceneIndexOptions.cs" />
     <Compile Include="LuceneIndexService.cs" />
     <Compile Include="LuceneSearchService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Internals\QueryHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

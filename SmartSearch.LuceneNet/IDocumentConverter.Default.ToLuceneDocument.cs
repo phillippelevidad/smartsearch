@@ -1,6 +1,7 @@
 ﻿using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using SmartSearch.Abstractions;
+using SmartSearch.LuceneNet.Internals;
 using System;
 using System.Collections.Generic;
 using LuceneDocument = Lucene.Net.Documents.Document;
@@ -67,31 +68,46 @@ namespace SmartSearch.LuceneNet
 
         IIndexableField ConvertFieldInternal(IField field, object value)
         {
-            var store = field.EnableReturning ? LuceneField.Store.YES : LuceneField.Store.NO;
+            var store = LuceneField.Store.YES;
 
             switch (field.Type)
             {
                 case SourceFieldType.Date:
                 case SourceFieldType.DateArray:
-                    return new Int64Field(field.Name, ((DateTime)value).Ticks, store);
+                    return new Int64Field(field.Name, ((DateTime)value).Ticks, store) { Boost = GetFieldBoost(field) };
 
                 case SourceFieldType.Double:
                 case SourceFieldType.DoubleArray:
-                    return new DoubleField(field.Name, (double)value, store);
+                    return new DoubleField(field.Name, (double)value, store) { Boost = GetFieldBoost(field) };
 
                 case SourceFieldType.Int:
                 case SourceFieldType.IntArray:
-                    return new Int64Field(field.Name, (long)value, store);
+                    return new Int64Field(field.Name, (long)value, store) { Boost = GetFieldBoost(field) };
 
                 case SourceFieldType.Text:
                 case SourceFieldType.Literal:
                 case SourceFieldType.TextArray:
                 case SourceFieldType.LiteralArray:
-                    return new TextField(field.Name, (string)value, store);
+                    return new TextField(field.Name, (string)value, store) { Boost = GetFieldBoost(field) };
 
                 default:
                 case SourceFieldType.LatLng:
                     throw new UnknownFieldTypeException(field.Type);
+            }
+        }
+
+        float GetFieldBoost(IField field)
+        {
+            switch (field.Relevance)
+            {
+                case FieldRelevance.Normal:
+                    return 1.0F;
+                case FieldRelevance.High:
+                    return 1.5F;
+                case FieldRelevance.Higher:
+                    return 3.0F;
+                default:
+                    throw new UnknownFieldRelevanceException(field.Relevance);
             }
         }
     }

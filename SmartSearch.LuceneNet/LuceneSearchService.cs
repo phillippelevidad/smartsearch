@@ -1,8 +1,8 @@
 ﻿using Lucene.Net.Index;
-using Lucene.Net.QueryParsers.Classic;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
 using SmartSearch.Abstractions;
+using SmartSearch.LuceneNet.Internals;
 using System;
 
 namespace SmartSearch.LuceneNet
@@ -34,19 +34,16 @@ namespace SmartSearch.LuceneNet
             using (var reader = DirectoryReader.Open(indexDirectory))
             {
                 var searcher = new IndexSearcher(reader);
-                var analyzer = options.AnalyzerFactory.Create();
+                var query = QueryHelper.GetQuery(domain, request, options.AnalyzerFactory);
+                var sort = SortHelper.GetSort(domain, request);
 
-                var defaultField = "Name"; // TODO: find a better way for this. 
-                var parser = new QueryParser(Definitions.LuceneVersion, defaultField, analyzer);
-                var query = parser.Parse(request.Query);
-
-                return SearchInternal(domain, request, searcher, query);
+                return SearchInternal(domain, request, searcher, query, sort);
             }
         }
 
-        ISearchResult SearchInternal(ISearchDomain domain, ISearchRequest request, IndexSearcher searcher, Query query)
+        ISearchResult SearchInternal(ISearchDomain domain, ISearchRequest request, IndexSearcher searcher, Query query, Sort sort)
         {
-            var results = searcher.Search(query, int.MaxValue);
+            var results = searcher.Search(query, int.MaxValue, sort);
             var hits = results.ScoreDocs;
 
             var start = request.StartIndex;

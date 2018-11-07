@@ -1,4 +1,5 @@
 ﻿using SmartSearch;
+using SmartSearch.Abstractions;
 using SmartSearch.LuceneNet;
 using System;
 
@@ -30,11 +31,15 @@ namespace ConsoleApp
             {
                 Query = query,
                 StartIndex = 0,
-                PageSize = 4
+                PageSize = 3,
+                Filters = new[]
+                {
+                    new QueryFilter("AddressCityAndState", "PR")
+                }
             });
 
-            Console.WriteLine();
-            Console.WriteLine($"{result.TotalCount} resultados");
+            Console.Clear();
+            Console.WriteLine($"{result.TotalCount} resultados para {query}");
             Console.WriteLine();
 
             foreach (var d in result.Documents)

@@ -1,6 +1,7 @@
 ﻿using Lucene.Net.Index;
 using Lucene.Net.Store;
 using SmartSearch.Abstractions;
+using SmartSearch.LuceneNet.Internals;
 using System;
 using System.IO;
 

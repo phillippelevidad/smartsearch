@@ -11,10 +11,10 @@ namespace ConsoleApp
             Name = "mock";
             Fields = new[]
             {
-                new Field("Id", FieldType.Literal, enableSearching: true, enableReturning: true),
-                new Field("Name", FieldType.Text, enableSearching: true, enableReturning: true),
-                new Field("Color", FieldType.Literal, enableFaceting: true, enableSearching: true, enableReturning: true),
-                new Field("Sizes", FieldType.LiteralArray, enableFaceting: true, enableSearching: true, enableReturning: true)
+                new Field("Id", FieldType.Literal, FieldRelevance.Normal, enableSearching: true),
+                new Field("Name", FieldType.Text, FieldRelevance.Normal, enableSearching: true),
+                new Field("Color", FieldType.Literal, FieldRelevance.Normal, enableFaceting: true, enableSearching: true),
+                new Field("Sizes", FieldType.LiteralArray, FieldRelevance.Normal, enableFaceting: true, enableSearching: true)
             };
         }
     }

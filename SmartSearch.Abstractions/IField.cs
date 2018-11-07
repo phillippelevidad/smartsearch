@@ -4,19 +4,29 @@
     {
         string Name { get; }
 
+        FieldRelevance Relevance { get; }
+
         FieldType Type { get; }
 
         bool EnableFaceting { get; }
 
         bool EnableSearching { get; }
 
-        bool EnableReturning { get; }
-
         bool EnableSorting { get; }
+    }
+
+    public enum FieldRelevance
+    {
+        Normal, High, Higher
     }
 
     public enum FieldType
     {
-        Date, DateArray, Double, DoubleArray, Int, IntArray, LatLng, Literal, LiteralArray, Text, TextArray
+        Date, DateArray,
+        Double, DoubleArray,
+        Int, IntArray,
+        LatLng,
+        Literal, LiteralArray,
+        Text, TextArray
     }
 }

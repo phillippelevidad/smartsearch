@@ -1,6 +1,7 @@
 ﻿using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Br;
 using Lucene.Net.Analysis.Standard;
+using SmartSearch.LuceneNet.Internals;
 
 namespace SmartSearch.LuceneNet
 {

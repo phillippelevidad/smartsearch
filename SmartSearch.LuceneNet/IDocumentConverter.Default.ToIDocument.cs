@@ -1,5 +1,6 @@
 ﻿using Lucene.Net.Index;
 using SmartSearch.Abstractions;
+using SmartSearch.LuceneNet.Internals;
 using System.Collections.Generic;
 using LuceneDocument = Lucene.Net.Documents.Document;
 using SourceFieldType = SmartSearch.Abstractions.FieldType;
