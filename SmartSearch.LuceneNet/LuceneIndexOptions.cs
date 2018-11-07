@@ -1,6 +1,4 @@
-﻿using Lucene.Net.Analysis;
-using Lucene.Net.Analysis.Standard;
-using System;
+﻿using System;
 
 namespace SmartSearch.LuceneNet
 {
@@ -10,6 +8,6 @@ namespace SmartSearch.LuceneNet
 
         public string IndexDirectory { get; set; } = AppDomain.CurrentDomain.BaseDirectory;
 
-        public Func<Analyzer> AnalyzerFactory { get; set; } = () => new StandardAnalyzer(Definitions.LuceneVersion);
+        public IAnalyzerFactory AnalyzerFactory { get; set; } = new StandardAnalyzerFactory();
     }
 }

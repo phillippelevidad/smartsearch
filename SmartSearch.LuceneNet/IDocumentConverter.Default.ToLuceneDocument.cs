@@ -15,6 +15,9 @@ namespace SmartSearch.LuceneNet
         {
             var luceneDocument = new LuceneDocument();
 
+            luceneDocument.AddTextField(
+                Definitions.DocumentIdFieldName, sourceDocument.Id, LuceneField.Store.YES);
+
             foreach (var indexField in GetIndexFields(domain, sourceDocument))
                 luceneDocument.Add(indexField);
 

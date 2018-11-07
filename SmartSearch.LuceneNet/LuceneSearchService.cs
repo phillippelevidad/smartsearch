@@ -34,7 +34,7 @@ namespace SmartSearch.LuceneNet
             using (var reader = DirectoryReader.Open(indexDirectory))
             {
                 var searcher = new IndexSearcher(reader);
-                var analyzer = options.AnalyzerFactory.Invoke();
+                var analyzer = options.AnalyzerFactory.Create();
 
                 var defaultField = "Name"; // TODO: find a better way for this. 
                 var parser = new QueryParser(Definitions.LuceneVersion, defaultField, analyzer);
@@ -49,14 +49,14 @@ namespace SmartSearch.LuceneNet
             var results = searcher.Search(query, int.MaxValue);
             var hits = results.ScoreDocs;
 
-            int start = request.StartIndex;
-            int end = Math.Min(results.TotalHits, request.StartIndex + request.PageSize);
-            int resultSize = Math.Min(request.PageSize, results.TotalHits);
+            var start = request.StartIndex;
+            var end = Math.Min(results.TotalHits, request.StartIndex + request.PageSize);
+            var resultSize = end - start;
 
             var items = new IDocument[resultSize];
             var itemIndex = 0;
 
-            for (int i = start; i < end; i++)
+            for (var i = start; i < end; i++)
             {
                 var luceneDocument = searcher.Doc(hits[i].Doc);
                 var documentResult = documentConverter.Convert(domain, luceneDocument);

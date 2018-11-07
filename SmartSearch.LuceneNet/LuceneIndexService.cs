@@ -37,7 +37,7 @@ namespace SmartSearch.LuceneNet
                 if (!System.IO.Directory.Exists(path))
                     System.IO.Directory.CreateDirectory(path);
 
-                var analyzer = options.AnalyzerFactory.Invoke();
+                var analyzer = options.AnalyzerFactory.Create();
                 var config = new IndexWriterConfig(Definitions.LuceneVersion, analyzer)
                 {
                     OpenMode = options.ForceCreate ? OpenMode.CREATE : OpenMode.CREATE_OR_APPEND

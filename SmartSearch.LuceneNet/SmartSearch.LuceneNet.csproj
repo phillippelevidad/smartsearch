@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IAnalyzerFactory.cs" />
     <Compile Include="IDocumentConverter.Default.ToIDocument.cs" />
     <Compile Include="IDocumentConverter.Default.ToLuceneDocument.cs" />
     <Compile Include="IDocumentConverter.Default.cs" />

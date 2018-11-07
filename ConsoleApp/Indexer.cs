@@ -1,6 +1,4 @@
-﻿using SmartSearch;
-using SmartSearch.Abstractions;
-using SmartSearch.LuceneNet;
+﻿using SmartSearch.LuceneNet;
 
 namespace ConsoleApp
 {
@@ -10,14 +8,12 @@ namespace ConsoleApp
         {
             public static void CreateIndex()
             {
-                var domain = Configuration.SearchDomain;
-                var options = Configuration.LuceneIndexOptions;
+                var domain = new PromonetSearchDomain();
+                var options = Configuration.GetLuceneIndexOptions();
                 var indexService = new LuceneIndexService(options);
 
-                using (var provider = new MockDocumentProvider())
-                {
+                using (var provider = new PromonetDocumentProvider())
                     indexService.CreateIndex(domain, provider);
-                }
             }
         }
     }

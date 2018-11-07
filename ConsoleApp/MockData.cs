@@ -4,6 +4,21 @@ using System.Collections.Generic;
 
 namespace ConsoleApp
 {
+    class MockSearchDomain : SearchDomain
+    {
+        public MockSearchDomain()
+        {
+            Name = "mock";
+            Fields = new[]
+            {
+                new Field("Id", FieldType.Literal, enableSearching: true, enableReturning: true),
+                new Field("Name", FieldType.Text, enableSearching: true, enableReturning: true),
+                new Field("Color", FieldType.Literal, enableFaceting: true, enableSearching: true, enableReturning: true),
+                new Field("Sizes", FieldType.LiteralArray, enableFaceting: true, enableSearching: true, enableReturning: true)
+            };
+        }
+    }
+
     class MockDocumentProvider : IDocumentProvider
     {
         public void Dispose() { }

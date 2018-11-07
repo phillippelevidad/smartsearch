@@ -44,8 +44,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Indexer.cs" />
-    <Compile Include="MockDocumentProvider.cs" />
+    <Compile Include="MockData.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="PomonetData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Searcher.cs" />
