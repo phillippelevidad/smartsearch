@@ -1,9 +1,9 @@
 ﻿using SmartSearch.Abstractions;
 using LuceneDocument = Lucene.Net.Documents.Document;
 
-namespace SmartSearch.LuceneNet
+namespace SmartSearch.LuceneNet.Internals.Converters
 {
-    public interface IDocumentConverter
+    interface IDocumentConverter
     {
         LuceneDocument Convert(ISearchDomain domain, IDocument sourceDocument);
 

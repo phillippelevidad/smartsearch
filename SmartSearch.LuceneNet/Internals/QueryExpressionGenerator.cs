@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace SmartSearch.LuceneNet.Internals
 {
-    static class QueryExpressionHelper
+    static class QueryExpressionGenerator
     {
         public static string GetQueryExpression(ISearchDomain domain, ISearchRequest request)
         {

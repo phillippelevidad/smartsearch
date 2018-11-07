@@ -4,13 +4,13 @@ using SmartSearch.Abstractions;
 
 namespace SmartSearch.LuceneNet.Internals
 {
-    static class QueryHelper
+    static class QueryGenerator
     {
         public static Query GetQuery(ISearchDomain domain, ISearchRequest request, IAnalyzerFactory analyzerFactory)
         {
             var analyzer = analyzerFactory.Create();
             var parser = new QueryParser(Definitions.LuceneVersion, "", analyzer);
-            var queryExpression = QueryExpressionHelper.GetQueryExpression(domain, request);
+            var queryExpression = QueryExpressionGenerator.GetQueryExpression(domain, request);
             return GetQueryInternal(parser, queryExpression);
         }
 

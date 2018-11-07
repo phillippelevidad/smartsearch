@@ -3,6 +3,8 @@ using Lucene.Net.Search;
 using Lucene.Net.Store;
 using SmartSearch.Abstractions;
 using SmartSearch.LuceneNet.Internals;
+using SmartSearch.LuceneNet.Internals.Converters;
+using SmartSearch.LuceneNet.Internals.Helpers;
 using System;
 
 namespace SmartSearch.LuceneNet
@@ -12,18 +14,14 @@ namespace SmartSearch.LuceneNet
         readonly LuceneIndexOptions options;
         readonly IDocumentConverter documentConverter;
 
-        public LuceneSearchService() : this(new LuceneIndexOptions(), new DefaultDocumentConverter())
+        public LuceneSearchService() : this(new LuceneIndexOptions())
         {
         }
 
-        public LuceneSearchService(LuceneIndexOptions options) : this(options, new DefaultDocumentConverter())
-        {
-        }
-
-        public LuceneSearchService(LuceneIndexOptions options, IDocumentConverter documentConverter)
+        public LuceneSearchService(LuceneIndexOptions options)
         {
             this.options = options;
-            this.documentConverter = documentConverter;
+            documentConverter = new DefaultDocumentConverter();
         }
 
         public ISearchResult Search(ISearchDomain domain, ISearchRequest request)
@@ -34,8 +32,8 @@ namespace SmartSearch.LuceneNet
             using (var reader = DirectoryReader.Open(indexDirectory))
             {
                 var searcher = new IndexSearcher(reader);
-                var query = QueryHelper.GetQuery(domain, request, options.AnalyzerFactory);
-                var sort = SortHelper.GetSort(domain, request);
+                var query = QueryGenerator.GetQuery(domain, request, options.AnalyzerFactory);
+                var sort = SortGenerator.GetSort(domain, request);
 
                 return SearchInternal(domain, request, searcher, query, sort);
             }

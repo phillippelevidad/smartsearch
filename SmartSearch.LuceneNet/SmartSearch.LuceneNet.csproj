@@ -37,6 +37,15 @@
     <Reference Include="Lucene.Net.Analysis.Common, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lucene.Net.Analysis.Common.4.8.0-beta00005\lib\net45\Lucene.Net.Analysis.Common.dll</HintPath>
     </Reference>
+    <Reference Include="Lucene.Net.Facet, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lucene.Net.Facet.4.8.0-beta00005\lib\net45\Lucene.Net.Facet.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Grouping, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lucene.Net.Grouping.4.8.0-beta00005\lib\net45\Lucene.Net.Grouping.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Join, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lucene.Net.Join.4.8.0-beta00005\lib\net45\Lucene.Net.Join.dll</HintPath>
+    </Reference>
     <Reference Include="Lucene.Net.Queries, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lucene.Net.Queries.4.8.0-beta00005\lib\net45\Lucene.Net.Queries.dll</HintPath>
     </Reference>
@@ -57,20 +66,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IAnalyzerFactory.cs" />
-    <Compile Include="IDocumentConverter.Default.ToIDocument.cs" />
-    <Compile Include="IDocumentConverter.Default.ToLuceneDocument.cs" />
-    <Compile Include="IDocumentConverter.Default.cs" />
+    <Compile Include="Internals\Converters\DefaultDocumentConverter.ToIDocument.cs" />
+    <Compile Include="Internals\Converters\DefaultDocumentConverter.ToLuceneDocument.cs" />
+    <Compile Include="Internals\Converters\FacetDocumentConverter.cs" />
+    <Compile Include="Internals\Helpers\ArrayFieldHelper.cs" />
     <Compile Include="Internals\Definitions.cs" />
     <Compile Include="Exceptions.cs" />
-    <Compile Include="IDocumentConverter.cs" />
-    <Compile Include="Internals\IndexDirectoryHelper.cs" />
-    <Compile Include="Internals\QueryExpressionHelper.cs" />
-    <Compile Include="Internals\SortHelper.cs" />
+    <Compile Include="Internals\Converters\IDocumentConverter.cs" />
+    <Compile Include="Internals\Helpers\IndexDirectoryHelper.cs" />
+    <Compile Include="Internals\QueryExpressionGenerator.cs" />
+    <Compile Include="Internals\SortGenerator.cs" />
     <Compile Include="LuceneIndexOptions.cs" />
     <Compile Include="LuceneIndexService.cs" />
     <Compile Include="LuceneSearchService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Internals\QueryHelper.cs" />
+    <Compile Include="Internals\QueryGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

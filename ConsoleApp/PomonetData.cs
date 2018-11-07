@@ -20,7 +20,7 @@ namespace ConsoleApp
                 new Field("AddressStreet", FieldType.Text, FieldRelevance.Normal, enableSearching: true, enableSorting: true),
                 new Field("AddressNumber", FieldType.Literal, FieldRelevance.Normal, enableSearching: true),
                 new Field("AddressNeighborhood", FieldType.Text, FieldRelevance.Normal, enableSearching: true, enableSorting: true),
-                new Field("AddressCityAndState", FieldType.Text, FieldRelevance.Normal, enableSearching: true, enableSorting: true)
+                new Field("AddressCityAndState", FieldType.Text, FieldRelevance.Normal, enableFaceting: true, enableSearching: true, enableSorting: true)
             };
         }
     }

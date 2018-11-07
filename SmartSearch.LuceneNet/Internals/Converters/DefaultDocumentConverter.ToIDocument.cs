@@ -1,13 +1,13 @@
 ﻿using Lucene.Net.Index;
 using SmartSearch.Abstractions;
-using SmartSearch.LuceneNet.Internals;
+using SmartSearch.LuceneNet.Internals.Helpers;
 using System.Collections.Generic;
 using LuceneDocument = Lucene.Net.Documents.Document;
 using SourceFieldType = SmartSearch.Abstractions.FieldType;
 
-namespace SmartSearch.LuceneNet
+namespace SmartSearch.LuceneNet.Internals.Converters
 {
-    public partial class DefaultDocumentConverter : IDocumentConverter
+    partial class DefaultDocumentConverter : IDocumentConverter
     {
         public IDocument Convert(ISearchDomain domain, LuceneDocument luceneDocument)
         {
@@ -19,7 +19,10 @@ namespace SmartSearch.LuceneNet
 
             foreach (var field in domain.Fields)
             {
-                var value = IsArrayField(field) ? ParseArrayField(field, luceneDocument) : ParseCommonField(field, luceneDocument);
+                var value = ArrayFieldHelper.IsArrayField(field)
+                    ? ParseArrayField(field, luceneDocument)
+                    : ParseCommonField(field, luceneDocument);
+
                 result.Fields.Add(field.Name, value);
             }
 

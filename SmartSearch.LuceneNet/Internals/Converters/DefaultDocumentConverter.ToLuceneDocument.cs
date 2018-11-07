@@ -1,16 +1,16 @@
 ﻿using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using SmartSearch.Abstractions;
-using SmartSearch.LuceneNet.Internals;
+using SmartSearch.LuceneNet.Internals.Helpers;
 using System;
 using System.Collections.Generic;
 using LuceneDocument = Lucene.Net.Documents.Document;
 using LuceneField = Lucene.Net.Documents.Field;
 using SourceFieldType = SmartSearch.Abstractions.FieldType;
 
-namespace SmartSearch.LuceneNet
+namespace SmartSearch.LuceneNet.Internals.Converters
 {
-    public partial class DefaultDocumentConverter : IDocumentConverter
+    partial class DefaultDocumentConverter : IDocumentConverter
     {
         public LuceneDocument Convert(ISearchDomain domain, IDocument sourceDocument)
         {
@@ -29,7 +29,7 @@ namespace SmartSearch.LuceneNet
         {
             foreach (var field in domain.Fields)
             {
-                if (IsArrayField(field))
+                if (ArrayFieldHelper.IsArrayField(field))
                 {
                     foreach (var f in ConvertArrayField(field, sourceDocument))
                         yield return f;

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace SmartSearch.LuceneNet.Internals
 {
-    static class SortHelper
+    static class SortGenerator
     {
         public static Sort GetSort(ISearchDomain domain, ISearchRequest request)
         {
