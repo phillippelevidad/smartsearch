@@ -1,4 +1,7 @@
-﻿using Lucene.Net.Index;
+﻿using Lucene.Net.Facet;
+using Lucene.Net.Facet.Taxonomy;
+using Lucene.Net.Facet.Taxonomy.Directory;
+using Lucene.Net.Index;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
 using SmartSearch.Abstractions;
@@ -6,6 +9,8 @@ using SmartSearch.LuceneNet.Internals;
 using SmartSearch.LuceneNet.Internals.Converters;
 using SmartSearch.LuceneNet.Internals.Helpers;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SmartSearch.LuceneNet
 {
@@ -26,26 +31,49 @@ namespace SmartSearch.LuceneNet
 
         public ISearchResult Search(ISearchDomain domain, ISearchRequest request)
         {
-            var path = IndexDirectoryHelper.GetDirectoryPath(options.IndexDirectory, domain.Name);
-
-            using (var indexDirectory = FSDirectory.Open(path))
-            using (var reader = DirectoryReader.Open(indexDirectory))
+            using (var facetsReader = GetFacetsReader(domain))
+            using (var indexReader = GetIndexReader(domain))
             {
-                var searcher = new IndexSearcher(reader);
+                var searcher = new IndexSearcher(indexReader);
                 var query = QueryGenerator.GetQuery(domain, request, options.AnalyzerFactory);
                 var sort = SortGenerator.GetSort(domain, request);
 
-                return SearchInternal(domain, request, searcher, query, sort);
+                return SearchInternal(domain, request, searcher, facetsReader, query, sort);
             }
         }
 
-        ISearchResult SearchInternal(ISearchDomain domain, ISearchRequest request, IndexSearcher searcher, Query query, Sort sort)
+        TaxonomyReader GetFacetsReader(ISearchDomain domain)
         {
-            var results = searcher.Search(query, int.MaxValue, sort);
-            var hits = results.ScoreDocs;
+            var path = IndexDirectoryHelper.GetFacetsDirectoryPath(options.IndexDirectory, domain.Name);
+            return new DirectoryTaxonomyReader(FSDirectory.Open(path));
+        }
+
+        DirectoryReader GetIndexReader(ISearchDomain domain)
+        {
+            var path = IndexDirectoryHelper.GetDirectoryPath(options.IndexDirectory, domain.Name);
+            return DirectoryReader.Open(FSDirectory.Open(path));
+        }
+
+        ISearchResult SearchInternal(
+            ISearchDomain domain, ISearchRequest request,
+            IndexSearcher searcher, TaxonomyReader facetsReader,
+            Query query, Sort sort)
+        {
+            var facetsCollector = new FacetsCollector();
+            var results = FacetsCollector.Search(searcher, query, int.MaxValue, facetsCollector);
+
+            var documents = CollectDocumentResults(domain, request, searcher, results);
+            var facets = CollectFacetResults(domain, results, facetsCollector, facetsReader);
+
+            return new SearchResult(documents, facets, results.TotalHits);
+        }
+
+        IDocument[] CollectDocumentResults(ISearchDomain domain, ISearchRequest request, IndexSearcher searcher, TopDocs searchResults)
+        {
+            var hits = searchResults.ScoreDocs;
 
             var start = request.StartIndex;
-            var end = Math.Min(results.TotalHits, request.StartIndex + request.PageSize);
+            var end = Math.Min(searchResults.TotalHits, request.StartIndex + request.PageSize);
             var resultSize = end - start;
 
             var items = new IDocument[resultSize];
@@ -59,7 +87,29 @@ namespace SmartSearch.LuceneNet
                 items[itemIndex++] = documentResult;
             }
 
-            return new SearchResult(items, results.TotalHits);
+            return items;
+        }
+
+        IFacet[] CollectFacetResults(ISearchDomain domain, TopDocs searchResults, FacetsCollector facetsCollector, TaxonomyReader facetsReader)
+        {
+            var facetFields = domain.Fields.Where(f => f.EnableFaceting);
+
+            var results = new List<Facet>();
+            var config = new FacetsConfig();
+            var facets = new FastTaxonomyFacetCounts(facetsReader, config, facetsCollector);
+
+            foreach (var f in facetFields)
+            {
+                var luceneFacet = facets.GetTopChildren(30, f.Name);
+
+                if (luceneFacet == null)
+                    continue;
+
+                var facetResults = luceneFacet.LabelValues.Select(lv => new Facet(f.Name, lv.Label, (int)lv.Value));
+                results.AddRange(facetResults);
+            }
+
+            return results.ToArray();
         }
     }
 }

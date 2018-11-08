@@ -1,7 +1,9 @@
 ﻿using SmartSearch.Abstractions;
+using System.Diagnostics;
 
 namespace SmartSearch
 {
+    [DebuggerDisplay("{FieldName} = {Value}")]
     public class QueryFilter : IQueryFilter
     {
         public string FieldName { get; set; }

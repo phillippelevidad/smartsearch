@@ -75,7 +75,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
 
         public IDocument Convert(ISearchDomain domain, LuceneDocument luceneDocument)
         {
-            throw new NotImplementedException();
+            throw new InvalidOperationException("A facet document is not supposed to be converted back into a result document.");
         }
     }
 }

@@ -32,10 +32,10 @@ namespace ConsoleApp
                 Query = query,
                 StartIndex = 0,
                 PageSize = 3,
-                Filters = new[]
-                {
-                    new QueryFilter("AddressCityAndState", "PR")
-                }
+                //Filters = new[]
+                //{
+                //    new QueryFilter("AddressCityAndState", "Mandirituba")
+                //}
             });
 
             Console.Clear();

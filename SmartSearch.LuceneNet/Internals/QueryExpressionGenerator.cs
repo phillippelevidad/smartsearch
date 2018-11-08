@@ -40,18 +40,22 @@ namespace SmartSearch.LuceneNet.Internals
 
             var searchFields = domain.Fields
                 .Where(f => f.EnableSearching)
-                .Where(f => !request.Filters.Any(x => f.Name.Equals(x.FieldName, StringComparison.OrdinalIgnoreCase)))
                 .ToArray();
 
-            var expressions = new List<string>(searchFields.Length);
+            var wordExpressions = new List<string>(words.Length);
 
-            foreach (var field in searchFields)
+            foreach (var word in words)
             {
-                var allWords = string.Join(" ", words);
-                expressions.Add($"{field.Name}:({allWords})");
+                var fieldExpressions = new List<string>(searchFields.Length);
+
+                foreach (var field in searchFields)
+                    fieldExpressions.Add($"{field.Name}:{word}");
+
+                var expression = string.Join(" ", fieldExpressions);
+                wordExpressions.Add($"+({expression})");
             }
 
-            return string.Join(" ", expressions);
+            return string.Join(" ", wordExpressions);
         }
     }
 }

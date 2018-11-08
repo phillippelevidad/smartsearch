@@ -1,7 +1,9 @@
 ﻿using SmartSearch.Abstractions;
+using System.Diagnostics;
 
 namespace SmartSearch
 {
+    [DebuggerDisplay("{Name}, Type: {Type}, Relevance: {Relevance}")]
     public class Field : IField
     {
         public string Name { get; set; }

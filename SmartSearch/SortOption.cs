@@ -1,7 +1,9 @@
 ﻿using SmartSearch.Abstractions;
+using System.Diagnostics;
 
 namespace SmartSearch
 {
+    [DebuggerDisplay("{FieldName}, {Direction}")]
     public class SortOption : ISortOption
     {
         public string FieldName { get; set; }

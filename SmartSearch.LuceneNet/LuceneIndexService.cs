@@ -17,6 +17,7 @@ namespace SmartSearch.LuceneNet
     {
         readonly FacetsConfig facetsConfig;
         readonly LuceneIndexOptions options;
+
         readonly IDocumentConverter defaultDocumentConverter;
         readonly IDocumentConverter facetDocumentConverter;
 
@@ -26,8 +27,7 @@ namespace SmartSearch.LuceneNet
 
         public LuceneIndexService(LuceneIndexOptions options)
         {
-            this.options = options ??
-                throw new ArgumentNullException(nameof(options));
+            this.options = options ?? throw new ArgumentNullException(nameof(options));
 
             facetsConfig = new FacetsConfig();
             defaultDocumentConverter = new DefaultDocumentConverter();
@@ -38,13 +38,13 @@ namespace SmartSearch.LuceneNet
         {
             try
             {
+                using (var facetWriter = GetFacetWriter(domain))
                 using (var indexWriter = GetIndexWriter(domain))
-                using (var taxonomyWriter = GetTaxonomyWriter(domain))
                 using (var documentReader = documentProvider.GetDocumentReader())
                 {
                     while (documentReader.ReadNext())
                     {
-                        var document = BuildDocument(domain, documentReader.CurrentDocument, taxonomyWriter);
+                        var document = BuildDocument(domain, documentReader.CurrentDocument, facetWriter);
 
                         if (indexWriter.Config.OpenMode == OpenMode.CREATE)
                             indexWriter.AddDocument(document);
@@ -74,6 +74,16 @@ namespace SmartSearch.LuceneNet
             return facetsConfig.Build(taxonomyWriter, mainDocument);
         }
 
+        ITaxonomyWriter GetFacetWriter(ISearchDomain domain)
+        {
+            var facetsPath = IndexDirectoryHelper.GetFacetsDirectoryPath(options.IndexDirectory, domain.Name);
+
+            if (!System.IO.Directory.Exists(facetsPath))
+                System.IO.Directory.CreateDirectory(facetsPath);
+
+            return new DirectoryTaxonomyWriter(FSDirectory.Open(facetsPath));
+        }
+
         IndexWriter GetIndexWriter(ISearchDomain domain)
         {
             var path = IndexDirectoryHelper.GetDirectoryPath(options.IndexDirectory, domain.Name);
@@ -88,15 +98,5 @@ namespace SmartSearch.LuceneNet
 
             return new IndexWriter(FSDirectory.Open(path), config);
         }
-
-        ITaxonomyWriter GetTaxonomyWriter(ISearchDomain domain)
-        {
-            var facetsPath = IndexDirectoryHelper.GetFacetsDirectoryPath(options.IndexDirectory, domain.Name);
-
-            if (!System.IO.Directory.Exists(facetsPath))
-                System.IO.Directory.CreateDirectory(facetsPath);
-
-            return new DirectoryTaxonomyWriter(FSDirectory.Open(facetsPath));
-        }        
     }
 }

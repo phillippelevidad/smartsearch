@@ -5,5 +5,7 @@
         int TotalCount { get; }
 
         IDocument[] Documents { get; }
+
+        IFacet[] Facets { get; }
     }
 }

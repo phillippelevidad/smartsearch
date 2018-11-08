@@ -1,8 +1,10 @@
 ﻿using SmartSearch.Abstractions;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace SmartSearch
 {
+    [DebuggerDisplay("{Id}")]
     public class Document : IDocument
     {
         public string Id { get; set; }

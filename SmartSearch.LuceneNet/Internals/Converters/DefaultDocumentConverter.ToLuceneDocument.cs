@@ -101,11 +101,14 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             switch (field.Relevance)
             {
                 case FieldRelevance.Normal:
-                    return 1.0F;
+                    return 1f;
+
                 case FieldRelevance.High:
-                    return 1.5F;
+                    return 2f;
+
                 case FieldRelevance.Higher:
-                    return 3.0F;
+                    return 4f;
+
                 default:
                     throw new UnknownFieldRelevanceException(field.Relevance);
             }
