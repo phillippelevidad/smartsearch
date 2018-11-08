@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnalysisSettings.cs" />
     <Compile Include="Document.cs" />
     <Compile Include="Facet.cs" />
     <Compile Include="QueryFilter.cs" />

@@ -8,7 +8,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
 {
     class FacetDocumentConverter : IDocumentConverter
     {
-        public LuceneDocument Convert(ISearchDomain domain, IDocument sourceDocument)
+        public LuceneDocument Convert(InternalSearchDomain domain, InternalDocument sourceDocument)
         {
             var luceneDocument = new LuceneDocument();
 
@@ -71,7 +71,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             return new FacetField(field.Name, value.ToString());
         }
 
-        public IDocument Convert(ISearchDomain domain, LuceneDocument luceneDocument)
+        public IDocument Convert(InternalSearchDomain domain, LuceneDocument luceneDocument)
         {
             throw new InvalidOperationException("A facet document is not supposed to be converted back into a result document.");
         }

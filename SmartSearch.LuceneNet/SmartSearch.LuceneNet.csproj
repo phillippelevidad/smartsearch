@@ -65,7 +65,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnalyzerFactories.cs" />
+    <Compile Include="Analysis\BrazilianAnalyzerFactory.cs" />
+    <Compile Include="Analysis\IAnalyzerFactory.cs" />
+    <Compile Include="Internals\InternalAnalyzerFactory.cs" />
+    <Compile Include="Analysis\StandardAnalyzerFactory.cs" />
     <Compile Include="Internals\Converters\DefaultDocumentConverter.ToIDocument.cs" />
     <Compile Include="Internals\Converters\DefaultDocumentConverter.ToLuceneDocument.cs" />
     <Compile Include="Internals\Converters\FacetDocumentConverter.cs" />
@@ -75,13 +78,21 @@
     <Compile Include="Internals\Helpers\IFieldExtensions.cs" />
     <Compile Include="Internals\Helpers\IndexDirectoryHelper.cs" />
     <Compile Include="Internals\Helpers\ISearchDomainExtensions.cs" />
-    <Compile Include="Internals\QueryExpressionGenerator.cs" />
-    <Compile Include="Internals\SortGenerator.cs" />
+    <Compile Include="Internals\SpecializedFields\SpecificationsList.cs" />
+    <Compile Include="Internals\InternalDocument.cs" />
+    <Compile Include="Internals\InternalSearchDomain.cs" />
+    <Compile Include="Internals\Builders\QueryExpressionBuilder.cs" />
+    <Compile Include="Internals\Builders\SortBuilder.cs" />
+    <Compile Include="Internals\SpecializedFields\ISpecializedField.cs" />
+    <Compile Include="Internals\SpecializedFields\ISpecializedFieldSpecification.cs" />
+    <Compile Include="Internals\SpecializedFields\SynonymFieldSpecification.cs" />
+    <Compile Include="Analysis\SynonymsAnalyzer.cs" />
+    <Compile Include="Internals\SpecializedFields\SynonymsProcessor.cs" />
     <Compile Include="LuceneIndexOptions.cs" />
     <Compile Include="LuceneIndexService.cs" />
     <Compile Include="LuceneSearchService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Internals\QueryGenerator.cs" />
+    <Compile Include="Internals\Builders\QueryBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

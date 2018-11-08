@@ -1,6 +1,5 @@
 ﻿using Lucene.Net.Index;
 using SmartSearch.Abstractions;
-using SmartSearch.LuceneNet.Internals.Helpers;
 using System.Collections.Generic;
 using LuceneDocument = Lucene.Net.Documents.Document;
 using SourceFieldType = SmartSearch.Abstractions.FieldType;
@@ -9,7 +8,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
 {
     partial class DefaultDocumentConverter : IDocumentConverter
     {
-        public IDocument Convert(ISearchDomain domain, LuceneDocument luceneDocument)
+        public IDocument Convert(InternalSearchDomain domain, LuceneDocument luceneDocument)
         {
             var result = new Document
             {

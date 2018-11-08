@@ -5,9 +5,16 @@ using System.Collections.Generic;
 
 namespace SmartSearch.LuceneNet.Internals
 {
-    static class QueryExpressionGenerator
+    class QueryExpressionBuilder
     {
-        public static string GetQueryExpression(ISearchDomain domain, ISearchRequest request)
+        readonly InternalSearchDomain domain;
+
+        public QueryExpressionBuilder(InternalSearchDomain domain)
+        {
+            this.domain = domain;
+        }
+
+        public string Build(ISearchRequest request)
         {
             if (string.IsNullOrWhiteSpace(request.Query))
                 return "";
@@ -21,7 +28,7 @@ namespace SmartSearch.LuceneNet.Internals
             return string.Join(" ", filter, search);
         }
 
-        static string BuildFilterExpression(ISearchDomain domain, ISearchRequest request)
+        string BuildFilterExpression(ISearchDomain domain, ISearchRequest request)
         {
             if (request.Filters == null || request.Filters.Length == 0)
                 return "";
@@ -34,7 +41,7 @@ namespace SmartSearch.LuceneNet.Internals
             return string.Join(" ", expressions);
         }
 
-        static string BuildSearchExpression(ISearchDomain domain, ISearchRequest request)
+        string BuildSearchExpression(ISearchDomain domain, ISearchRequest request)
         {
             var searchFields = domain.GetSearchEnabledFields();
             var words = request.Query.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);

@@ -12,27 +12,27 @@ namespace SmartSearch
 
         public SearchDomain()
         {
-            Fields = new Field[0];
+            Fields = new IField[0];
         }
 
         public SearchDomain(string name, IAnalysisSettings analysisSettings = null)
         {
             Name = name;
             AnalysisSettings = analysisSettings;
-            Fields = new Field[0];
+            Fields = new IField[0];
         }
 
         public SearchDomain(string name, params IField[] fields)
         {
             Name = name;
-            Fields = fields;
+            Fields = fields ?? new IField[0];
         }
 
         public SearchDomain(string name, IAnalysisSettings analysisSettings, params IField[] fields)
         {
             Name = name;
             AnalysisSettings = analysisSettings;
-            Fields = fields;
+            Fields = fields ?? new IField[0];
         }
     }
 }

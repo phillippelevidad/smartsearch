@@ -5,6 +5,7 @@ using Lucene.Net.Index;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
 using SmartSearch.Abstractions;
+using SmartSearch.LuceneNet.Analysis;
 using SmartSearch.LuceneNet.Internals;
 using SmartSearch.LuceneNet.Internals.Converters;
 using SmartSearch.LuceneNet.Internals.Helpers;
@@ -31,14 +32,19 @@ namespace SmartSearch.LuceneNet
 
         public ISearchResult Search(ISearchDomain domain, ISearchRequest request)
         {
+            var internalDomain = InternalSearchDomain.CreateFrom(domain);
+
             using (var facetsReader = GetFacetsReader(domain))
             using (var indexReader = GetIndexReader(domain))
             {
-                var searcher = new IndexSearcher(indexReader);
-                var query = QueryGenerator.GetQuery(domain, request, options.AnalyzerFactory);
-                var sort = SortGenerator.GetSort(domain, request);
+                var factory = new InternalAnalyzerFactory(internalDomain, options.AnalyzerFactory);
+                var analyzer = factory.Create();
 
-                return SearchInternal(domain, request, searcher, facetsReader, query, sort);
+                var searcher = new IndexSearcher(indexReader);
+                var query = new QueryBuilder(internalDomain).Build(request, analyzer);
+                var sort = new SortBuilder(internalDomain).Build(request);
+
+                return SearchInternal(internalDomain, request, searcher, facetsReader, query, sort);
             }
         }
 
@@ -55,7 +61,7 @@ namespace SmartSearch.LuceneNet
         }
 
         ISearchResult SearchInternal(
-            ISearchDomain domain, ISearchRequest request,
+            InternalSearchDomain domain, ISearchRequest request,
             IndexSearcher searcher, TaxonomyReader facetsReader,
             Query query, Sort sort)
         {
@@ -68,7 +74,7 @@ namespace SmartSearch.LuceneNet
             return new SearchResult(documents, facets, results.TotalHits);
         }
 
-        IDocument[] CollectDocumentResults(ISearchDomain domain, ISearchRequest request, IndexSearcher searcher, TopDocs searchResults)
+        IDocument[] CollectDocumentResults(InternalSearchDomain domain, ISearchRequest request, IndexSearcher searcher, TopDocs searchResults)
         {
             var hits = searchResults.ScoreDocs;
 

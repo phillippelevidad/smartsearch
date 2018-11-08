@@ -4,9 +4,16 @@ using System.Linq;
 
 namespace SmartSearch.LuceneNet.Internals
 {
-    static class SortGenerator
+    class SortBuilder
     {
-        public static Sort GetSort(ISearchDomain domain, ISearchRequest request)
+        readonly InternalSearchDomain domain;
+
+        public SortBuilder(InternalSearchDomain domain)
+        {
+            this.domain = domain;
+        }
+
+        public Sort Build(ISearchRequest request)
         {
             if (request.SortOptions == null || request.SortOptions.Length == 0)
                 return new Sort();
@@ -21,7 +28,7 @@ namespace SmartSearch.LuceneNet.Internals
             return new Sort(sortFields.ToArray());
         }
 
-        static SortField GetSortField(ISearchDomain domain, ISortOption sortOption)
+        SortField GetSortField(ISearchDomain domain, ISortOption sortOption)
         {
             var field = domain.Fields.SingleOrDefault(f => f.Name == sortOption.FieldName);
 
@@ -33,7 +40,7 @@ namespace SmartSearch.LuceneNet.Internals
             return new SortField(field.Name, type, sortDescending);
         }
 
-        static SortFieldType GetSortFieldType(IField field)
+        SortFieldType GetSortFieldType(IField field)
         {
             switch (field.Type)
             {

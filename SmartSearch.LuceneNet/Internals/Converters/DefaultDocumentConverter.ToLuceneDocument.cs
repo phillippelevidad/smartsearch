@@ -1,7 +1,6 @@
 ﻿using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using SmartSearch.Abstractions;
-using SmartSearch.LuceneNet.Internals.Helpers;
 using System;
 using System.Collections.Generic;
 using LuceneDocument = Lucene.Net.Documents.Document;
@@ -12,7 +11,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
 {
     partial class DefaultDocumentConverter : IDocumentConverter
     {
-        public LuceneDocument Convert(ISearchDomain domain, IDocument sourceDocument)
+        public LuceneDocument Convert(InternalSearchDomain domain, InternalDocument sourceDocument)
         {
             var luceneDocument = new LuceneDocument();
 
@@ -25,9 +24,9 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             return luceneDocument;
         }
 
-        IEnumerable<IIndexableField> GetIndexFields(ISearchDomain domain, IDocument sourceDocument)
+        IEnumerable<IIndexableField> GetIndexFields(InternalSearchDomain domain, InternalDocument sourceDocument)
         {
-            foreach (var field in domain.Fields)
+            foreach (var field in domain.AllFields)
             {
                 if (field.IsArray())
                 {
@@ -44,7 +43,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             }
         }
 
-        IIndexableField[] ConvertArrayField(IField field, IDocument sourceDocument)
+        IIndexableField[] ConvertArrayField(IField field, InternalDocument sourceDocument)
         {
             var array = sourceDocument.Fields[field.Name] as Array;
             if (array == null || array.Length == 0)
@@ -60,7 +59,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             return indexFields;
         }
 
-        IIndexableField ConvertSimpleField(IField field, IDocument sourceDocument)
+        IIndexableField ConvertSimpleField(IField field, InternalDocument sourceDocument)
         {
             var value = sourceDocument.Fields[field.Name];
             return value == null ? null : ConvertFieldInternal(field, value);

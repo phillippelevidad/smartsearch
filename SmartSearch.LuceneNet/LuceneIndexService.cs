@@ -38,13 +38,15 @@ namespace SmartSearch.LuceneNet
         {
             try
             {
-                using (var facetWriter = GetFacetWriter(domain))
-                using (var indexWriter = GetIndexWriter(domain))
+                var internalDomain = InternalSearchDomain.CreateFrom(domain);
+
+                using (var facetWriter = GetFacetWriter(internalDomain))
+                using (var indexWriter = GetIndexWriter(internalDomain))
                 using (var documentReader = documentProvider.GetDocumentReader())
                 {
                     while (documentReader.ReadNext())
                     {
-                        var document = BuildDocument(domain, documentReader.CurrentDocument, facetWriter);
+                        var document = BuildDocument(internalDomain, documentReader.CurrentDocument, facetWriter);
 
                         if (indexWriter.Config.OpenMode == OpenMode.CREATE)
                             indexWriter.AddDocument(document);
@@ -63,10 +65,11 @@ namespace SmartSearch.LuceneNet
             }
         }
 
-        LuceneDocument BuildDocument(ISearchDomain domain, IDocument document, ITaxonomyWriter taxonomyWriter)
+        LuceneDocument BuildDocument(InternalSearchDomain domain, IDocument document, ITaxonomyWriter taxonomyWriter)
         {
-            var mainDocument = defaultDocumentConverter.Convert(domain, document);
-            var facetDocument = facetDocumentConverter.Convert(domain, document);
+            var internalDocument = InternalDocument.CreateFrom(domain, document);
+            var mainDocument = defaultDocumentConverter.Convert(domain, internalDocument);
+            var facetDocument = facetDocumentConverter.Convert(domain, internalDocument);
 
             foreach (var facet in facetDocument.Fields)
                 mainDocument.Add(facet);
@@ -74,7 +77,7 @@ namespace SmartSearch.LuceneNet
             return facetsConfig.Build(taxonomyWriter, mainDocument);
         }
 
-        ITaxonomyWriter GetFacetWriter(ISearchDomain domain)
+        ITaxonomyWriter GetFacetWriter(InternalSearchDomain domain)
         {
             var facetsPath = IndexDirectoryHelper.GetFacetsDirectoryPath(options.IndexDirectory, domain.Name);
 
@@ -84,14 +87,17 @@ namespace SmartSearch.LuceneNet
             return new DirectoryTaxonomyWriter(FSDirectory.Open(facetsPath));
         }
 
-        IndexWriter GetIndexWriter(ISearchDomain domain)
+        IndexWriter GetIndexWriter(InternalSearchDomain domain)
         {
             var path = IndexDirectoryHelper.GetDirectoryPath(options.IndexDirectory, domain.Name);
 
             if (!System.IO.Directory.Exists(path))
                 System.IO.Directory.CreateDirectory(path);
 
-            var config = new IndexWriterConfig(Definitions.LuceneVersion, options.AnalyzerFactory.Create())
+            var factory = new InternalAnalyzerFactory(domain, options.AnalyzerFactory);
+            var analyzer = factory.Create();
+
+            var config = new IndexWriterConfig(Definitions.LuceneVersion, analyzer)
             {
                 OpenMode = options.ForceCreate ? OpenMode.CREATE : OpenMode.CREATE_OR_APPEND
             };

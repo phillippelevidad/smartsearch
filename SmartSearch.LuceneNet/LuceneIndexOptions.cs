@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmartSearch.LuceneNet.Analysis;
+using System;
 
 namespace SmartSearch.LuceneNet
 {

@@ -1,4 +1,5 @@
 ﻿using SmartSearch.LuceneNet;
+using SmartSearch.LuceneNet.Analysis;
 
 namespace ConsoleApp
 {

@@ -10,16 +10,14 @@ namespace SmartSearch
 
         public int TotalCount { get; set; }
 
-        public SearchResult()
+        public SearchResult() : this(null, null, 0)
         {
-            Documents = new IDocument[0];
-            Facets = new IFacet[0];
         }
 
         public SearchResult(IDocument[] documents, IFacet[] facets, int totalCount)
         {
-            Documents = documents;
-            Facets = facets;
+            Documents = documents ?? new IDocument[0];
+            Facets = facets ?? new IFacet[0];
             TotalCount = totalCount;
         }
     }

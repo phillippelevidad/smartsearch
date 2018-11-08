@@ -5,8 +5,8 @@ namespace SmartSearch.LuceneNet.Internals.Converters
 {
     interface IDocumentConverter
     {
-        LuceneDocument Convert(ISearchDomain domain, IDocument sourceDocument);
+        LuceneDocument Convert(InternalSearchDomain domain, InternalDocument sourceDocument);
 
-        IDocument Convert(ISearchDomain domain, LuceneDocument luceneDocument);
+        IDocument Convert(InternalSearchDomain domain, LuceneDocument luceneDocument);
     }
 }

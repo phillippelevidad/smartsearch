@@ -22,6 +22,14 @@ namespace ConsoleApp
                 new Field("AddressNeighborhood", FieldType.Text, FieldRelevance.Normal, enableSearching: true, enableSorting: true),
                 new Field("AddressCityAndState", FieldType.Text, FieldRelevance.Normal, enableFaceting: true, enableSearching: true, enableSorting: true)
             };
+            AnalysisSettings = new AnalysisSettings
+            {
+                Synonyms = new[]
+                {
+                    new [] { "curitiba", "frio" },
+                    new [] { "matinhos", "praia"}
+                }
+            };
         }
     }
 

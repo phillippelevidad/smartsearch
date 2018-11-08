@@ -1,20 +1,27 @@
-﻿using Lucene.Net.QueryParsers.Classic;
+﻿using Lucene.Net.Analysis;
+using Lucene.Net.QueryParsers.Classic;
 using Lucene.Net.Search;
 using SmartSearch.Abstractions;
 
 namespace SmartSearch.LuceneNet.Internals
 {
-    static class QueryGenerator
+    class QueryBuilder
     {
-        public static Query GetQuery(ISearchDomain domain, ISearchRequest request, IAnalyzerFactory analyzerFactory)
+        private readonly InternalSearchDomain domain;
+
+        public QueryBuilder(InternalSearchDomain domain)
         {
-            var analyzer = analyzerFactory.Create();
-            var parser = new QueryParser(Definitions.LuceneVersion, "", analyzer);
-            var queryExpression = QueryExpressionGenerator.GetQueryExpression(domain, request);
-            return GetQueryInternal(parser, queryExpression);
+            this.domain = domain;
         }
 
-        static Query GetQueryInternal(QueryParser parser, string queryExpression)
+        public Query Build(ISearchRequest request, Analyzer analyzer)
+        {
+            var parser = new QueryParser(Definitions.LuceneVersion, "", analyzer);
+            var queryExpression = new QueryExpressionBuilder(domain).Build(request);
+            return BuildInternal(parser, queryExpression);
+        }
+
+        Query BuildInternal(QueryParser parser, string queryExpression)
         {
             while (true)
             {
@@ -29,7 +36,7 @@ namespace SmartSearch.LuceneNet.Internals
             }
         }
 
-        static string FixQueryExpression(string queryExpression, ParseException parseEx)
+        string FixQueryExpression(string queryExpression, ParseException parseEx)
         {
             if (parseEx.CurrentToken == null)
             {

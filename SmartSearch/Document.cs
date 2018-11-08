@@ -11,21 +11,18 @@ namespace SmartSearch
 
         public IDictionary<string, object> Fields { get; set; }
 
-        public Document()
+        public Document() : this(null, null)
         {
-            Fields = new Dictionary<string, object>();
         }
 
-        public Document(string id)
+        public Document(string id) : this(id, null)
         {
-            Id = id;
-            Fields = new Dictionary<string, object>();
         }
 
         public Document(string id, IDictionary<string, object> fields)
         {
             Id = id;
-            Fields = fields;
+            Fields = fields ?? new Dictionary<string, object>();
         }
     }
 }
