@@ -19,7 +19,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
 
             foreach (var field in domain.Fields)
             {
-                var value = ArrayFieldHelper.IsArrayField(field)
+                var value = field.IsArray()
                     ? ParseArrayField(field, luceneDocument)
                     : ParseCommonField(field, luceneDocument);
 

@@ -1,9 +1,7 @@
 ﻿using Lucene.Net.Facet;
 using SmartSearch.Abstractions;
-using SmartSearch.LuceneNet.Internals.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using LuceneDocument = Lucene.Net.Documents.Document;
 
 namespace SmartSearch.LuceneNet.Internals.Converters
@@ -22,11 +20,11 @@ namespace SmartSearch.LuceneNet.Internals.Converters
 
         IEnumerable<FacetField> GetFacetFields(ISearchDomain domain, IDocument sourceDocument)
         {
-            var fields = domain.Fields.Where(f => f.EnableFaceting);
+            var fields = domain.GetFacetEnabledFields();
 
             foreach (var field in fields)
             {
-                if (ArrayFieldHelper.IsArrayField(field))
+                if (field.IsArray())
                 {
                     foreach (var f in ConvertArrayField(field, sourceDocument))
                         yield return f;

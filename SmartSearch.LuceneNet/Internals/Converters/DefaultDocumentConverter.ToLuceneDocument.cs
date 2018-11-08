@@ -29,7 +29,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
         {
             foreach (var field in domain.Fields)
             {
-                if (ArrayFieldHelper.IsArrayField(field))
+                if (field.IsArray())
                 {
                     foreach (var f in ConvertArrayField(field, sourceDocument))
                         yield return f;

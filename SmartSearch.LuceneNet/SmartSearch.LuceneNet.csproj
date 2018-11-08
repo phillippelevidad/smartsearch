@@ -69,11 +69,12 @@
     <Compile Include="Internals\Converters\DefaultDocumentConverter.ToIDocument.cs" />
     <Compile Include="Internals\Converters\DefaultDocumentConverter.ToLuceneDocument.cs" />
     <Compile Include="Internals\Converters\FacetDocumentConverter.cs" />
-    <Compile Include="Internals\Helpers\ArrayFieldHelper.cs" />
     <Compile Include="Internals\Definitions.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="Internals\Converters\IDocumentConverter.cs" />
+    <Compile Include="Internals\Helpers\IFieldExtensions.cs" />
     <Compile Include="Internals\Helpers\IndexDirectoryHelper.cs" />
+    <Compile Include="Internals\Helpers\ISearchDomainExtensions.cs" />
     <Compile Include="Internals\QueryExpressionGenerator.cs" />
     <Compile Include="Internals\SortGenerator.cs" />
     <Compile Include="LuceneIndexOptions.cs" />

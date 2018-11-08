@@ -1,7 +1,7 @@
-﻿using SmartSearch.Abstractions;
+﻿using Lucene.Net.Search;
+using SmartSearch.Abstractions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SmartSearch.LuceneNet.Internals
 {
@@ -13,7 +13,7 @@ namespace SmartSearch.LuceneNet.Internals
                 return "";
 
             if (Definitions.MatchAllDocsQuery.Equals(request.Query, StringComparison.OrdinalIgnoreCase))
-                return "*:";
+                return new MatchAllDocsQuery().ToString();
 
             var filter = BuildFilterExpression(domain, request);
             var search = BuildSearchExpression(domain, request);
@@ -36,12 +36,8 @@ namespace SmartSearch.LuceneNet.Internals
 
         static string BuildSearchExpression(ISearchDomain domain, ISearchRequest request)
         {
+            var searchFields = domain.GetSearchEnabledFields();
             var words = request.Query.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-            var searchFields = domain.Fields
-                .Where(f => f.EnableSearching)
-                .ToArray();
-
             var wordExpressions = new List<string>(words.Length);
 
             foreach (var word in words)

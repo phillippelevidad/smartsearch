@@ -1,10 +1,8 @@
-﻿using SmartSearch.Abstractions;
-
-namespace SmartSearch.LuceneNet.Internals.Helpers
+﻿namespace SmartSearch.Abstractions
 {
-    static class ArrayFieldHelper
+    static class IFieldExtensions
     {
-        public static bool IsArrayField(IField field)
+        public static bool IsArray(this IField field)
         {
             switch (field.Type)
             {
