@@ -31,19 +31,22 @@ namespace SmartSearch.LuceneNet
 
         public ISearchResult Search(ISearchDomain domain, ISearchRequest request)
         {
-            var internalDomain = InternalSearchDomain.CreateFrom(domain);
-
-            using (var facetsReader = GetFacetsReader(domain))
-            using (var indexReader = GetIndexReader(domain))
+            using (CultureContext.Invariant)
             {
-                var factory = new InternalAnalyzerFactory(internalDomain, options.AnalyzerFactory);
-                var analyzer = factory.Create();
+                var internalDomain = InternalSearchDomain.CreateFrom(domain);
 
-                var searcher = new IndexSearcher(indexReader);
-                var query = new QueryBuilder(internalDomain).Build(request, analyzer);
-                var sort = new SortBuilder(internalDomain).Build(request);
+                using (var facetsReader = GetFacetsReader(domain))
+                using (var indexReader = GetIndexReader(domain))
+                {
+                    var factory = new InternalAnalyzerFactory(internalDomain, options.AnalyzerFactory);
+                    var analyzer = factory.Create();
 
-                return SearchInternal(internalDomain, request, searcher, facetsReader, query, sort);
+                    var searcher = new IndexSearcher(indexReader);
+                    var query = new QueryBuilder(internalDomain).Build(request, analyzer);
+                    var sort = new SortBuilder(internalDomain).Build(request);
+
+                    return SearchInternal(internalDomain, request, searcher, facetsReader, query, sort);
+                }
             }
         }
 

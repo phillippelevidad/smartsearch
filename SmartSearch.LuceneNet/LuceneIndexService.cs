@@ -37,24 +37,27 @@ namespace SmartSearch.LuceneNet
         {
             try
             {
-                var internalDomain = InternalSearchDomain.CreateFrom(domain);
-                SetFacetsConfig(internalDomain);
-
-                using (var facetWriter = GetFacetWriter(internalDomain))
-                using (var indexWriter = GetIndexWriter(internalDomain))
-                using (var documentReader = documentProvider.GetDocumentReader())
+                using (CultureContext.Invariant)
                 {
-                    while (documentReader.ReadNext())
+                    var internalDomain = InternalSearchDomain.CreateFrom(domain);
+                    SetFacetsConfig(internalDomain);
+
+                    using (var facetWriter = GetFacetWriter(internalDomain))
+                    using (var indexWriter = GetIndexWriter(internalDomain))
+                    using (var documentReader = documentProvider.GetDocumentReader())
                     {
-                        var document = BuildDocument(internalDomain, documentReader.CurrentDocument, facetWriter);
-
-                        if (indexWriter.Config.OpenMode == OpenMode.CREATE)
-                            indexWriter.AddDocument(document);
-
-                        else
+                        while (documentReader.ReadNext())
                         {
-                            var updateClause = new Term(Definitions.DocumentIdFieldName, documentReader.CurrentDocument.Id);
-                            indexWriter.UpdateDocument(updateClause, document);
+                            var document = BuildDocument(internalDomain, documentReader.CurrentDocument, facetWriter);
+
+                            if (indexWriter.Config.OpenMode == OpenMode.CREATE)
+                                indexWriter.AddDocument(document);
+
+                            else
+                            {
+                                var updateClause = new Term(Definitions.DocumentIdFieldName, documentReader.CurrentDocument.Id);
+                                indexWriter.UpdateDocument(updateClause, document);
+                            }
                         }
                     }
                 }

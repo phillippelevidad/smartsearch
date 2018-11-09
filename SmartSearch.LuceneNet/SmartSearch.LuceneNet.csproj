@@ -68,6 +68,7 @@
     <Compile Include="Analysis\BrazilianAnalyzerFactory.cs" />
     <Compile Include="Analysis\IAnalyzerFactory.cs" />
     <Compile Include="Internals\Converters\TypeConverters.cs" />
+    <Compile Include="Internals\Helpers\CultureContext.cs" />
     <Compile Include="Internals\Helpers\InternalSearchDomainExtensions.cs" />
     <Compile Include="Internals\Helpers\SynonymMapBuilderExtensions.cs" />
     <Compile Include="Internals\InternalAnalyzerFactory.cs" />
