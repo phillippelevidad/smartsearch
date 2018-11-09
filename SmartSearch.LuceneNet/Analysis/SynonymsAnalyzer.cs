@@ -2,7 +2,6 @@
 using Lucene.Net.Analysis.Core;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Analysis.Synonym;
-using Lucene.Net.Util;
 using SmartSearch.LuceneNet.Internals;
 using System.IO;
 
@@ -25,10 +24,8 @@ namespace SmartSearch.LuceneNet.Analysis
 
             var version = Definitions.LuceneVersion;
             var source = new StandardTokenizer(version, reader);
-            var stream = source as TokenStream;
 
-            stream = new LowerCaseFilter(version, stream);
-            stream = new StandardFilter(version, stream);
+            var stream = new StandardFilter(version, source) as TokenStream;
             stream = new SynonymFilter(stream, synonymMap, true);
 
             return new TokenStreamComponents(source, stream);
@@ -44,7 +41,7 @@ namespace SmartSearch.LuceneNet.Analysis
                     foreach (var item in group)
                         foreach (var other in group)
                             if (item != other)
-                                builder.Add(new CharsRef(item), new CharsRef(other), true);
+                                builder.Add(item, other);
             }
 
             synonymMap = builder.Build();

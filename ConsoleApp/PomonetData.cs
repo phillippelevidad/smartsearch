@@ -26,8 +26,8 @@ namespace ConsoleApp
             {
                 Synonyms = new[]
                 {
-                    new [] { "curitiba", "frio" },
-                    new [] { "matinhos", "praia"}
+                    new [] { "curitiba", "frio", "cwb", "mambalambas" },
+                    new [] { "matinhos", "praia", "sujeira" }
                 }
             };
         }

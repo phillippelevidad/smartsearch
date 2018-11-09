@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="Analysis\BrazilianAnalyzerFactory.cs" />
     <Compile Include="Analysis\IAnalyzerFactory.cs" />
+    <Compile Include="Internals\Helpers\SynonymMapBuilderExtensions.cs" />
     <Compile Include="Internals\InternalAnalyzerFactory.cs" />
     <Compile Include="Analysis\StandardAnalyzerFactory.cs" />
     <Compile Include="Internals\Converters\DefaultDocumentConverter.ToIDocument.cs" />
