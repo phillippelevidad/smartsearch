@@ -1,5 +1,4 @@
 ﻿using Lucene.Net.Analysis;
-using Lucene.Net.Analysis.Core;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Analysis.Synonym;
 using SmartSearch.LuceneNet.Internals;

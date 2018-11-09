@@ -11,6 +11,8 @@ namespace SmartSearch.LuceneNet.Internals
 
         public IField[] Fields { get; private set; }
 
+        public ISpecializedFieldSpecification[] SpecializedFieldSpecifications { get; private set; }
+
         public ISpecializedField[] SpecializedFields { get; private set; }
 
         public IAnalysisSettings AnalysisSettings { get; private set; }
@@ -22,10 +24,11 @@ namespace SmartSearch.LuceneNet.Internals
             var newDomain = new InternalSearchDomain()
             {
                 Name = domain.Name,
-                AnalysisSettings = domain.AnalysisSettings,
+                AnalysisSettings = domain.AnalysisSettings ?? new AnalysisSettings(),
                 Fields = domain.Fields
             };
 
+            newDomain.BuildSpecializedFieldSpecifications();
             newDomain.BuildSpecializedFields();
             return newDomain;
         }
@@ -33,11 +36,21 @@ namespace SmartSearch.LuceneNet.Internals
         public IField[] GetFacetEnabledFields() =>
             Fields.Where(f => f.EnableFaceting).ToArray();
 
+        void BuildSpecializedFieldSpecifications()
+        {
+            var specifications = new List<ISpecializedFieldSpecification>();
+
+            if (AnalysisSettings?.Synonyms?.Any() ?? false)
+                specifications.Add(new SynonymFieldSpecification());
+
+            SpecializedFieldSpecifications = specifications.ToArray();
+        }
+
         void BuildSpecializedFields()
         {
             var specializedFields = new List<ISpecializedField>();
 
-            foreach (var spec in SpecificationsList.All)
+            foreach (var spec in SpecializedFieldSpecifications)
             {
                 foreach (var field in Fields)
                 {

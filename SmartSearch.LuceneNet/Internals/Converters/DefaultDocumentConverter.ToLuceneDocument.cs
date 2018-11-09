@@ -45,8 +45,8 @@ namespace SmartSearch.LuceneNet.Internals.Converters
 
         IIndexableField[] ConvertArrayField(IField field, InternalDocument sourceDocument)
         {
-            var array = sourceDocument.Fields[field.Name] as Array;
-            if (array == null || array.Length == 0)
+            if (!sourceDocument.Fields.ContainsKey(field.Name) ||
+                !(sourceDocument.Fields[field.Name] is Array array) || array.Length == 0)
                 return new IIndexableField[0];
 
             var indexFields = new IIndexableField[array.Length];
@@ -73,21 +73,21 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             {
                 case SourceFieldType.Date:
                 case SourceFieldType.DateArray:
-                    return new Int64Field(field.Name, ((DateTime)value).Ticks, store) { Boost = GetFieldBoost(field) };
+                    return new Int64Field(field.Name, DateTimeConverter.ConvertToLong(value), store) { Boost = GetFieldBoost(field) };
 
                 case SourceFieldType.Double:
                 case SourceFieldType.DoubleArray:
-                    return new DoubleField(field.Name, (double)value, store) { Boost = GetFieldBoost(field) };
+                    return new DoubleField(field.Name, DoubleConverter.Convert(value), store) { Boost = GetFieldBoost(field) };
 
                 case SourceFieldType.Int:
                 case SourceFieldType.IntArray:
-                    return new Int64Field(field.Name, (long)value, store) { Boost = GetFieldBoost(field) };
+                    return new Int64Field(field.Name, LongConverter.Convert(value), store) { Boost = GetFieldBoost(field) };
 
                 case SourceFieldType.Text:
                 case SourceFieldType.Literal:
                 case SourceFieldType.TextArray:
                 case SourceFieldType.LiteralArray:
-                    return new TextField(field.Name, (string)value, store) { Boost = GetFieldBoost(field) };
+                    return new TextField(field.Name, StringConverter.Convert(value), store) { Boost = GetFieldBoost(field) };
 
                 default:
                 case SourceFieldType.LatLng:

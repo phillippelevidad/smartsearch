@@ -15,7 +15,7 @@ namespace SmartSearch.LuceneNet
 {
     public class LuceneIndexService : IIndexService
     {
-        readonly FacetsConfig facetsConfig;
+        FacetsConfig facetsConfig;
         readonly LuceneIndexOptions options;
 
         readonly IDocumentConverter defaultDocumentConverter;
@@ -29,7 +29,6 @@ namespace SmartSearch.LuceneNet
         {
             this.options = options ?? throw new ArgumentNullException(nameof(options));
 
-            facetsConfig = new FacetsConfig();
             defaultDocumentConverter = new DefaultDocumentConverter();
             facetDocumentConverter = new FacetDocumentConverter();
         }
@@ -39,6 +38,7 @@ namespace SmartSearch.LuceneNet
             try
             {
                 var internalDomain = InternalSearchDomain.CreateFrom(domain);
+                SetFacetsConfig(internalDomain);
 
                 using (var facetWriter = GetFacetWriter(internalDomain))
                 using (var indexWriter = GetIndexWriter(internalDomain))
@@ -103,6 +103,15 @@ namespace SmartSearch.LuceneNet
             };
 
             return new IndexWriter(FSDirectory.Open(path), config);
+        }
+
+        void SetFacetsConfig(InternalSearchDomain domain)
+        {
+            facetsConfig = new FacetsConfig();
+
+            foreach (var field in domain.Fields)
+                if (field.EnableFaceting)
+                    facetsConfig.SetMultiValued(field.Name, true);
         }
     }
 }

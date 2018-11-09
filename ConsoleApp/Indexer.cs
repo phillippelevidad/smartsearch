@@ -8,11 +8,11 @@ namespace ConsoleApp
         {
             public static void CreateIndex()
             {
-                var domain = new PromonetSearchDomain();
+                var domain = new MegaSoaresSearchDomain();
                 var options = Configuration.GetLuceneIndexOptions();
                 var indexService = new LuceneIndexService(options);
 
-                using (var provider = new PromonetDocumentProvider())
+                using (var provider = new MegaSoaresDocumentProvider())
                     indexService.CreateIndex(domain, provider);
             }
         }

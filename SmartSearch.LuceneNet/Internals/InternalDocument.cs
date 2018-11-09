@@ -23,11 +23,14 @@ namespace SmartSearch.LuceneNet.Internals
             foreach (var field in document.Fields)
                 newFields.Add(field.Key, field.Value);
 
-            foreach (var spec in SpecificationsList.All)
+            foreach (var spec in domain.SpecializedFieldSpecifications)
             {
                 foreach (var field in domain.SpecializedFields)
                 {
                     if (!spec.IsSatisfiedBy(field))
+                        continue;
+
+                    if (!document.Fields.ContainsKey(field.OriginalName))
                         continue;
 
                     var originalValue = document.Fields[field.OriginalName];

@@ -41,7 +41,8 @@ namespace SmartSearch.LuceneNet.Internals.Converters
 
         FacetField[] ConvertArrayField(IField field, IDocument sourceDocument)
         {
-            if (!(sourceDocument.Fields[field.Name] is Array array) || array.Length == 0)
+            if (!sourceDocument.Fields.ContainsKey(field.Name) ||
+                !(sourceDocument.Fields[field.Name] is Array array) || array.Length == 0)
                 return new FacetField[0];
 
             var facetFields = new List<FacetField>(array.Length);
