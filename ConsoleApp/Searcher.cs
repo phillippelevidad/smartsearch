@@ -52,6 +52,12 @@ namespace ConsoleApp
                 Console.WriteLine("==============================");
                 Console.WriteLine();
             }
+
+            foreach (var f in result.Facets)
+                PrintFieldAndValue(f.Name, $"{f.Label} ({f.Count})");
+
+            Console.WriteLine();
+
         }
 
         static void PrintFieldAndValue(string field, object value)
