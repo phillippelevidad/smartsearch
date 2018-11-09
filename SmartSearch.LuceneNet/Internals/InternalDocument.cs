@@ -1,5 +1,4 @@
 ﻿using SmartSearch.Abstractions;
-using SmartSearch.LuceneNet.Internals.SpecializedFields;
 using System.Collections.Generic;
 
 namespace SmartSearch.LuceneNet.Internals

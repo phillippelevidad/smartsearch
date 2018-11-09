@@ -18,7 +18,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             return luceneDocument;
         }
 
-        IEnumerable<FacetField> GetFacetFields(ISearchDomain domain, IDocument sourceDocument)
+        IEnumerable<FacetField> GetFacetFields(InternalSearchDomain domain, IDocument sourceDocument)
         {
             var fields = domain.GetFacetEnabledFields();
 

@@ -68,6 +68,7 @@
     <Compile Include="Analysis\BrazilianAnalyzerFactory.cs" />
     <Compile Include="Analysis\IAnalyzerFactory.cs" />
     <Compile Include="Internals\Converters\TypeConverters.cs" />
+    <Compile Include="Internals\Helpers\InternalSearchDomainExtensions.cs" />
     <Compile Include="Internals\Helpers\SynonymMapBuilderExtensions.cs" />
     <Compile Include="Internals\InternalAnalyzerFactory.cs" />
     <Compile Include="Analysis\StandardAnalyzerFactory.cs" />
@@ -79,11 +80,11 @@
     <Compile Include="Internals\Converters\IDocumentConverter.cs" />
     <Compile Include="Internals\Helpers\IFieldExtensions.cs" />
     <Compile Include="Internals\Helpers\IndexDirectoryHelper.cs" />
-    <Compile Include="Internals\Helpers\ISearchDomainExtensions.cs" />
     <Compile Include="Internals\InternalDocument.cs" />
     <Compile Include="Internals\InternalSearchDomain.cs" />
     <Compile Include="Internals\Builders\QueryExpressionBuilder.cs" />
     <Compile Include="Internals\Builders\SortBuilder.cs" />
+    <Compile Include="Internals\SpecializedFields\AnalyzedFieldSpecification.cs" />
     <Compile Include="Internals\SpecializedFields\ISpecializedField.cs" />
     <Compile Include="Internals\SpecializedFields\ISpecializedFieldSpecification.cs" />
     <Compile Include="Internals\SpecializedFields\SynonymFieldSpecification.cs" />

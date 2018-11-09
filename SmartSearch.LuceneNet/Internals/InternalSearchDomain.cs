@@ -38,7 +38,10 @@ namespace SmartSearch.LuceneNet.Internals
 
         void BuildSpecializedFieldSpecifications()
         {
-            var specifications = new List<ISpecializedFieldSpecification>();
+            var specifications = new List<ISpecializedFieldSpecification>
+            {
+                new AnalyzedFieldSpecification()
+            };
 
             if (AnalysisSettings?.Synonyms?.Any() ?? false)
                 specifications.Add(new SynonymFieldSpecification());

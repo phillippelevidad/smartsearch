@@ -22,13 +22,13 @@ namespace SmartSearch.LuceneNet.Internals
             if (Definitions.MatchAllDocsQuery.Equals(request.Query, StringComparison.OrdinalIgnoreCase))
                 return new MatchAllDocsQuery().ToString();
 
-            var filter = BuildFilterExpression(domain, request);
-            var search = BuildSearchExpression(domain, request);
+            var filter = BuildFilterExpression(request);
+            var search = BuildSearchExpression(request);
 
             return string.Join(" ", filter, search);
         }
 
-        string BuildFilterExpression(ISearchDomain domain, ISearchRequest request)
+        string BuildFilterExpression(ISearchRequest request)
         {
             if (request.Filters == null || request.Filters.Length == 0)
                 return "";
@@ -41,7 +41,7 @@ namespace SmartSearch.LuceneNet.Internals
             return string.Join(" ", expressions);
         }
 
-        string BuildSearchExpression(ISearchDomain domain, ISearchRequest request)
+        string BuildSearchExpression(ISearchRequest request)
         {
             var searchFields = domain.GetSearchEnabledFields();
             var words = request.Query.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);

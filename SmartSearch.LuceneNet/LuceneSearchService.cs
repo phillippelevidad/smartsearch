@@ -5,7 +5,6 @@ using Lucene.Net.Index;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
 using SmartSearch.Abstractions;
-using SmartSearch.LuceneNet.Analysis;
 using SmartSearch.LuceneNet.Internals;
 using SmartSearch.LuceneNet.Internals.Converters;
 using SmartSearch.LuceneNet.Internals.Helpers;

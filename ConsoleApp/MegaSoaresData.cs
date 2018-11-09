@@ -1,11 +1,11 @@
-﻿using SmartSearch;
+﻿using Dapper;
+using SmartSearch;
 using SmartSearch.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using Dapper;
 
 namespace ConsoleApp
 {
@@ -28,22 +28,32 @@ namespace ConsoleApp
                 new Field("Id", FieldType.Literal, FieldRelevance.Normal),
                 new Field("CustomId", FieldType.Literal, FieldRelevance.Normal),
                 new Field("FriendlyUrl", FieldType.Literal, FieldRelevance.Normal),
-                new Field("Title", FieldType.Text, FieldRelevance.Normal),
-                new Field("Description", FieldType.Text, FieldRelevance.Normal),
-                new Field("Specifications", FieldType.Text, FieldRelevance.Normal),
+                new Field("Title", FieldType.Text, FieldRelevance.Higher, enableSearching: true),
+                new Field("Description", FieldType.Text, FieldRelevance.Normal, enableSearching: true),
+                new Field("Specifications", FieldType.Text, FieldRelevance.Normal, enableSearching: true),
                 new Field("Price", FieldType.Double, FieldRelevance.Normal),
                 new Field("CoverImageUrl", FieldType.Literal, FieldRelevance.Normal),
                 new Field("CurrentStock", FieldType.Int, FieldRelevance.Normal),
                 new Field("CategoryId", FieldType.Int, FieldRelevance.Normal),
-                new Field("CategoryName", FieldType.Text, FieldRelevance.Normal),
+                new Field("CategoryName", FieldType.Text, FieldRelevance.High, enableSearching: true),
                 new Field("SellerId", FieldType.Literal, FieldRelevance.Normal),
-                new Field("SellerEmail", FieldType.Literal, FieldRelevance.Normal),
-                new Field("SellerName", FieldType.Text, FieldRelevance.Normal),
-                new Field("SellerPublicName", FieldType.Text, FieldRelevance.Normal)
+                new Field("SellerEmail", FieldType.Literal, FieldRelevance.Normal, enableSearching: true),
+                new Field("SellerName", FieldType.Text, FieldRelevance.Normal, enableSearching: true),
+                new Field("SellerPublicName", FieldType.Text, FieldRelevance.Normal, enableSearching: true)
             };
 
             Name = "MegaSoares";
             Fields = fixedFields.Union(variantFields).ToArray();
+            AnalysisSettings = new AnalysisSettings
+            {
+                Synonyms = new[]
+                {
+                    new[] { "qrcode", "megasoares", "mega soares", "ms" },
+                    new[] { "loja", "store" },
+                    new[] { "branco", "white" },
+                    new[] { "frizer", "freezer" },
+                }
+            };
         }
     }
 

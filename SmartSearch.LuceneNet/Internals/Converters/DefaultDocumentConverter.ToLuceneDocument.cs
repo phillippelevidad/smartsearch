@@ -1,6 +1,7 @@
 ﻿using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using SmartSearch.Abstractions;
+using SmartSearch.LuceneNet.Internals.SpecializedFields;
 using System;
 using System.Collections.Generic;
 using LuceneDocument = Lucene.Net.Documents.Document;
@@ -67,7 +68,9 @@ namespace SmartSearch.LuceneNet.Internals.Converters
 
         IIndexableField ConvertFieldInternal(IField field, object value)
         {
-            var store = LuceneField.Store.YES;
+            var store = field is ISpecializedField
+                ? LuceneField.Store.NO /* analyzed fields, best for searching, cannot be returned */
+                : LuceneField.Store.YES /* not-analyzed fields, only exact matches, can be returned */;
 
             switch (field.Type)
             {

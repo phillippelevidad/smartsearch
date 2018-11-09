@@ -1,5 +1,4 @@
 ﻿using SmartSearch;
-using SmartSearch.Abstractions;
 using SmartSearch.LuceneNet;
 using System;
 
@@ -23,7 +22,7 @@ namespace ConsoleApp
 
         static void DoSearchAndOutputResults(string query)
         {
-            var domain = new PromonetSearchDomain();
+            var domain = new MegaSoaresSearchDomain();
             var options = Configuration.GetLuceneIndexOptions();
             var searchService = new LuceneSearchService(options);
 
@@ -60,7 +59,18 @@ namespace ConsoleApp
             var colSize = 35;
             var spaceCount = colSize - field.Length;
             var spaces = new string(' ', spaceCount);
-            Console.WriteLine($"{field}{spaces}{value}");
+
+            string stringValue;
+
+            if (value is Array array)
+            {
+                var newArray = new object[array.Length];
+                array.CopyTo(newArray, 0);
+                stringValue = string.Join(",", newArray);
+            }
+            else stringValue = value?.ToString();
+
+            Console.WriteLine($"{field}{spaces}{stringValue}");
         }
     }
 }
