@@ -44,6 +44,9 @@
     <Compile Include="AnalysisSettings.cs" />
     <Compile Include="Document.cs" />
     <Compile Include="Facet.cs" />
+    <Compile Include="Suggestion.cs" />
+    <Compile Include="ISuggestionRequest.cs" />
+    <Compile Include="ISuggestionResult.cs" />
     <Compile Include="QueryFilter.cs" />
     <Compile Include="SearchDomain.cs" />
     <Compile Include="Field.cs" />

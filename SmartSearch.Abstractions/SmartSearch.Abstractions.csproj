@@ -54,6 +54,13 @@
     <Compile Include="ISearchResult.cs" />
     <Compile Include="ISearchService.cs" />
     <Compile Include="ISortOption.cs" />
+    <Compile Include="ISuggestion.cs" />
+    <Compile Include="ISuggestionIndexService.cs" />
+    <Compile Include="ISuggestionProvider.cs" />
+    <Compile Include="ISuggestionReader.cs" />
+    <Compile Include="ISuggestionRequest.cs" />
+    <Compile Include="ISuggestionResult.cs" />
+    <Compile Include="ISuggestionSearchService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
