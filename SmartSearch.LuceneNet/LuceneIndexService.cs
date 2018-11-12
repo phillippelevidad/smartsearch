@@ -1,11 +1,10 @@
 ﻿using Lucene.Net.Facet;
 using Lucene.Net.Facet.Taxonomy;
-using Lucene.Net.Facet.Taxonomy.Directory;
 using Lucene.Net.Index;
-using Lucene.Net.Store;
 using SmartSearch.Abstractions;
 using SmartSearch.LuceneNet.Internals;
 using SmartSearch.LuceneNet.Internals.Converters;
+using SmartSearch.LuceneNet.Internals.Factories;
 using SmartSearch.LuceneNet.Internals.Helpers;
 using System;
 using System.IO;
@@ -16,8 +15,8 @@ namespace SmartSearch.LuceneNet
     public class LuceneIndexService : IIndexService
     {
         FacetsConfig facetsConfig;
-        readonly LuceneIndexOptions options;
 
+        readonly LuceneIndexOptions options;
         readonly IDocumentConverter defaultDocumentConverter;
         readonly IDocumentConverter facetDocumentConverter;
 
@@ -28,7 +27,6 @@ namespace SmartSearch.LuceneNet
         public LuceneIndexService(LuceneIndexOptions options)
         {
             this.options = options ?? throw new ArgumentNullException(nameof(options));
-
             defaultDocumentConverter = new DefaultDocumentConverter();
             facetDocumentConverter = new FacetDocumentConverter();
         }
@@ -42,8 +40,8 @@ namespace SmartSearch.LuceneNet
                     var internalDomain = InternalSearchDomain.CreateFrom(domain);
                     SetFacetsConfig(internalDomain);
 
-                    using (var facetWriter = GetFacetWriter(internalDomain))
-                    using (var indexWriter = GetIndexWriter(internalDomain))
+                    using (var facetWriter = IndexWriterFactory.CreateFacetWriter(internalDomain, options))
+                    using (var indexWriter = IndexWriterFactory.CreateIndexWriter(internalDomain, options))
                     using (var documentReader = documentProvider.GetDocumentReader())
                     {
                         while (documentReader.ReadNext())
@@ -78,41 +76,6 @@ namespace SmartSearch.LuceneNet
                 mainDocument.Add(facet);
 
             return facetsConfig.Build(taxonomyWriter, mainDocument);
-        }
-
-        ITaxonomyWriter GetFacetWriter(InternalSearchDomain domain)
-        {
-            var facetsPath = IndexDirectoryHelper.GetFacetsDirectoryPath(options.IndexDirectory, domain.Name);
-
-            if (!System.IO.Directory.Exists(facetsPath))
-                System.IO.Directory.CreateDirectory(facetsPath);
-
-            return new DirectoryTaxonomyWriter(FSDirectory.Open(facetsPath));
-        }
-
-        IndexWriter GetIndexWriter(InternalSearchDomain domain)
-        {
-            var factory = new InternalAnalyzerFactory(domain, options.AnalyzerFactory);
-            var analyzer = factory.Create();
-
-            var config = new IndexWriterConfig(Definitions.LuceneVersion, analyzer)
-            {
-                OpenMode = options.ForceRecreate ? OpenMode.CREATE : OpenMode.CREATE_OR_APPEND
-            };
-
-            if (options.IndexInMemory)
-            {
-                return new IndexWriter(new RAMDirectory(), config);
-            }
-            else
-            {
-                var path = IndexDirectoryHelper.GetDirectoryPath(options.IndexDirectory, domain.Name);
-
-                if (!System.IO.Directory.Exists(path))
-                    System.IO.Directory.CreateDirectory(path);
-
-                return new IndexWriter(FSDirectory.Open(path), config);
-            }
         }
 
         void SetFacetsConfig(InternalSearchDomain domain)

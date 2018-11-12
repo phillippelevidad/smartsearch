@@ -9,31 +9,14 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
     }
 
     [DebuggerDisplay("{Name}, Type: {Type}, Relevance: {Relevance}")]
-    internal class SpecializedField : ISpecializedField
+    internal class SpecializedField : Field, ISpecializedField
     {
-        public string Name { get; set; }
-
         public string OriginalName { get; set; }
 
-        public FieldRelevance Relevance { get; set; }
-
-        public FieldType Type { get; set; }
-
-        public bool EnableFaceting { get; set; }
-
-        public bool EnableSearching { get; set; }
-
-        public bool EnableSorting { get; set; }
-
         public SpecializedField(string name, string originalName, FieldType type, FieldRelevance relevance, bool enableFaceting, bool enableSearching, bool enableSorting)
+            : base(name, type, relevance, enableFaceting, enableSearching, enableSorting)
         {
-            Name = name;
             OriginalName = originalName;
-            Type = type;
-            Relevance = relevance;
-            EnableFaceting = enableFaceting;
-            EnableSearching = enableSearching;
-            EnableSorting = enableSorting;
         }
     }
 }

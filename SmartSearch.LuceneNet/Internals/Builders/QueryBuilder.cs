@@ -7,7 +7,7 @@ namespace SmartSearch.LuceneNet.Internals
 {
     class QueryBuilder
     {
-        private readonly InternalSearchDomain domain;
+        readonly InternalSearchDomain domain;
 
         public QueryBuilder(InternalSearchDomain domain)
         {

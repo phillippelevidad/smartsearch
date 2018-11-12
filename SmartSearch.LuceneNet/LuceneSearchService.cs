@@ -1,12 +1,10 @@
 ﻿using Lucene.Net.Facet;
 using Lucene.Net.Facet.Taxonomy;
-using Lucene.Net.Facet.Taxonomy.Directory;
-using Lucene.Net.Index;
 using Lucene.Net.Search;
-using Lucene.Net.Store;
 using SmartSearch.Abstractions;
 using SmartSearch.LuceneNet.Internals;
 using SmartSearch.LuceneNet.Internals.Converters;
+using SmartSearch.LuceneNet.Internals.Factories;
 using SmartSearch.LuceneNet.Internals.Helpers;
 using System;
 using System.Collections.Generic;
@@ -35,8 +33,8 @@ namespace SmartSearch.LuceneNet
             {
                 var internalDomain = InternalSearchDomain.CreateFrom(domain);
 
-                using (var facetsReader = GetFacetsReader(domain))
-                using (var indexReader = GetIndexReader(domain))
+                using (var facetsReader = IndexReaderFactory.CreateFacetsReader(internalDomain, options))
+                using (var indexReader = IndexReaderFactory.CreateIndexReader(internalDomain, options))
                 {
                     var factory = new InternalAnalyzerFactory(internalDomain, options.AnalyzerFactory);
                     var analyzer = factory.Create();
@@ -47,33 +45,6 @@ namespace SmartSearch.LuceneNet
 
                     return SearchInternal(internalDomain, request, searcher, facetsReader, query, sort);
                 }
-            }
-        }
-
-        TaxonomyReader GetFacetsReader(ISearchDomain domain)
-        {
-            if (options.IndexInMemory)
-            {
-                return new DirectoryTaxonomyReader(new RAMDirectory());
-            }
-            else
-            {
-                var path = IndexDirectoryHelper.GetFacetsDirectoryPath(options.IndexDirectory, domain.Name);
-                return new DirectoryTaxonomyReader(FSDirectory.Open(path));
-            }
-        }
-
-        DirectoryReader GetIndexReader(ISearchDomain domain)
-        {
-            if (options.IndexInMemory)
-            {
-                using (var dir = FSDirectory.Open(options.IndexDirectory))
-                    return DirectoryReader.Open(new RAMDirectory(dir, IOContext.DEFAULT));
-            }
-            else
-            {
-                var path = IndexDirectoryHelper.GetDirectoryPath(options.IndexDirectory, domain.Name);
-                return DirectoryReader.Open(FSDirectory.Open(path));
             }
         }
 

@@ -5,6 +5,8 @@ namespace SmartSearch.LuceneNet
 {
     public class LuceneIndexOptions
     {
+        public IAnalyzerFactory AnalyzerFactory { get; private set; } = new StandardAnalyzerFactory();
+
         static readonly string DefaultIndexDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
         public bool ForceRecreate { get; private set; } = false;
@@ -13,7 +15,7 @@ namespace SmartSearch.LuceneNet
 
         public bool IndexInMemory { get; private set; } = false;
 
-        public IAnalyzerFactory AnalyzerFactory { get; private set; } = new StandardAnalyzerFactory();
+        #region Fluent API
 
         public LuceneIndexOptions UseAnalyzerFactory(IAnalyzerFactory analyzerFactory)
         {
@@ -34,5 +36,7 @@ namespace SmartSearch.LuceneNet
             IndexInMemory = true;
             return this;
         }
+
+        #endregion
     }
 }

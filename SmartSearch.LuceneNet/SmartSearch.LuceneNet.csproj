@@ -67,7 +67,10 @@
   <ItemGroup>
     <Compile Include="Analysis\BrazilianAnalyzerFactory.cs" />
     <Compile Include="Analysis\IAnalyzerFactory.cs" />
+    <Compile Include="Internals\Builders\FilterBuilder.cs" />
     <Compile Include="Internals\Converters\TypeConverters.cs" />
+    <Compile Include="Internals\Factories\IndexReaderFactory.cs" />
+    <Compile Include="Internals\Factories\IndexWriterFactory.cs" />
     <Compile Include="Internals\Helpers\CultureContext.cs" />
     <Compile Include="Internals\Helpers\InternalSearchDomainExtensions.cs" />
     <Compile Include="Internals\Helpers\SynonymMapBuilderExtensions.cs" />

@@ -44,7 +44,7 @@ namespace SmartSearch.LuceneNet.Internals
         string BuildSearchExpression(ISearchRequest request)
         {
             var searchFields = domain.GetSearchEnabledFields();
-            var words = request.Query.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var words = request.Query.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             var wordExpressions = new List<string>(words.Length);
 
             foreach (var word in words)

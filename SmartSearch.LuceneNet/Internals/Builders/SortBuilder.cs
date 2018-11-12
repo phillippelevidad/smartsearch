@@ -52,6 +52,8 @@ namespace SmartSearch.LuceneNet.Internals
                 case FieldType.DoubleArray:
                     return SortFieldType.DOUBLE;
 
+                case FieldType.Bool:
+                case FieldType.BoolArray:
                 case FieldType.Int:
                 case FieldType.IntArray:
                     return SortFieldType.INT32;
