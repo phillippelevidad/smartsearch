@@ -52,14 +52,29 @@ namespace SmartSearch.LuceneNet
 
         TaxonomyReader GetFacetsReader(ISearchDomain domain)
         {
-            var path = IndexDirectoryHelper.GetFacetsDirectoryPath(options.IndexDirectory, domain.Name);
-            return new DirectoryTaxonomyReader(FSDirectory.Open(path));
+            if (options.IndexInMemory)
+            {
+                return new DirectoryTaxonomyReader(new RAMDirectory());
+            }
+            else
+            {
+                var path = IndexDirectoryHelper.GetFacetsDirectoryPath(options.IndexDirectory, domain.Name);
+                return new DirectoryTaxonomyReader(FSDirectory.Open(path));
+            }
         }
 
         DirectoryReader GetIndexReader(ISearchDomain domain)
         {
-            var path = IndexDirectoryHelper.GetDirectoryPath(options.IndexDirectory, domain.Name);
-            return DirectoryReader.Open(FSDirectory.Open(path));
+            if (options.IndexInMemory)
+            {
+                using (var dir = FSDirectory.Open(options.IndexDirectory))
+                    return DirectoryReader.Open(new RAMDirectory(dir, IOContext.DEFAULT));
+            }
+            else
+            {
+                var path = IndexDirectoryHelper.GetDirectoryPath(options.IndexDirectory, domain.Name);
+                return DirectoryReader.Open(FSDirectory.Open(path));
+            }
         }
 
         ISearchResult SearchInternal(

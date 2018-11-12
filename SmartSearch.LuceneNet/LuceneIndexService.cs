@@ -92,20 +92,27 @@ namespace SmartSearch.LuceneNet
 
         IndexWriter GetIndexWriter(InternalSearchDomain domain)
         {
-            var path = IndexDirectoryHelper.GetDirectoryPath(options.IndexDirectory, domain.Name);
-
-            if (!System.IO.Directory.Exists(path))
-                System.IO.Directory.CreateDirectory(path);
-
             var factory = new InternalAnalyzerFactory(domain, options.AnalyzerFactory);
             var analyzer = factory.Create();
 
             var config = new IndexWriterConfig(Definitions.LuceneVersion, analyzer)
             {
-                OpenMode = options.ForceCreate ? OpenMode.CREATE : OpenMode.CREATE_OR_APPEND
+                OpenMode = options.ForceRecreate ? OpenMode.CREATE : OpenMode.CREATE_OR_APPEND
             };
 
-            return new IndexWriter(FSDirectory.Open(path), config);
+            if (options.IndexInMemory)
+            {
+                return new IndexWriter(new RAMDirectory(), config);
+            }
+            else
+            {
+                var path = IndexDirectoryHelper.GetDirectoryPath(options.IndexDirectory, domain.Name);
+
+                if (!System.IO.Directory.Exists(path))
+                    System.IO.Directory.CreateDirectory(path);
+
+                return new IndexWriter(FSDirectory.Open(path), config);
+            }
         }
 
         void SetFacetsConfig(InternalSearchDomain domain)
