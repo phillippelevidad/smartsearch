@@ -1,11 +1,38 @@
 ﻿using System;
-using System.ComponentModel;
 
 namespace SmartSearch.LuceneNet.Internals.Converters
 {
+    class BoolConverter
+    {
+        static readonly Type boolType = typeof(bool);
+
+        public static bool ConvertFromInt(int value)
+        {
+            return value == 1 ? true : false;
+        }
+
+        public static int ConvertToInt(object value)
+        {
+            return Convert(value) ? 1 : 0;
+        }
+
+        static bool Convert(object value)
+        {
+            if (value.GetType() == boolType)
+                return (bool)value;
+
+            return System.Convert.ToBoolean(value);
+        }
+    }
+
     class DateTimeConverter
     {
         static readonly Type dateTimeType = typeof(DateTime);
+
+        public static DateTime ConvertFromLong(long value)
+        {
+            return new DateTime(value);
+        }
 
         public static long ConvertToLong(object value)
         {
@@ -59,5 +86,4 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             return System.Convert.ToString(value);
         }
     }
-
 }

@@ -74,6 +74,10 @@ namespace SmartSearch.LuceneNet.Internals.Converters
 
             switch (field.Type)
             {
+                case SourceFieldType.Bool:
+                case SourceFieldType.BoolArray:
+                    return new Int32Field(field.Name, BoolConverter.ConvertToInt(value), store) { Boost = GetFieldBoost(field) };
+
                 case SourceFieldType.Date:
                 case SourceFieldType.DateArray:
                     return new Int64Field(field.Name, DateTimeConverter.ConvertToLong(value), store) { Boost = GetFieldBoost(field) };

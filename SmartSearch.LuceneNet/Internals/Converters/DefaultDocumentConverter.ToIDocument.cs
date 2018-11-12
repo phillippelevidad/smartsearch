@@ -49,17 +49,21 @@ namespace SmartSearch.LuceneNet.Internals.Converters
         {
             switch (field.Type)
             {
+                case SourceFieldType.Bool:
+                case SourceFieldType.BoolArray:
+                    return BoolConverter.ConvertFromInt(luceneField.GetInt32Value().Value);
+
                 case SourceFieldType.Date:
                 case SourceFieldType.DateArray:
-                    return luceneField.GetInt64Value();
+                    return DateTimeConverter.ConvertFromLong(luceneField.GetInt64Value().Value);
 
                 case SourceFieldType.Double:
                 case SourceFieldType.DoubleArray:
-                    return luceneField.GetDoubleValue();
+                    return luceneField.GetDoubleValue().Value;
 
                 case SourceFieldType.Int:
                 case SourceFieldType.IntArray:
-                    return luceneField.GetInt64Value();
+                    return luceneField.GetInt64Value().Value;
 
                 case SourceFieldType.Text:
                 case SourceFieldType.Literal:

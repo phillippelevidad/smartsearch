@@ -90,7 +90,6 @@
     <Compile Include="Internals\SpecializedFields\ISpecializedFieldSpecification.cs" />
     <Compile Include="Internals\SpecializedFields\SynonymFieldSpecification.cs" />
     <Compile Include="Analysis\SynonymsAnalyzer.cs" />
-    <Compile Include="Internals\SpecializedFields\SynonymsProcessor.cs" />
     <Compile Include="LuceneIndexOptions.cs" />
     <Compile Include="LuceneIndexService.cs" />
     <Compile Include="LuceneSearchService.cs" />

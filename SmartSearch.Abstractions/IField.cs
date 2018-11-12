@@ -22,6 +22,7 @@
 
     public enum FieldType
     {
+        Bool, BoolArray,
         Date, DateArray,
         Double, DoubleArray,
         Int, IntArray,
