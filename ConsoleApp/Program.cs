@@ -17,8 +17,8 @@ namespace ConsoleApp
 
         static IIndexContext CreateContext(ISearchDomain domain)
         {
-            var baseDir = @"C:\Temp\SmartSearchIndexes\";
-            return new PhysicalIndexContext(domain, baseDir, true);
+            var indexDirectory = System.IO.Path.Combine(@"C:\Temp\SmartSearchIndexes", domain.Name);
+            return new PhysicalIndexContext(indexDirectory, true);
         }
 
         static IDocumentProvider CreateDocumentProvider()

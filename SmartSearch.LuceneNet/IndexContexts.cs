@@ -31,16 +31,13 @@ namespace SmartSearch.LuceneNet
     {
         readonly BaseIndexContext baseContext;
 
-        public ISearchDomain Domain { get; }
-
         public string IndexDirectory { get; }
 
         public bool ForceRecreate { get; }
 
-        public PhysicalIndexContext(ISearchDomain domain, string indexDirectory, bool forceRecreate)
+        public PhysicalIndexContext(string indexDirectory, bool forceRecreate)
         {
             baseContext = new BaseIndexContext(InitializeCompositeIndex);
-            Domain = domain;
             IndexDirectory = indexDirectory;
             ForceRecreate = forceRecreate;
         }
@@ -51,10 +48,10 @@ namespace SmartSearch.LuceneNet
 
         CompositeIndex InitializeCompositeIndex()
         {
-            var facetsPath = IndexDirectoryHelper.GetFacetsDirectoryPath(IndexDirectory, Domain.Name);
+            var facetsPath = IndexDirectoryHelper.GetFacetsDirectoryPath(IndexDirectory);
             var facetsDir = FSDirectory.Open(facetsPath);
 
-            var indexPath = IndexDirectoryHelper.GetDirectoryPath(IndexDirectory, Domain.Name);
+            var indexPath = IndexDirectoryHelper.GetDirectoryPath(IndexDirectory);
             var indexDir = FSDirectory.Open(indexPath);
 
             return new CompositeIndex(facetsDir, indexDir);

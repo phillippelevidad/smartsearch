@@ -1,0 +1,26 @@
+﻿[
+  {
+    "Id": "626C6710-5698-440B-9342-13B6D0EBC51D",
+    "Title": "Ar Condicionado Springer 18.000 Btus Mídea Frio Classe A",
+    "Description": "O ar-condicionado Springer Midea oferece o Sistema Ar+Puro HD, com quatro etapas de tratamentos que melhoram a qualidade do ar a ajudam a previnir problemas respiratórios. Suas funções facilitam sua operação e o dia a dia como o aviso limpa e troca filtro, que informam a necessidade de manutenção. A Função dormir regula a temperatura durante o sono por até 7 horas - sono tranquilo e com economia de energia. Com a função Siga-me, a temperatura programada atinge o local onde está o controle remoto.O modo Não Perturbe desliga as leds da unidade interna e os sinais sonoros. Tudo isso com baixo consumo de energia e Selo Procel em todas as capacidades e fluido refrigerante ecológico R410-A não inflamável, atóxico e que não agride a camada de Ozônio.",
+    "Price": 2076.40,
+    "IsInPromotion": false,
+    "Category": "categoria exemplo"
+  },
+  {
+    "Id": "D3F9C773-89D4-4543-A64E-F5573C65FA78",
+    "Title": "Centrífuga de Roupas Mueller Dry 2.8kg 600050005 PRETO",
+    "Description": "Que tal secar suas roupas com mais praticidade e em menos tempo? Com a Centrífuga de Roupas Dry isso é possível! Sua centrifugação conta com 1.800 rotações por minuto, que garante roupas quase secas em apenas 5 minutos.\r\n\r\nCaracterísticas:\r\nExclusiva alça de transporte\r\nEncaixe especial para recipientes\r\nPés antideslizantes\r\nGrade de proteção para Roupas\r\nConsumo por ciclo 5 min 127V 60Hz: 0,016 Kw 220V 60Hz: 0,016 Kw\r\nPotencia Lavação 127V 60Hz: 136 W 220V 60Hz: 137 W Capacidade ( Litros ): 13 Material: Polipropileno",
+    "Price": 385.60,
+    "IsInPromotion": false,
+    "Category": "Eletrodomésticos"
+  },
+  {
+    "Id": "0DFD1862-9DFB-43F6-9579-4632DC3EA362",
+    "Title": "Fogão 5 Bocas Brastemp Clean com Timer Digital e Acendimento Automático BFS5TARUNA",
+    "Description": "O Fogão 5 Bocas Brastemp Clean com Timer Digital e Acendimento Automático tem um design moderno com porta de vidro panorâmico e grades individuais. Para facilitar a limpeza, ele possui vidro interno removível e novo revestimento do forno com a tecnologia Cleartec.",
+    "Price": 1936.60,
+    "IsInPromotion": false,
+    "Category": "Eletrodomésticos"
+  }
+]

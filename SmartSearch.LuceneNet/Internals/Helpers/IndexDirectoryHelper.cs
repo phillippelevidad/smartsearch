@@ -4,10 +4,10 @@ namespace SmartSearch.LuceneNet.Internals.Helpers
 {
     static class IndexDirectoryHelper
     {
-        public static string GetDirectoryPath(string baseDirectory, string domainName) =>
-            Path.Combine(baseDirectory, domainName);
+        public static string GetDirectoryPath(string baseDirectory) =>
+            Path.Combine(baseDirectory, "mainindex");
 
-        public static string GetFacetsDirectoryPath(string baseDirectory, string domainName) =>
-            GetDirectoryPath(baseDirectory, $"{domainName}_facets");
+        public static string GetFacetsDirectoryPath(string baseDirectory) =>
+            Path.Combine(baseDirectory, "facets");
     }
 }
