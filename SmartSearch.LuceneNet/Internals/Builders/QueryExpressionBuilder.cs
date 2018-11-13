@@ -3,7 +3,7 @@ using SmartSearch.Abstractions;
 using System;
 using System.Collections.Generic;
 
-namespace SmartSearch.LuceneNet.Internals
+namespace SmartSearch.LuceneNet.Internals.Builders
 {
     class QueryExpressionBuilder
     {

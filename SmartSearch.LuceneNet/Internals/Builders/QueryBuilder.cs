@@ -1,9 +1,10 @@
 ﻿using Lucene.Net.Analysis;
+using Lucene.Net.Analysis.Miscellaneous;
 using Lucene.Net.QueryParsers.Classic;
 using Lucene.Net.Search;
 using SmartSearch.Abstractions;
 
-namespace SmartSearch.LuceneNet.Internals
+namespace SmartSearch.LuceneNet.Internals.Builders
 {
     class QueryBuilder
     {
@@ -18,11 +19,17 @@ namespace SmartSearch.LuceneNet.Internals
         {
             var parser = new QueryParser(Definitions.LuceneVersion, "", analyzer);
             var queryExpression = new QueryExpressionBuilder(domain).Build(request);
-            return BuildInternal(parser, queryExpression);
+            var filter = new FilterBuilder(domain).Build(request, analyzer as PerFieldAnalyzerWrapper);
+            var query = BuildInternal(parser, queryExpression);
+
+            return filter == null ? query : new FilteredQuery(query, filter);
         }
 
         Query BuildInternal(QueryParser parser, string queryExpression)
         {
+            if (string.IsNullOrEmpty(queryExpression))
+                return new MatchAllDocsQuery();
+
             while (true)
             {
                 try

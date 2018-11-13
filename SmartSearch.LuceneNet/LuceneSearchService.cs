@@ -3,6 +3,7 @@ using Lucene.Net.Facet.Taxonomy;
 using Lucene.Net.Search;
 using SmartSearch.Abstractions;
 using SmartSearch.LuceneNet.Internals;
+using SmartSearch.LuceneNet.Internals.Builders;
 using SmartSearch.LuceneNet.Internals.Converters;
 using SmartSearch.LuceneNet.Internals.Factories;
 using SmartSearch.LuceneNet.Internals.Helpers;

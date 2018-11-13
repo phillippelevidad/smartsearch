@@ -2,7 +2,7 @@
 using SmartSearch.Abstractions;
 using System.Linq;
 
-namespace SmartSearch.LuceneNet.Internals
+namespace SmartSearch.LuceneNet.Internals.Builders
 {
     class SortBuilder
     {
