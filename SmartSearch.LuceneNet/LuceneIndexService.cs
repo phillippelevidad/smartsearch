@@ -31,17 +31,19 @@ namespace SmartSearch.LuceneNet
             facetDocumentConverter = new FacetDocumentConverter();
         }
 
-        public void CreateIndex(ISearchDomain domain, IDocumentProvider documentProvider)
+        public void CreateIndex(IIndexContext context, ISearchDomain domain, IDocumentProvider documentProvider)
         {
             try
             {
                 using (CultureContext.Invariant)
                 {
+                    var contextWrapper = new IndexContextWrapper(context);
                     var internalDomain = InternalSearchDomain.CreateFrom(domain);
+
                     SetFacetsConfig(internalDomain);
 
-                    using (var facetWriter = IndexWriterFactory.CreateFacetWriter(internalDomain, options))
-                    using (var indexWriter = IndexWriterFactory.CreateIndexWriter(internalDomain, options))
+                    using (var facetWriter = IndexWriterFactory.CreateFacetWriter(contextWrapper, internalDomain, options))
+                    using (var indexWriter = IndexWriterFactory.CreateIndexWriter(contextWrapper, internalDomain, options))
                     using (var documentReader = documentProvider.GetDocumentReader())
                     {
                         while (documentReader.ReadNext())

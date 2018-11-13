@@ -3,6 +3,11 @@ using System;
 
 namespace SmartSearch.LuceneNet
 {
+    public class InvalidIndexContextTypeException : Exception
+    {
+        public InvalidIndexContextTypeException(Type type) : base($"Type '{type?.FullName}' is not valid as an IndexContext.") { }
+    }
+
     public class ErrorCreatingLuceneIndexException : Exception
     {
         public ErrorCreatingLuceneIndexException(Exception innerException) : base("Error creating Lucene Index.", innerException) { }

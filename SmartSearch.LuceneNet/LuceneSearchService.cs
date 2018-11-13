@@ -27,14 +27,24 @@ namespace SmartSearch.LuceneNet
             documentConverter = new DefaultDocumentConverter();
         }
 
-        public ISearchResult Search(ISearchDomain domain, ISearchRequest request)
+        public ISearchResult Search(IIndexContext context, ISearchDomain domain, ISearchRequest request)
         {
+            if (context == null)
+                throw new ArgumentNullException(nameof(context));
+
+            if (domain == null)
+                throw new ArgumentNullException(nameof(domain));
+
+            if (request == null)
+                throw new ArgumentNullException(nameof(request));
+
             using (CultureContext.Invariant)
             {
+                var contextWrapper = new IndexContextWrapper(context);
                 var internalDomain = InternalSearchDomain.CreateFrom(domain);
 
-                using (var facetsReader = IndexReaderFactory.CreateFacetsReader(internalDomain, options))
-                using (var indexReader = IndexReaderFactory.CreateIndexReader(internalDomain, options))
+                using (var facetsReader = IndexReaderFactory.CreateFacetsReader(contextWrapper))
+                using (var indexReader = IndexReaderFactory.CreateIndexReader(contextWrapper))
                 {
                     var factory = new InternalAnalyzerFactory(internalDomain, options.AnalyzerFactory);
                     var analyzer = factory.Create();

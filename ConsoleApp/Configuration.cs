@@ -6,7 +6,6 @@ namespace ConsoleApp
     static class Configuration
     {
         public static LuceneIndexOptions GetLuceneIndexOptions() => new LuceneIndexOptions()
-            .UseAnalyzerFactory(new BrazilianAnalyzerFactory())
-            .UsePhysicalIndexDirectory(@"C:\Temp\SmartSearchIndexes\", forceRecreate: true);
+            .UseAnalyzerFactory(new BrazilianAnalyzerFactory());
     }
 }

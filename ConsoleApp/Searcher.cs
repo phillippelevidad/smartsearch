@@ -1,4 +1,5 @@
 ﻿using SmartSearch;
+using SmartSearch.Abstractions;
 using SmartSearch.LuceneNet;
 using System;
 
@@ -6,7 +7,7 @@ namespace ConsoleApp
 {
     static class Searcher
     {
-        public static void SearchIndex()
+        public static void SearchIndex(IIndexContext context)
         {
             while (true)
             {
@@ -16,17 +17,17 @@ namespace ConsoleApp
                 if (query.Length == 0)
                     break;
 
-                DoSearchAndOutputResults(query);
+                DoSearchAndOutputResults(context, query);
             }
         }
 
-        static void DoSearchAndOutputResults(string query)
+        static void DoSearchAndOutputResults(IIndexContext context, string query)
         {
             var domain = new MegaSoaresSearchDomain();
             var options = Configuration.GetLuceneIndexOptions();
             var searchService = new LuceneSearchService(options);
 
-            var result = searchService.Search(domain, new SearchRequest
+            var result = searchService.Search(context, domain, new SearchRequest
             {
                 Query = query,
                 StartIndex = 0,

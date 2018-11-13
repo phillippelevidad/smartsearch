@@ -2,6 +2,6 @@
 {
     public interface IIndexService
     {
-        void CreateIndex(ISearchDomain domain, IDocumentProvider documentProvider);
+        void CreateIndex(IIndexContext context, ISearchDomain domain, IDocumentProvider documentProvider);
     }
 }

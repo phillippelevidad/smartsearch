@@ -14,7 +14,7 @@ namespace SmartSearch.LuceneNet.Internals
             Id = id;
         }
 
-        public static InternalDocument CreateFrom(InternalSearchDomain domain, IDocument document)
+        internal static InternalDocument CreateFrom(InternalSearchDomain domain, IDocument document)
         {
             var newDocument = new InternalDocument(document.Id);
             var newFields = new Dictionary<string, object>(domain.Fields.Length + domain.SpecializedFields.Length);

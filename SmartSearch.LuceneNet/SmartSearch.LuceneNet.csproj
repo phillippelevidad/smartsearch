@@ -68,12 +68,14 @@
     <Compile Include="Analysis\BrazilianAnalyzerFactory.cs" />
     <Compile Include="Analysis\IAnalyzerFactory.cs" />
     <Compile Include="Internals\Builders\FilterBuilder.cs" />
+    <Compile Include="Internals\CompositeIndex.cs" />
     <Compile Include="Internals\Converters\TypeConverters.cs" />
     <Compile Include="Internals\Factories\IndexReaderFactory.cs" />
     <Compile Include="Internals\Factories\IndexWriterFactory.cs" />
     <Compile Include="Internals\Helpers\CultureContext.cs" />
     <Compile Include="Internals\Helpers\InternalSearchDomainExtensions.cs" />
     <Compile Include="Internals\Helpers\SynonymMapBuilderExtensions.cs" />
+    <Compile Include="Internals\IndexContextWrapper.cs" />
     <Compile Include="Internals\InternalAnalyzerFactory.cs" />
     <Compile Include="Analysis\StandardAnalyzerFactory.cs" />
     <Compile Include="Internals\Converters\DefaultDocumentConverter.ToIDocument.cs" />
@@ -96,6 +98,7 @@
     <Compile Include="LuceneIndexOptions.cs" />
     <Compile Include="LuceneIndexService.cs" />
     <Compile Include="LuceneSearchService.cs" />
+    <Compile Include="IndexContexts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Internals\Builders\QueryBuilder.cs" />
   </ItemGroup>
