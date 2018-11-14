@@ -1,13 +1,8 @@
-﻿using Lucene.Net.Analysis;
-using Lucene.Net.Analysis.TokenAttributes;
-using Lucene.Net.Analysis.Miscellaneous;
-using Lucene.Net.Search;
-using Lucene.Net.Util;
-using SmartSearch.Abstractions;
-using SmartSearch.LuceneNet.Internals.Converters;
-using System.Linq;
-using System.Collections.Generic;
+﻿using Lucene.Net.Analysis.Miscellaneous;
 using Lucene.Net.Queries;
+using Lucene.Net.Search;
+using SmartSearch.Abstractions;
+using System.Linq;
 
 namespace SmartSearch.LuceneNet.Internals.Builders
 {
@@ -41,79 +36,33 @@ namespace SmartSearch.LuceneNet.Internals.Builders
 
         Filter BuildFilterForField(ISearchRequest request, IQueryFilter requestFilter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
-            if (requestFilter.Value == null)
-                return null;
-
             switch (field.Type)
             {
                 case FieldType.Bool:
                 case FieldType.BoolArray:
-                    var internalBoolValue = BoolConverter.ConvertToInt(requestFilter.Value);
-                    return NumericRangeFilter.NewInt32Range(field.Name, internalBoolValue, internalBoolValue, true, true);
+                    return new BoolFilterBuilder().Build(request, requestFilter, field, perFieldAnalyzer);
 
                 case FieldType.Date:
                 case FieldType.DateArray:
-                    var internalDateValue = DateTimeConverter.ConvertToLong(requestFilter.Value);
-                    return NumericRangeFilter.NewInt64Range(field.Name, internalDateValue, internalDateValue, true, true);
+                    return new DateFilterBuilder().Build(request, requestFilter, field, perFieldAnalyzer);
 
                 case FieldType.Double:
                 case FieldType.DoubleArray:
-                    var internalDoubleValue = DoubleConverter.Convert(requestFilter.Value);
-                    return NumericRangeFilter.NewDoubleRange(field.Name, internalDoubleValue, internalDoubleValue, true, true);
+                    return new DoubleFilterBuilder().Build(request, requestFilter, field, perFieldAnalyzer);
 
                 case FieldType.Int:
                 case FieldType.IntArray:
-                    var internalLongValue = LongConverter.Convert(requestFilter.Value);
-                    return NumericRangeFilter.NewInt64Range(field.Name, internalLongValue, internalLongValue, true, true);
+                    return new IntFilterBuilder().Build(request, requestFilter, field, perFieldAnalyzer);
 
                 case FieldType.Literal:
                 case FieldType.LiteralArray:
                 case FieldType.Text:
                 case FieldType.TextArray:
-                    return BuildFilterForTextField(request, requestFilter, field, perFieldAnalyzer);
+                    return new TextAndLiteralFilterBuilder().Build(request, requestFilter, field, perFieldAnalyzer);
 
                 default:
                 case FieldType.LatLng:
                     throw new UnknownFieldTypeException(field.Type);
-            }
-        }
-
-        Filter BuildFilterForTextField(ISearchRequest request, IQueryFilter requestFilter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
-        {
-            var value = StringConverter.Convert(requestFilter.Value);
-            var terms = ExtractTermsFromString(field.Name, value, perFieldAnalyzer);
-            return new FieldCacheTermsFilter(field.Name, terms);
-        }
-
-        string[] ExtractTermsFromString(string fieldName, string value, PerFieldAnalyzerWrapper perFieldAnalyzer)
-        {
-            TokenStream tokenStream = null;
-
-            try
-            {
-                tokenStream = perFieldAnalyzer.GetTokenStream(fieldName, value);
-
-                var offsetAttribute = new OffsetAttribute();
-                var charTermAttribute = new CharTermAttribute();
-                var terms = new List<string>();
-
-                tokenStream.AddAttributeImpl(offsetAttribute);
-                tokenStream.AddAttributeImpl(charTermAttribute);
-                tokenStream.Reset();
-
-                while (tokenStream.IncrementToken())
-                {
-                    int start = offsetAttribute.StartOffset;
-                    int end = offsetAttribute.EndOffset;
-                    terms.Add(charTermAttribute.ToString());
-                }
-
-                return terms.ToArray();
-            }
-            finally
-            {
-                if (tokenStream != null)
-                    IOUtils.DisposeWhileHandlingException(tokenStream);
             }
         }
     }

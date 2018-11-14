@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="AnalysisSettings.cs" />
     <Compile Include="Document.cs" />
+    <Compile Include="Exceptions.cs" />
     <Compile Include="Facet.cs" />
     <Compile Include="Suggestion.cs" />
     <Compile Include="ISuggestionRequest.cs" />

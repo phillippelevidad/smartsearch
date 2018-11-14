@@ -36,7 +36,7 @@ namespace SmartSearch.LuceneNet.Internals.Builders
             var expressions = new List<string>(request.Filters.Length);
 
             foreach (var f in request.Filters)
-                expressions.Add($"+({f.FieldName}:{f.Value})");
+                expressions.Add($"+({f.FieldName}:{f.SingleValue})");
 
             return string.Join(" ", expressions);
         }

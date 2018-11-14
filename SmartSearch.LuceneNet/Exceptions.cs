@@ -22,4 +22,16 @@ namespace SmartSearch.LuceneNet
     {
         public UnknownFieldTypeException(FieldType type) : base($"Unknown field type: '{type}'.") { }
     }
+
+    public class InvalidFilterTypeForFilterBuilderException : Exception
+    {
+        public InvalidFilterTypeForFilterBuilderException(Type filterBuilderType, FieldType fieldType)
+            : base($"Field type '{fieldType}' is not valid for builder of type '{filterBuilderType?.Name}'.") { }
+    }
+
+    public class RangeFilterNotSupportedForTextAndLiteralFieldsException : Exception
+    {
+        public RangeFilterNotSupportedForTextAndLiteralFieldsException(string fieldName)
+            :base ($"Range filter is not supported for Text and Literal fields. Attempted field: '{fieldName}'.") { }
+    }
 }

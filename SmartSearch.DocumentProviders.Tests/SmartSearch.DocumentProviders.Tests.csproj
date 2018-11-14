@@ -73,10 +73,6 @@
       <Project>{4D011092-FDDA-4175-990B-906D29DCE8FD}</Project>
       <Name>SmartSearch.Abstractions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SmartSearch.DocumentProviders\SmartSearch.DocumentProviders.csproj">
-      <Project>{d9a2005c-57f2-4454-b8a5-29901b6e4762}</Project>
-      <Name>SmartSearch.DocumentProviders</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SmartSearch\SmartSearch.csproj">
       <Project>{77b4852d-7953-465f-b8ce-1ba682ae9efc}</Project>
       <Name>SmartSearch</Name>

@@ -5,7 +5,7 @@ using System.Linq;
 namespace SmartSearch.LuceneNet.Tests
 {
     [TestClass]
-    public class BooleanFilterShould
+    public class BoolFieldFilterShould
     {
         [TestMethod]
         public void WorkOnBooleanFieldWithTrueValue()
