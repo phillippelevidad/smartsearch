@@ -122,7 +122,7 @@ namespace ConsoleApp
         List<Product> products;
         int index = -1;
 
-        public IDocument CurrentDocument { get; private set; }
+        public IDocumentOperation CurrentDocument { get; private set; }
 
         void ReadAllProducts()
         {
@@ -202,7 +202,7 @@ namespace ConsoleApp
             foreach (var variant in p.Variants)
                 values.Add(variant.Key, variant.Value);
 
-            CurrentDocument = new Document(p.Id.ToString(), values);
+            CurrentDocument = new DocumentOperation(p.Id.ToString(), values);
         }
 
         class Product

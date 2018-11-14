@@ -20,7 +20,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             {
                 var value = field.IsArray()
                     ? ParseArrayField(field, luceneDocument)
-                    : ParseCommonField(field, luceneDocument);
+                    : ParseSingleValuedField(field, luceneDocument);
 
                 result.Fields.Add(field.Name, value);
             }
@@ -39,7 +39,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             return values;
         }
 
-        object ParseCommonField(IField field, LuceneDocument luceneDocument)
+        object ParseSingleValuedField(IField field, LuceneDocument luceneDocument)
         {
             var luceneField = luceneDocument.GetField(field.Name);
             return luceneField == null ? null : ParseFieldInternal(field, luceneField);

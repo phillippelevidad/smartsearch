@@ -6,13 +6,13 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
 {
     class MockDocumentReader : IDocumentReader
     {
-        public IDocument CurrentDocument { get; private set; }
-
-        public IDocument[] Documents { get; }
-
         int currentIndex = -1;
 
-        public MockDocumentReader(IEnumerable<IDocument> documents)
+        public IDocumentOperation CurrentDocument { get; private set; }
+
+        public IDocumentOperation[] Documents { get; }
+
+        public MockDocumentReader(IEnumerable<IDocumentOperation> documents)
         {
             Documents = documents.ToArray();
         }

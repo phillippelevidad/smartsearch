@@ -5,9 +5,9 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
 {
     static class MockDocuments
     {
-        public static IDocument[] ListAll() => new[]
+        public static IDocumentOperation[] ListAll() => new[]
         {
-            new Document("D42428A9", new Dictionary<string, object>
+            new DocumentOperation("D42428A9", new Dictionary<string, object>
             {
                 { "Id", "D42428A9" },
                 { "Name", "Geladeira / Refrigerador Electrolux 454 Litros 2 Portas Frost Free Inverse DB53" },
@@ -17,7 +17,7 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "IsInPromotion", false },
                 { "Category", "Eletrodomésticos" }
             }),
-            new Document("BC64C1F2", new Dictionary<string, object>
+            new DocumentOperation("BC64C1F2", new Dictionary<string, object>
             {
                 { "Id", "BC64C1F2" },
                 { "Name", "TV Led HD 28 Polegadas Philco USB HDMI PH28N91D" },
@@ -27,7 +27,7 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "IsInPromotion", true },
                 { "Category", "Eletrônicos" }
             }),
-            new Document("6EFEEED7", new Dictionary<string, object>
+            new DocumentOperation("6EFEEED7", new Dictionary<string, object>
             {
                 { "Id", "6EFEEED7" },
                 { "Name", "Ventilador Britânia de Mesa Ventus 3 Velocidades" },
@@ -37,7 +37,7 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "IsInPromotion", false },
                 { "Category", "Portáteis" }
             }),
-            new Document("48BDDFA8", new Dictionary<string, object>
+            new DocumentOperation("48BDDFA8", new Dictionary<string, object>
             {
                 { "Id", "48BDDFA8" },
                 { "Name", "Multifuncional HP Deskjet WI-FI INK Advantage 3776 J9V88AAK4" },
@@ -47,7 +47,7 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "IsInPromotion", false },
                 { "Category", "Informática" }
             }),
-            new Document("FC940BFB", new Dictionary<string, object>
+            new DocumentOperation("FC940BFB", new Dictionary<string, object>
             {
                 { "Id", "FC940BFB" },
                 { "Name", "iPhone X A1901 - 5.8 Polegadas - Single-Sim - 256GB - 4G LTE - Cinza-Espacial" },
@@ -57,7 +57,7 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "IsInPromotion", false },
                 { "Category", "Smartphones" }
             }),
-            new Document("222B6FC6", new Dictionary<string, object>
+            new DocumentOperation("222B6FC6", new Dictionary<string, object>
             {
                 { "Id", "222B6FC6" },
                 { "Name", "Tabua de Passar Melissa 2 Portas - Nicioli" },

@@ -31,7 +31,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
                 }
                 else
                 {
-                    var indexField = ConvertSimpleField(field, sourceDocument);
+                    var indexField = ConvertSingleValuedField(field, sourceDocument);
 
                     if (indexField != null)
                         yield return indexField;
@@ -58,7 +58,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             return facetFields.ToArray();
         }
 
-        FacetField ConvertSimpleField(IField field, IDocument sourceDocument)
+        FacetField ConvertSingleValuedField(IField field, IDocument sourceDocument)
         {
             var value = sourceDocument.Fields[field.Name];
             return ConvertFieldInternal(field, value);

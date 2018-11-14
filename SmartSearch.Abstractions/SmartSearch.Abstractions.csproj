@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="IAnalysisSettings.cs" />
     <Compile Include="IDocument.cs" />
+    <Compile Include="IDocumentOperation.cs" />
     <Compile Include="IDocumentProvider.cs" />
     <Compile Include="IDocumentReader.cs" />
     <Compile Include="IFacetResult.cs" />

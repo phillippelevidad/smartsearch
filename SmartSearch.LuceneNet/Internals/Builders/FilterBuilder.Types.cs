@@ -1,6 +1,7 @@
 ﻿using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Miscellaneous;
 using Lucene.Net.Analysis.TokenAttributes;
+using Lucene.Net.QueryParsers.Classic;
 using Lucene.Net.Search;
 using Lucene.Net.Util;
 using SmartSearch.Abstractions;
@@ -8,6 +9,7 @@ using SmartSearch.LuceneNet.Internals.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace SmartSearch.LuceneNet.Internals.Builders
 {
@@ -83,9 +85,9 @@ namespace SmartSearch.LuceneNet.Internals.Builders
         }
     }
 
-    class TextAndLiteralFilterBuilder : TypedFilterBuilderBase
+    class LiteralFilterBuilder : TypedFilterBuilderBase
     {
-        public TextAndLiteralFilterBuilder() : base(FieldType.Text, FieldType.TextArray, FieldType.Literal, FieldType.LiteralArray) { }
+        public LiteralFilterBuilder() : base(FieldType.Literal, FieldType.LiteralArray) { }
 
         protected override Filter BuildForRange(ISearchRequest request, IQueryFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
@@ -95,31 +97,61 @@ namespace SmartSearch.LuceneNet.Internals.Builders
         protected override Filter BuildForSingleValue(ISearchRequest request, IQueryFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
             var value = StringConverter.Convert(filter.SingleValue);
-            var terms = ExtractTerms(field.Name, value, perFieldAnalyzer);
-            return new FieldCacheTermsFilter(field.Name, terms);
+            return new FieldCacheTermsFilter(field.Name, value);
         }
+    }
+
+    class TextFilterBuilder : TypedFilterBuilderBase
+    {
+        readonly Regex regexTerm = new Regex(@"term\=([^,]+)", RegexOptions.Compiled);
+
+        public TextFilterBuilder() : base(FieldType.Text, FieldType.TextArray) { }
+
+        protected override Filter BuildForRange(ISearchRequest request, IQueryFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
+        {
+            throw new RangeFilterNotSupportedForTextAndLiteralFieldsException(field.Name);
+        }
+
+        protected override Filter BuildForSingleValue(ISearchRequest request, IQueryFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
+        {
+            //  expressions.Add($"+({f.FieldName}:{f.SingleValue})");
+
+            var filterExpression = $"+({filter.SingleValue})";
+            var parser = new QueryParser(Definitions.LuceneVersion, field.Name, perFieldAnalyzer);
+            var query = parser.Parse(filterExpression);
+            return new QueryWrapperFilter(query);
+
+
+            var value = StringConverter.Convert(filter.SingleValue);
+            //var terms = ExtractTerms(field.Name, value, perFieldAnalyzer);
+            return new FieldCacheTermsFilter(field.Name, value);
+
+
+        }
+
+
 
         string[] ExtractTerms(string fieldName, string value, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
+            return value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
             TokenStream tokenStream = null;
 
             try
             {
-                tokenStream = perFieldAnalyzer.GetTokenStream(fieldName, value);
-
-                var offsetAttribute = new OffsetAttribute();
-                var charTermAttribute = new CharTermAttribute();
                 var terms = new List<string>();
-
-                tokenStream.AddAttributeImpl(offsetAttribute);
-                tokenStream.AddAttributeImpl(charTermAttribute);
+                tokenStream = perFieldAnalyzer.GetTokenStream(fieldName, value);
                 tokenStream.Reset();
 
                 while (tokenStream.IncrementToken())
                 {
-                    int start = offsetAttribute.StartOffset;
-                    int end = offsetAttribute.EndOffset;
-                    terms.Add(charTermAttribute.ToString());
+                    var str = tokenStream.ReflectAsString(true);
+
+                    if (regexTerm.IsMatch(str))
+                    {
+                        var term = regexTerm.Match(str).Groups[1].Value;
+                        terms.Add(term);
+                    }
                 }
 
                 return terms.ToArray();

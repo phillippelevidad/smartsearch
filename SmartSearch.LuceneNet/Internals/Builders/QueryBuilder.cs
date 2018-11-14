@@ -1,5 +1,6 @@
 ﻿using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Miscellaneous;
+using Lucene.Net.Index;
 using Lucene.Net.QueryParsers.Classic;
 using Lucene.Net.Search;
 using SmartSearch.Abstractions;
@@ -17,18 +18,23 @@ namespace SmartSearch.LuceneNet.Internals.Builders
 
         public Query Build(ISearchRequest request, Analyzer analyzer)
         {
-            var parser = new QueryParser(Definitions.LuceneVersion, "", analyzer);
-            var queryExpression = new QueryExpressionBuilder(domain).Build(request);
+            var query = BuildInternal(request, analyzer);
             var filter = new FilterBuilder(domain).Build(request, analyzer as PerFieldAnalyzerWrapper);
-            var query = BuildInternal(parser, queryExpression);
-
-            return filter == null ? query : new FilteredQuery(query, filter);
+            return CreateFilteredQuery(query, filter);
         }
 
-        Query BuildInternal(QueryParser parser, string queryExpression)
+        Query CreateFilteredQuery(Query query, Filter filter) =>
+            filter == null ? query : new FilteredQuery(query, filter);
+
+        Query BuildInternal(ISearchRequest request, Analyzer analyzer)
         {
+            var parser = new QueryParser(Definitions.LuceneVersion, "", analyzer);
+            var queryExpression = new QueryExpressionBuilder(domain).Build(request);
+
             if (string.IsNullOrEmpty(queryExpression))
                 return new MatchAllDocsQuery();
+
+            string prevExpression = null;
 
             while (true)
             {
@@ -38,7 +44,11 @@ namespace SmartSearch.LuceneNet.Internals.Builders
                 }
                 catch (ParseException parseEx)
                 {
+                    prevExpression = queryExpression;
                     queryExpression = FixQueryExpression(queryExpression, parseEx);
+
+                    if (queryExpression == prevExpression)
+                        return new TermQuery(new Term("", ""));
                 }
             }
         }

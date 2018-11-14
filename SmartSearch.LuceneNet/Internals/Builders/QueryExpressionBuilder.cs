@@ -44,6 +44,10 @@ namespace SmartSearch.LuceneNet.Internals.Builders
         string BuildSearchExpression(ISearchRequest request)
         {
             var searchFields = domain.GetSearchEnabledFields();
+
+            if (request.Query != null && searchFields.Length == 0)
+                throw new SearchDomainDoesNotSpecifySearchEnabledFieldsException(domain.Name);
+
             var words = request.Query.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             var wordExpressions = new List<string>(words.Length);
 

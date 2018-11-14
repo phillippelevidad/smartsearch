@@ -75,6 +75,7 @@
     <Compile Include="Analysis\IAnalyzerFactory.cs" />
     <Compile Include="Internals\Builders\FilterBuilder.Types.cs" />
     <Compile Include="Internals\Builders\FilterBuilder.cs" />
+    <Compile Include="Internals\Builders\IndexDocumentBuilder.cs" />
     <Compile Include="Internals\CompositeIndex.cs" />
     <Compile Include="Internals\Converters\TypeConverters.cs" />
     <Compile Include="Internals\Factories\IndexReaderFactory.cs" />

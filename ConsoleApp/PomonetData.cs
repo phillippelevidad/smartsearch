@@ -89,7 +89,7 @@ namespace ConsoleApp
         SqlDataReader reader;
         bool disposed = false;
 
-        public IDocument CurrentDocument { get; private set; }
+        public IDocumentOperation CurrentDocument { get; private set; }
 
         public PromonetDocumentReader(SqlDataReader dataReader)
         {
@@ -101,7 +101,7 @@ namespace ConsoleApp
             if (!reader.Read())
                 return false;
 
-            CurrentDocument = new Document(reader["Id"].ToString(), new Dictionary<string, object>
+            CurrentDocument = new DocumentOperation(reader["Id"].ToString(), new Dictionary<string, object>
             {
                 { "Id", reader.Get<string>("Id") },
                 { "FullName", reader.Get<string>("FullName") },

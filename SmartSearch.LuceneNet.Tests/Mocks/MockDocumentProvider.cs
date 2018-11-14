@@ -7,11 +7,11 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
     {
         private readonly IDocumentReader reader;
 
-        public MockDocumentProvider() : this(new IDocument[0])
+        public MockDocumentProvider() : this(new IDocumentOperation[0])
         {
         }
 
-        public MockDocumentProvider(IEnumerable<IDocument> documents)
+        public MockDocumentProvider(IEnumerable<IDocumentOperation> documents)
         {
             reader = new MockDocumentReader(documents);
         }

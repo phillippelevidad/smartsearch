@@ -56,9 +56,11 @@ namespace SmartSearch.LuceneNet.Internals.Builders
 
                 case FieldType.Literal:
                 case FieldType.LiteralArray:
+                    return new LiteralFilterBuilder().Build(request, requestFilter, field, perFieldAnalyzer);
+
                 case FieldType.Text:
                 case FieldType.TextArray:
-                    return new TextAndLiteralFilterBuilder().Build(request, requestFilter, field, perFieldAnalyzer);
+                    return new TextFilterBuilder().Build(request, requestFilter, field, perFieldAnalyzer);
 
                 default:
                 case FieldType.LatLng:

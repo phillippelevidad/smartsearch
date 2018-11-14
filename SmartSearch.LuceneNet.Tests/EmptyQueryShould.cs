@@ -11,7 +11,7 @@ namespace SmartSearch.LuceneNet.Tests
         {
             var env = TestEnvironment.Build();
             var results = env.Search(new SearchRequest { Query = "" });
-            Assert.AreEqual(results.TotalCount, env.Documents.Length);
+            Assert.AreEqual(env.Documents.Length, results.TotalCount);
         }
     }
 }

@@ -4,7 +4,7 @@ namespace SmartSearch.Abstractions
 {
     public interface IDocumentReader : IDisposable
     {
-        IDocument CurrentDocument { get; }
+        IDocumentOperation CurrentDocument { get; }
 
         bool ReadNext();
     }

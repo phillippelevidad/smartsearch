@@ -1,14 +1,12 @@
 ﻿using Lucene.Net.Facet;
-using Lucene.Net.Facet.Taxonomy;
 using Lucene.Net.Index;
 using SmartSearch.Abstractions;
 using SmartSearch.LuceneNet.Internals;
-using SmartSearch.LuceneNet.Internals.Converters;
+using SmartSearch.LuceneNet.Internals.Builders;
 using SmartSearch.LuceneNet.Internals.Factories;
 using SmartSearch.LuceneNet.Internals.Helpers;
 using System;
 using System.IO;
-using LuceneDocument = Lucene.Net.Documents.Document;
 
 namespace SmartSearch.LuceneNet
 {
@@ -17,8 +15,6 @@ namespace SmartSearch.LuceneNet
         FacetsConfig facetsConfig;
 
         readonly LuceneIndexOptions options;
-        readonly IDocumentConverter defaultDocumentConverter;
-        readonly IDocumentConverter facetDocumentConverter;
 
         public LuceneIndexService() : this(new LuceneIndexOptions())
         {
@@ -27,8 +23,6 @@ namespace SmartSearch.LuceneNet
         public LuceneIndexService(LuceneIndexOptions options)
         {
             this.options = options ?? throw new ArgumentNullException(nameof(options));
-            defaultDocumentConverter = new DefaultDocumentConverter();
-            facetDocumentConverter = new FacetDocumentConverter();
         }
 
         public void CreateIndex(IIndexContext context, ISearchDomain domain, IDocumentProvider documentProvider)
@@ -55,19 +49,12 @@ namespace SmartSearch.LuceneNet
                     using (var indexWriter = IndexWriterFactory.CreateIndexWriter(contextWrapper, internalDomain, options))
                     using (var documentReader = documentProvider.GetDocumentReader())
                     {
+                        var documentBuilder = new IndexDocumentBuilder(internalDomain, facetsConfig, facetWriter);
+
                         while (documentReader.ReadNext())
-                        {
-                            var document = BuildDocument(internalDomain, documentReader.CurrentDocument, facetWriter);
-
-                            if (indexWriter.Config.OpenMode == OpenMode.CREATE)
-                                indexWriter.AddDocument(document);
-
-                            else
-                            {
-                                var updateClause = new Term(Definitions.DocumentIdFieldName, documentReader.CurrentDocument.Id);
-                                indexWriter.UpdateDocument(updateClause, document);
-                            }
-                        }
+                            HandleDocument(
+                                indexWriter, documentBuilder,
+                                documentReader.CurrentDocument);
                     }
                 }
             }
@@ -77,17 +64,47 @@ namespace SmartSearch.LuceneNet
             }
         }
 
-        LuceneDocument BuildDocument(InternalSearchDomain domain, IDocument document, ITaxonomyWriter taxonomyWriter)
+        void HandleDocument(IndexWriter writer, IndexDocumentBuilder builder, IDocumentOperation document)
         {
-            var internalDocument = InternalDocument.CreateFrom(domain, document);
-            var mainDocument = defaultDocumentConverter.Convert(domain, internalDocument);
-            var facetDocument = facetDocumentConverter.Convert(domain, internalDocument);
+            switch (document.OperationType)
+            {
+                case DocumentOperationType.AddOrUpdate:
+                    HandleDocumentAddOrUpdate(writer, builder, document);
+                    break;
 
-            foreach (var facet in facetDocument.Fields)
-                mainDocument.Add(facet);
+                case DocumentOperationType.Delete:
+                    HandleDocumentDelete(writer, builder, document);
+                    break;
 
-            return facetsConfig.Build(taxonomyWriter, mainDocument);
+                default:
+                    throw new UnknownDocumentOperationTypeException(document.OperationType);
+            }
         }
+
+        void HandleDocumentAddOrUpdate(IndexWriter writer, IndexDocumentBuilder builder, IDocumentOperation document)
+        {
+            var indexDocument = builder.Build(document);
+
+            if (writer.Config.OpenMode == OpenMode.CREATE)
+                writer.AddDocument(indexDocument);
+
+            else
+            {
+                var updateClause = GetUpdateOrDeleteDocumentClause(document.Id);
+                writer.UpdateDocument(updateClause, indexDocument);
+            }
+        }
+
+        void HandleDocumentDelete(IndexWriter writer, IndexDocumentBuilder builder, IDocumentOperation document)
+        {
+            if (writer.Config.OpenMode != OpenMode.CREATE)
+            {
+                var deleteClause = GetUpdateOrDeleteDocumentClause(document.Id);
+                writer.DeleteDocuments(deleteClause);
+            }
+        }
+
+        Term GetUpdateOrDeleteDocumentClause(string documentId) => new Term(Definitions.DocumentIdFieldName, documentId);
 
         void SetFacetsConfig(InternalSearchDomain domain)
         {

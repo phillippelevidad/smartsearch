@@ -16,7 +16,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
         {
             var luceneDocument = new LuceneDocument();
 
-            luceneDocument.AddTextField(
+            luceneDocument.AddStringField(
                 Definitions.DocumentIdFieldName, sourceDocument.Id, LuceneField.Store.YES);
 
             foreach (var indexField in GetIndexFields(domain, sourceDocument))
@@ -30,10 +30,9 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             foreach (var field in domain.AllFields)
             {
                 if (field.IsArray())
-                {
                     foreach (var f in ConvertArrayField(field, sourceDocument))
                         yield return f;
-                }
+
                 else
                 {
                     var indexField = ConvertSimpleField(field, sourceDocument);
@@ -91,10 +90,12 @@ namespace SmartSearch.LuceneNet.Internals.Converters
                     return new Int64Field(field.Name, LongConverter.Convert(value), store) { Boost = GetFieldBoost(field) };
 
                 case SourceFieldType.Text:
-                case SourceFieldType.Literal:
                 case SourceFieldType.TextArray:
-                case SourceFieldType.LiteralArray:
                     return new TextField(field.Name, StringConverter.Convert(value), store) { Boost = GetFieldBoost(field) };
+
+                case SourceFieldType.Literal:
+                case SourceFieldType.LiteralArray:
+                    return new StringField(field.Name, StringConverter.Convert(value), store) { Boost = GetFieldBoost(field) };
 
                 default:
                 case SourceFieldType.LatLng:
