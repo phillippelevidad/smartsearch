@@ -19,12 +19,17 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
 
         public LuceneIndexOptions Options { get; set; }
 
+        public void CreateIndex()
+        {
+            IndexService.CreateIndex(IndexContext, SearchDomain, DocumentProvider);
+        }
+
         public ISearchResult Search(ISearchRequest request)
         {
             return SearchService.Search(IndexContext, SearchDomain, request);
         }
 
-        public static TestEnvironment Build()
+        public static TestEnvironment Build(bool createIndex = true)
         {
             var documents = MockDocuments.ListAll();
             var options = new LuceneIndexOptions().UseAnalyzerFactory(new BrazilianAnalyzerFactory());
@@ -35,14 +40,15 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 DocumentProvider = new MockDocumentProvider(documents),
 
                 SearchDomain = new MockSearchDomain(),
-                IndexContext = new InMemoryIndexContext(),
+                IndexContext = new MemoryIndexContext(),
                 IndexService = new LuceneIndexService(options),
                 SearchService = new LuceneSearchService(options),
 
                 Options = options
             };
 
-            env.IndexService.CreateIndex(env.IndexContext, env.SearchDomain, env.DocumentProvider);
+            if (createIndex)
+                env.CreateIndex();
 
             return env;
         }

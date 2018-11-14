@@ -6,11 +6,11 @@ using System;
 
 namespace SmartSearch.LuceneNet
 {
-    public class InMemoryIndexContext : IIndexContext
+    public class MemoryIndexContext : IIndexContext
     {
         readonly BaseIndexContext baseContext;
 
-        public InMemoryIndexContext()
+        public MemoryIndexContext()
         {
             baseContext = new BaseIndexContext(InitializeCompositeIndex);
         }

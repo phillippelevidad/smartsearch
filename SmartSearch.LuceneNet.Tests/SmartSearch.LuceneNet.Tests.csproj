@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="BoolFieldFilterShould.cs" />
     <Compile Include="EmptyQueryShould.cs" />
+    <Compile Include="IndexServiceShould.cs" />
     <Compile Include="Mocks\MockDocumentProvider.cs" />
     <Compile Include="Mocks\MockDocumentReader.cs" />
     <Compile Include="Mocks\MockDocuments.cs" />

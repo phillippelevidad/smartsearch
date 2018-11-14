@@ -33,6 +33,15 @@ namespace SmartSearch.LuceneNet
 
         public void CreateIndex(IIndexContext context, ISearchDomain domain, IDocumentProvider documentProvider)
         {
+            if (context == null)
+                throw new ArgumentNullException(nameof(context));
+
+            if (domain == null)
+                throw new ArgumentNullException(nameof(domain));
+
+            if (documentProvider == null)
+                throw new ArgumentNullException(nameof(documentProvider));
+
             try
             {
                 using (CultureContext.Invariant)
