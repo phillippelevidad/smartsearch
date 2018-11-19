@@ -3,10 +3,22 @@ using System;
 
 namespace SmartSearch.LuceneNet
 {
+    public class DuplicatedFieldException : Exception
+    {
+        public DuplicatedFieldException(string fieldName)
+            : base($"Field '{fieldName}' occurs twice in a single search domain.") { }
+    }
+
     public class ErrorCreatingLuceneIndexException : Exception
     {
         public ErrorCreatingLuceneIndexException(Exception innerException)
             : base("Error creating Lucene Index.", innerException) { }
+    }
+
+    public class InvalidFieldNameException : Exception
+    {
+        public InvalidFieldNameException(string fieldName)
+            : base($"Invalid name for field: '{fieldName}'. A valid name should be comprised only of alphanumeric characteres and underscores.") { }
     }
 
     public class InvalidFilterTypeForFilterBuilderException : Exception
@@ -19,6 +31,12 @@ namespace SmartSearch.LuceneNet
     {
         public InvalidIndexContextTypeException(Type type)
             : base($"Type '{type?.FullName}' is not valid as an IndexContext.") { }
+    }
+
+    public class InvalidSearchDomainNameException : Exception
+    {
+        public InvalidSearchDomainNameException(string domainName)
+            : base($"Invalid name for search domain: '{domainName}'. A valid name should be comprised only of alphanumeric characteres and underscores.") { }
     }
 
     public class RangeFilterNotSupportedForTextAndLiteralFieldsException : Exception

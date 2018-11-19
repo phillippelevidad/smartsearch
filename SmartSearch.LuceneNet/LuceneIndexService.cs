@@ -36,6 +36,8 @@ namespace SmartSearch.LuceneNet
             if (documentProvider == null)
                 throw new ArgumentNullException(nameof(documentProvider));
 
+            new SearchDomainValidator().Validate(domain);
+
             try
             {
                 using (CultureContext.Invariant)

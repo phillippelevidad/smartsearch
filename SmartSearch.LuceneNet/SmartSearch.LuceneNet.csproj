@@ -98,6 +98,7 @@
     <Compile Include="Internals\InternalSearchDomain.cs" />
     <Compile Include="Internals\Builders\QueryExpressionBuilder.cs" />
     <Compile Include="Internals\Builders\SortBuilder.cs" />
+    <Compile Include="Internals\SearchDomainValidator.cs" />
     <Compile Include="Internals\SpecializedFields\AnalyzedFieldSpecification.cs" />
     <Compile Include="Internals\SpecializedFields\ISpecializedField.cs" />
     <Compile Include="Internals\SpecializedFields\ISpecializedFieldSpecification.cs" />
