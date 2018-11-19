@@ -24,7 +24,7 @@ namespace SmartSearch.LuceneNet.Tests
             var bId = Guid.NewGuid().ToString();
 
             // Create a new index.
-            env.IndexService.CreateIndex(env.IndexContext, env.SearchDomain, new MockDocumentProvider(new IDocumentOperation[]
+            env.IndexService.CreateIndex(env.IndexContext, env.SearchDomain, new DocumentProvider(new IDocumentOperation[]
             {
                 new DocumentOperation(aId, new Dictionary<string, object>
                 {
@@ -41,7 +41,7 @@ namespace SmartSearch.LuceneNet.Tests
             Assert.AreEqual(fst_a.Fields["Age"], 30L);
 
             // Update a document and add another.
-            env.IndexService.CreateIndex(env.IndexContext, env.SearchDomain, new MockDocumentProvider(new IDocumentOperation[]
+            env.IndexService.CreateIndex(env.IndexContext, env.SearchDomain, new DocumentProvider(new IDocumentOperation[]
             {
                 new DocumentOperation(aId, new Dictionary<string, object> // should be updated
                 {

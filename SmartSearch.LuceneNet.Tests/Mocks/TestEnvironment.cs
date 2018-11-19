@@ -37,7 +37,7 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
             var env = new TestEnvironment
             {
                 Documents = documents,
-                DocumentProvider = new MockDocumentProvider(documents),
+                DocumentProvider = new DocumentProvider(documents),
 
                 SearchDomain = new MockSearchDomain(),
                 IndexContext = new MemoryIndexContext(),

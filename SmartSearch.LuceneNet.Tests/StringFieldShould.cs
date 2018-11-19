@@ -22,7 +22,7 @@ namespace SmartSearch.LuceneNet.Tests
             // TODO: remover
             env.IndexContext = new PhysicalIndexContext(@"C:\Temp\SmartSearchIndexes\websites", false);
 
-            env.IndexService.CreateIndex(env.IndexContext, env.SearchDomain, new MockDocumentProvider(new IDocumentOperation[]
+            env.IndexService.CreateIndex(env.IndexContext, env.SearchDomain, new DocumentProvider(new IDocumentOperation[]
             {
                 new DocumentOperation("1", new Dictionary<string, object>
                 {
