@@ -15,8 +15,6 @@ namespace SmartSearch.LuceneNet.Internals
 
         public IField[] AllFields => Fields.Union(SpecializedFields).ToArray();
 
-        public ISpecializedFieldSpecification[] SpecializedFieldSpecifications { get; private set; }
-
         public IAnalysisSettings AnalysisSettings { get; private set; }
 
         public static InternalSearchDomain CreateFrom(ISearchDomain domain)
@@ -28,7 +26,6 @@ namespace SmartSearch.LuceneNet.Internals
                 Fields = domain.Fields
             };
 
-            internalDomain.BuildSpecializedFieldSpecifications();
             internalDomain.BuildSpecializedFields();
 
             return internalDomain;
@@ -36,28 +33,16 @@ namespace SmartSearch.LuceneNet.Internals
 
         public IField[] GetFacetEnabledFields() =>
             Fields.Where(f => f.EnableFaceting).ToArray();
-
-        void BuildSpecializedFieldSpecifications()
-        {
-            var specifications = new List<ISpecializedFieldSpecification>
-            {
-                new AnalyzedFieldSpecification()
-            };
-
-            if (AnalysisSettings?.Synonyms?.Any() ?? false)
-                specifications.Add(new SynonymFieldSpecification());
-
-            SpecializedFieldSpecifications = specifications.ToArray();
-        }
-
+        
         void BuildSpecializedFields()
         {
             var specializedFields = new List<ISpecializedField>();
+            var specifications = SpecializedFieldSpecifications.ListAll();
 
-            foreach (var spec in SpecializedFieldSpecifications)
+            foreach (var spec in specifications)
                 foreach (var field in Fields)
-                    if (spec.IsEligibleToBecomeSpecialized(field))
-                        specializedFields.Add(spec.BuildFrom(field));
+                    if (spec.IsEligibleForSpecialization(field))
+                        specializedFields.Add(spec.CreateFrom(field));
 
             SpecializedFields = specializedFields.ToArray();
         }

@@ -2,7 +2,7 @@
 using Lucene.Net.Facet.Taxonomy.Directory;
 using Lucene.Net.Index;
 
-namespace SmartSearch.LuceneNet.Internals.Factories
+namespace SmartSearch.LuceneNet.Internals.IndexFactories
 {
     static class IndexReaderFactory
     {

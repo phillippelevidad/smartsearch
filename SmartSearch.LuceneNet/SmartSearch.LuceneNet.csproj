@@ -78,8 +78,8 @@
     <Compile Include="Internals\Builders\IndexDocumentBuilder.cs" />
     <Compile Include="Internals\CompositeIndex.cs" />
     <Compile Include="Internals\Converters\TypeConverters.cs" />
-    <Compile Include="Internals\Factories\IndexReaderFactory.cs" />
-    <Compile Include="Internals\Factories\IndexWriterFactory.cs" />
+    <Compile Include="Internals\IndexFactories\IndexReaderFactory.cs" />
+    <Compile Include="Internals\IndexFactories\IndexWriterFactory.cs" />
     <Compile Include="Internals\Helpers\CultureContext.cs" />
     <Compile Include="Internals\Helpers\InternalSearchDomainExtensions.cs" />
     <Compile Include="Internals\Helpers\SynonymMapBuilderExtensions.cs" />
@@ -99,10 +99,10 @@
     <Compile Include="Internals\Builders\QueryExpressionBuilder.cs" />
     <Compile Include="Internals\Builders\SortBuilder.cs" />
     <Compile Include="Internals\SearchDomainValidator.cs" />
-    <Compile Include="Internals\SpecializedFields\AnalyzedFieldSpecification.cs" />
+    <Compile Include="Internals\SpecializedFields\AnalyzedField.cs" />
     <Compile Include="Internals\SpecializedFields\ISpecializedField.cs" />
     <Compile Include="Internals\SpecializedFields\ISpecializedFieldSpecification.cs" />
-    <Compile Include="Internals\SpecializedFields\SynonymFieldSpecification.cs" />
+    <Compile Include="Internals\SpecializedFields\SynonymField.cs" />
     <Compile Include="Analysis\SynonymsAnalyzer.cs" />
     <Compile Include="LuceneIndexOptions.cs" />
     <Compile Include="LuceneIndexService.cs" />

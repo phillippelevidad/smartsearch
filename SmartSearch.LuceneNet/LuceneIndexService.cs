@@ -3,7 +3,7 @@ using Lucene.Net.Index;
 using SmartSearch.Abstractions;
 using SmartSearch.LuceneNet.Internals;
 using SmartSearch.LuceneNet.Internals.Builders;
-using SmartSearch.LuceneNet.Internals.Factories;
+using SmartSearch.LuceneNet.Internals.IndexFactories;
 using SmartSearch.LuceneNet.Internals.Helpers;
 using System;
 using System.IO;

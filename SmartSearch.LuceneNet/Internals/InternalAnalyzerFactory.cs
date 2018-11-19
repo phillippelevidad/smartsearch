@@ -23,7 +23,7 @@ namespace SmartSearch.LuceneNet.Internals
             return new PerFieldAnalyzerWrapper(defaultAnalyzer, fieldAnalyzers);
         }
 
-        Dictionary<string, Analyzer>  AddSpecializedAnalyzers()
+        Dictionary<string, Analyzer> AddSpecializedAnalyzers()
         {
             var fieldAnalyzers = new Dictionary<string, Analyzer>();
             var knownAnalyzers = new Dictionary<string, Analyzer>
@@ -31,21 +31,13 @@ namespace SmartSearch.LuceneNet.Internals
                 { typeof(SynonymsAnalyzer).FullName, new SynonymsAnalyzer(domain) }
             };
 
-            foreach (var spec in domain.SpecializedFieldSpecifications)
+            foreach (var field in domain.SpecializedFields)
             {
-                foreach (var field in domain.SpecializedFields)
-                {
-                    if (spec.IsSatisfiedBy(field))
-                    {
-                        var type = spec.GetAnalyzerType();
+                if (field.AnalyzerType == null)
+                    continue;
 
-                        if (type == null)
-                            continue;
-
-                        var analyzer = knownAnalyzers[type.FullName];
-                        fieldAnalyzers.Add(field.Name, analyzer);
-                    }
-                }
+                var analyzer = knownAnalyzers[field.AnalyzerType.FullName];
+                fieldAnalyzers.Add(field.Name, analyzer);
             }
 
             return fieldAnalyzers;

@@ -9,37 +9,29 @@ namespace SmartSearch.LuceneNet.Internals
 
         public IDictionary<string, object> Fields { get; private set; }
 
-        internal InternalDocument(string id)
+        InternalDocument(string id, IDictionary<string, object> fields)
         {
             Id = id;
+            Fields = fields;
         }
 
         internal static InternalDocument CreateFrom(InternalSearchDomain domain, IDocument document)
         {
-            var newDocument = new InternalDocument(document.Id);
-            var newFields = new Dictionary<string, object>(domain.Fields.Length + domain.SpecializedFields.Length);
+            var fields = new Dictionary<string, object>(domain.Fields.Length + domain.SpecializedFields.Length);
 
             foreach (var field in document.Fields)
-                newFields.Add(field.Key, field.Value);
+                fields.Add(field.Key, field.Value);
 
-            foreach (var spec in domain.SpecializedFieldSpecifications)
+            foreach (var field in domain.SpecializedFields)
             {
-                foreach (var field in domain.SpecializedFields)
-                {
-                    if (!spec.IsSatisfiedBy(field))
-                        continue;
+                if (!document.Fields.ContainsKey(field.OriginalName))
+                    continue;
 
-                    if (!document.Fields.ContainsKey(field.OriginalName))
-                        continue;
-
-                    var originalValue = document.Fields[field.OriginalName];
-                    var specializedValue = spec.ConvertValue(field, originalValue);
-                    newFields.Add(field.Name, specializedValue);
-                }
+                var value = document.Fields[field.OriginalName];
+                fields.Add(field.Name, value);
             }
 
-            newDocument.Fields = newFields;
-            return newDocument;
+            return new InternalDocument(document.Id, fields);
         }
     }
 }

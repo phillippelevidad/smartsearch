@@ -1,18 +1,20 @@
 ﻿using SmartSearch.Abstractions;
-using System;
 
 namespace SmartSearch.LuceneNet.Internals.SpecializedFields
 {
     interface ISpecializedFieldSpecification
     {
-        ISpecializedField BuildFrom(IField field);
+        bool IsEligibleForSpecialization(IField field);
 
-        object ConvertValue(ISpecializedField field, object value);
+        ISpecializedField CreateFrom(IField field);
+    }
 
-        bool IsEligibleToBecomeSpecialized(IField field);
-
-        bool IsSatisfiedBy(ISpecializedField field);
-
-        Type GetAnalyzerType();
+    static class SpecializedFieldSpecifications
+    {
+        public static ISpecializedFieldSpecification[] ListAll() => new ISpecializedFieldSpecification[]
+        {
+            new AnalyzedFieldSpecification(),
+            new SynonymFieldSpecification()
+        };
     }
 }
