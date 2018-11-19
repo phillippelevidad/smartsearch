@@ -1,4 +1,5 @@
 ﻿using SmartSearch.Abstractions;
+using System;
 
 namespace SmartSearch.LuceneNet.Internals.SpecializedFields
 {
@@ -11,5 +12,7 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
         bool IsEligibleToBecomeSpecialized(IField field);
 
         bool IsSatisfiedBy(ISpecializedField field);
+
+        Type GetAnalyzerType();
     }
 }
