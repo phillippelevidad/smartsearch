@@ -1,4 +1,6 @@
 ﻿using SmartSearch.Abstractions;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SmartSearch.LuceneNet.Internals.SpecializedFields
 {
@@ -9,12 +11,21 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
         ISpecializedField CreateFrom(IField field);
     }
 
-    static class SpecializedFieldSpecifications
+    class SpecializedFieldSpecifications
     {
-        public static ISpecializedFieldSpecification[] ListAll() => new ISpecializedFieldSpecification[]
+        private readonly InternalSearchDomain searchDomain;
+
+        public SpecializedFieldSpecifications(InternalSearchDomain searchDomain)
         {
-            new AnalyzedFieldSpecification(),
-            new SynonymFieldSpecification()
-        };
+            this.searchDomain = searchDomain;
+        }
+
+        public IEnumerable<ISpecializedFieldSpecification> ListAll()
+        {
+            yield return new AnalyzedFieldSpecification();
+
+            if (searchDomain.AnalysisSettings != null && searchDomain.AnalysisSettings.Synonyms.Any())
+                yield return new SynonymFieldSpecification();
+        }
     }
 }

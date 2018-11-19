@@ -37,7 +37,7 @@ namespace SmartSearch.LuceneNet.Internals
         void BuildSpecializedFields()
         {
             var specializedFields = new List<ISpecializedField>();
-            var specifications = SpecializedFieldSpecifications.ListAll();
+            var specifications = new SpecializedFieldSpecifications(this).ListAll();
 
             foreach (var spec in specifications)
                 foreach (var field in Fields)

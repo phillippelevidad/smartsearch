@@ -47,9 +47,6 @@
     <Compile Include="DocumentProvider.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="Facet.cs" />
-    <Compile Include="Suggestion.cs" />
-    <Compile Include="ISuggestionRequest.cs" />
-    <Compile Include="ISuggestionResult.cs" />
     <Compile Include="QueryFilter.cs" />
     <Compile Include="SearchDomain.cs" />
     <Compile Include="Field.cs" />
