@@ -3,6 +3,7 @@ using Lucene.Net.Queries;
 using Lucene.Net.Search;
 using SmartSearch.Abstractions;
 using System.Linq;
+using LuceneFilter = Lucene.Net.Search.Filter;
 
 namespace SmartSearch.LuceneNet.Internals.Builders
 {
@@ -15,7 +16,7 @@ namespace SmartSearch.LuceneNet.Internals.Builders
             this.domain = domain;
         }
 
-        public Filter Build(ISearchRequest request, PerFieldAnalyzerWrapper perFieldAnalyzer)
+        public LuceneFilter Build(ISearchRequest request, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
             if (request.Filters == null || request.Filters.Length == 0)
                 return null;
@@ -34,7 +35,7 @@ namespace SmartSearch.LuceneNet.Internals.Builders
             return booleanFilter;
         }
 
-        Filter BuildFilterForField(ISearchRequest request, IQueryFilter requestFilter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
+        LuceneFilter BuildFilterForField(ISearchRequest request, IFilter requestFilter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
             switch (field.Type)
             {

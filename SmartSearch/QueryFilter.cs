@@ -4,12 +4,12 @@ using System.Diagnostics;
 namespace SmartSearch
 {
     [DebuggerDisplay("{FieldName} = {SingleValue} | {RangeFrom} to {RangeTo}")]
-    public class QueryFilter : IQueryFilter
+    public class Filter : IFilter
     {
         object singleValue;
         object rangeFrom;
         object rangeTo;
-        QueryFilterType filterType;
+        FilterType filterType;
 
         public string FieldName { get; set; }
 
@@ -20,7 +20,7 @@ namespace SmartSearch
             {
                 singleValue = value;
                 rangeFrom = rangeTo = null;
-                filterType = QueryFilterType.SingleValue;
+                filterType = FilterType.SingleValue;
             }
         }
 
@@ -31,7 +31,7 @@ namespace SmartSearch
             {
                 rangeFrom = value;
                 singleValue = null;
-                filterType = QueryFilterType.Range;
+                filterType = FilterType.Range;
             }
         }
 
@@ -42,11 +42,11 @@ namespace SmartSearch
             {
                 rangeTo = value;
                 singleValue = null;
-                filterType = QueryFilterType.Range;
+                filterType = FilterType.Range;
             }
         }
 
-        public QueryFilterType FilterType
+        public FilterType FilterType
         {
             get => filterType;
             set
@@ -55,10 +55,10 @@ namespace SmartSearch
 
                 switch (filterType)
                 {
-                    case QueryFilterType.SingleValue:
+                    case FilterType.SingleValue:
                         rangeFrom = rangeTo = null;
                         break;
-                    case QueryFilterType.Range:
+                    case FilterType.Range:
                         singleValue = null;
                         break;
                     default:
@@ -67,17 +67,17 @@ namespace SmartSearch
             }
         }
 
-        public QueryFilter()
+        public Filter()
         {
         }
 
-        public QueryFilter(string fieldName, object value)
+        public Filter(string fieldName, object value)
         {
             FieldName = fieldName;
             SingleValue = value;
         }
 
-        public QueryFilter(string fieldName, object from, object to)
+        public Filter(string fieldName, object from, object to)
         {
             FieldName = fieldName;
             RangeFrom = from;

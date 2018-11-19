@@ -15,7 +15,7 @@ namespace SmartSearch.LuceneNet.Tests
             var env = TestEnvironment.Build();
             var results = env.Search(new SearchRequest
             {
-                Filters = new[] { new QueryFilter(fieldName, true) }
+                Filters = new[] { new Filter(fieldName, true) }
             });
 
             var expectedCount = env.Documents.Count(d =>
@@ -32,7 +32,7 @@ namespace SmartSearch.LuceneNet.Tests
             var env = TestEnvironment.Build();
             var results = env.Search(new SearchRequest
             {
-                Filters = new[] { new QueryFilter(fieldName, false) }
+                Filters = new[] { new Filter(fieldName, false) }
             });
 
             var expectedCount = env.Documents.Count(d =>

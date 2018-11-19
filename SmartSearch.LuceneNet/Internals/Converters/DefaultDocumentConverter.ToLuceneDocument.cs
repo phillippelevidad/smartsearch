@@ -68,7 +68,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
         IIndexableField ConvertFieldInternal(IField field, object value)
         {
             var store = field is ISpecializedField
-                ? LuceneField.Store.NO /* analyzed fields, best for searching, cannot be returned */
+                ? LuceneField.Store.NO /* analyzed fields, built for searching, cannot be returned */
                 : LuceneField.Store.YES /* not-analyzed fields, only exact matches, can be returned */;
 
             switch (field.Type)

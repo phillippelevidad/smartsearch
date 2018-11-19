@@ -23,7 +23,7 @@ namespace SmartSearch.LuceneNet.Internals.Builders
             return CreateFilteredQuery(query, filter);
         }
 
-        Query CreateFilteredQuery(Query query, Filter filter) =>
+        Query CreateFilteredQuery(Query query, Lucene.Net.Search.Filter filter) =>
             filter == null ? query : new FilteredQuery(query, filter);
 
         Query BuildInternal(ISearchRequest request, Analyzer analyzer)

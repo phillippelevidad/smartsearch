@@ -6,7 +6,7 @@ namespace SmartSearch
     {
         public string Query { get; set; }
 
-        public IQueryFilter[] Filters { get; set; } = new IQueryFilter[0];
+        public IFilter[] Filters { get; set; } = new IFilter[0];
 
         public ISortOption[] SortOptions { get; set; } = new ISortOption[0];
 

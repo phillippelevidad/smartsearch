@@ -29,7 +29,7 @@ namespace SmartSearch.LuceneNet.Internals
 
         void AddSynonymsAnalyzer(Dictionary<string, Analyzer> fieldAnalyzers)
         {
-            var synonymSpec = new SynonymFieldSpecification();
+            var synonymSpec = new SynonymFieldSpecification(); // Bring the knowledge of which analyzer to use into the specification itself, making it the absolute referente for this stuff
             var synonymAnalyzer = new SynonymsAnalyzer(domain);
 
             foreach (var field in domain.SpecializedFields)

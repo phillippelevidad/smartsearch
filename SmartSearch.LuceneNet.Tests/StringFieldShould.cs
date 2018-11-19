@@ -52,19 +52,19 @@ namespace SmartSearch.LuceneNet.Tests
 
             ISearchResult results;
 
-            //results = env.Search(new SearchRequest { Query = "facebook" });
-            //Assert.AreEqual(2, results.TotalCount);
+            results = env.Search(new SearchRequest { Query = "facebook" });
+            Assert.AreEqual(2, results.TotalCount);
 
-            results = env.Search(new SearchRequest { Filters = new[] { new QueryFilter("Categories", "Social Network") } });
+            results = env.Search(new SearchRequest { Filters = new[] { new Filter("Categories", "Social Network") } });
+            Assert.AreEqual(3, results.TotalCount);
+
+            results = env.Search(new SearchRequest { Filters = new[] { new Filter("Categories", "Mobile App") } });
             Assert.AreEqual(1, results.TotalCount);
 
-            results = env.Search(new SearchRequest { Filters = new[] { new QueryFilter("Categories", "Mobile App") } });
-            Assert.AreEqual(1, results.TotalCount);
-
-            results = env.Search(new SearchRequest { Filters = new[] { new QueryFilter("Url", "www.google.com") } });
+            results = env.Search(new SearchRequest { Filters = new[] { new Filter("Url", "www.google.com") } });
             Assert.AreEqual(0, results.TotalCount);
 
-            results = env.Search(new SearchRequest { Filters = new[] { new QueryFilter("Url", "https://www.google.com/") } });
+            results = env.Search(new SearchRequest { Filters = new[] { new Filter("Url", "https://www.google.com/") } });
             Assert.AreEqual(1, results.TotalCount);
         }
     }

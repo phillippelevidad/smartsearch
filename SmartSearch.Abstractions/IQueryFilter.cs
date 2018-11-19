@@ -1,6 +1,6 @@
 ﻿namespace SmartSearch.Abstractions
 {
-    public interface IQueryFilter
+    public interface IFilter
     {
         string FieldName { get; }
 
@@ -10,10 +10,10 @@
 
         object RangeTo { get; }
 
-        QueryFilterType FilterType { get; }
+        FilterType FilterType { get; }
     }
 
-    public enum QueryFilterType
+    public enum FilterType
     {
         SingleValue, Range
     }

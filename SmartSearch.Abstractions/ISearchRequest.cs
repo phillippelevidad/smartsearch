@@ -4,7 +4,7 @@
     {
         string Query { get; }
 
-        IQueryFilter[] Filters { get; }
+        IFilter[] Filters { get; }
 
         ISortOption[] SortOptions { get; }
 
