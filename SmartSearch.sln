@@ -17,8 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartSearch.LuceneNet.Tests
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{04D05D25-B87E-424D-9587-7A9CB6C7707E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartSearch.LuceneNet.AspNetMvc", "SmartSearch.LuceneNet.AspNetMvc\SmartSearch.LuceneNet.AspNetMvc.csproj", "{495234AB-F492-444B-B46F-095C36899784}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,10 +43,6 @@ Global
 		{EC44091D-ADC8-488D-B865-ABEFC8D320E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC44091D-ADC8-488D-B865-ABEFC8D320E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC44091D-ADC8-488D-B865-ABEFC8D320E5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{495234AB-F492-444B-B46F-095C36899784}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{495234AB-F492-444B-B46F-095C36899784}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{495234AB-F492-444B-B46F-095C36899784}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{495234AB-F492-444B-B46F-095C36899784}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,7 +52,6 @@ Global
 		{77B4852D-7953-465F-B8CE-1BA682AE9EFC} = {89709E5A-BF63-458F-B492-6B3D1C81F526}
 		{618D0B5D-659C-4460-886C-97A4E4E516E9} = {89709E5A-BF63-458F-B492-6B3D1C81F526}
 		{EC44091D-ADC8-488D-B865-ABEFC8D320E5} = {04D05D25-B87E-424D-9587-7A9CB6C7707E}
-		{495234AB-F492-444B-B46F-095C36899784} = {89709E5A-BF63-458F-B492-6B3D1C81F526}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4CBB0021-3BEF-4B78-9F7F-1CDD3F8E2761}
