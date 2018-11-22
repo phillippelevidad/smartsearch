@@ -1,4 +1,5 @@
 ﻿using SmartSearch.Abstractions;
+using System;
 using System.Collections.Generic;
 
 namespace SmartSearch.LuceneNet.Tests.Mocks
@@ -15,7 +16,8 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "Price", 3439.80 },
                 { "PromotionalPrice", null },
                 { "IsInPromotion", false },
-                { "Category", "Eletrodomésticos" }
+                { "Category", "Eletrodomésticos" },
+                { "AddedDate", new DateTime(2018, 1, 1) }
             }),
             new DocumentOperation("BC64C1F2", new Dictionary<string, object>
             {
@@ -25,7 +27,8 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "Price", 983.00 },
                 { "PromotionalPrice", 950.00 },
                 { "IsInPromotion", true },
-                { "Category", "Eletrônicos" }
+                { "Category", "Eletrônicos" },
+                { "AddedDate", new DateTime(2018, 2, 1) }
             }),
             new DocumentOperation("6EFEEED7", new Dictionary<string, object>
             {
@@ -35,7 +38,8 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "Price", 107.20 },
                 { "PromotionalPrice", null },
                 { "IsInPromotion", false },
-                { "Category", "Portáteis" }
+                { "Category", "Portáteis" },
+                { "AddedDate", new DateTime(2018, 1, 16) }
             }),
             new DocumentOperation("48BDDFA8", new Dictionary<string, object>
             {
@@ -45,7 +49,8 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "Price", 433.30 },
                 { "PromotionalPrice", null },
                 { "IsInPromotion", false },
-                { "Category", "Informática" }
+                { "Category", "Informática" },
+                { "AddedDate", new DateTime(2018, 3, 5) }
             }),
             new DocumentOperation("FC940BFB", new Dictionary<string, object>
             {
@@ -55,7 +60,8 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "Price", 7299.90 },
                 { "PromotionalPrice", null },
                 { "IsInPromotion", false },
-                { "Category", "Smartphones" }
+                { "Category", "Smartphones" },
+                { "AddedDate", new DateTime(2018, 9, 10) }
             }),
             new DocumentOperation("222B6FC6", new Dictionary<string, object>
             {
@@ -65,7 +71,8 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "Price", 169.70 },
                 { "PromotionalPrice", null },
                 { "IsInPromotion", false },
-                { "Category", "Móveis" }
+                { "Category", "Móveis" },
+                { "AddedDate", new DateTime(2018, 10, 1) }
             })
         };
     }

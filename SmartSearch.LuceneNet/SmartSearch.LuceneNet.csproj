@@ -58,6 +58,12 @@
     <Reference Include="Lucene.Net.Sandbox, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lucene.Net.Sandbox.4.8.0-beta00005\lib\net45\Lucene.Net.Sandbox.dll</HintPath>
     </Reference>
+    <Reference Include="SmartSearch, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SmartSearch.1.0.0\lib\net461\SmartSearch.dll</HintPath>
+    </Reference>
+    <Reference Include="SmartSearch.Abstractions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SmartSearch.Abstractions.1.0.0\lib\net461\SmartSearch.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Spatial4n.Core, Version=0.3.0.0, Culture=neutral, PublicKeyToken=9f9456e1ca16d45e, processorArchitecture=MSIL">
       <HintPath>..\packages\Spatial4n.Core.0.3\lib\net40\Spatial4n.Core.dll</HintPath>
     </Reference>
@@ -113,16 +119,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SmartSearch.Abstractions\SmartSearch.Abstractions.csproj">
-      <Project>{4d011092-fdda-4175-990b-906d29dce8fd}</Project>
-      <Name>SmartSearch.Abstractions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmartSearch\SmartSearch.csproj">
-      <Project>{77b4852d-7953-465f-b8ce-1ba682ae9efc}</Project>
-      <Name>SmartSearch</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

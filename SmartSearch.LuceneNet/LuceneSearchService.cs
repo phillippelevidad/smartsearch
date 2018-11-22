@@ -65,7 +65,7 @@ namespace SmartSearch.LuceneNet
             Query query, Sort sort)
         {
             var facetsCollector = new FacetsCollector();
-            var results = FacetsCollector.Search(searcher, query, int.MaxValue, facetsCollector);
+            var results = FacetsCollector.Search(searcher, query, null, int.MaxValue, sort, facetsCollector);
 
             var documents = CollectDocumentResults(domain, request, searcher, results);
             var facets = CollectFacetResults(domain, results, facetsCollector, facetsReader);

@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SmartSearch.Abstractions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SmartSearch.Abstractions.1.0.0\lib\net461\SmartSearch.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -56,10 +59,7 @@
     <Compile Include="SortOption.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SmartSearch.Abstractions\SmartSearch.Abstractions.csproj">
-      <Project>{4d011092-fdda-4175-990b-906d29dce8fd}</Project>
-      <Name>SmartSearch.Abstractions</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

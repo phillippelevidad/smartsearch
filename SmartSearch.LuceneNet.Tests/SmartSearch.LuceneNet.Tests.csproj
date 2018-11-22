@@ -57,6 +57,7 @@
     <Compile Include="Mocks\TestEnvironment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RangeFilterShould.cs" />
+    <Compile Include="SortingShould.cs" />
     <Compile Include="StringFieldShould.cs" />
     <Compile Include="WhitespaceQueryShould.cs" />
   </ItemGroup>

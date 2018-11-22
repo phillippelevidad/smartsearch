@@ -22,26 +22,10 @@ namespace SmartSearch.LuceneNet.Internals.Builders
             if (Definitions.MatchAllDocsQuery.Equals(request.Query, StringComparison.OrdinalIgnoreCase))
                 return new MatchAllDocsQuery().ToString();
 
-            var filter = BuildFilterExpression(request);
-            var search = BuildSearchExpression(request);
-
-            return string.Join(" ", filter, search);
+            return BuildInternal(request);
         }
 
-        string BuildFilterExpression(ISearchRequest request)
-        {
-            if (request.Filters == null || request.Filters.Length == 0)
-                return "";
-
-            var expressions = new List<string>(request.Filters.Length);
-
-            foreach (var f in request.Filters)
-                expressions.Add($"+({f.FieldName}:{f.SingleValue})");
-
-            return string.Join(" ", expressions);
-        }
-
-        string BuildSearchExpression(ISearchRequest request)
+        string BuildInternal(ISearchRequest request)
         {
             var searchFields = domain.GetSearchEnabledFields();
 
