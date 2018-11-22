@@ -24,45 +24,36 @@ namespace SmartSearch.LuceneNet.Internals.Builders
                 .ToList();
 
             sortFields.Add(SortField.FIELD_SCORE);
-
             return new Sort(sortFields.ToArray());
         }
 
         SortField GetSortField(ISearchDomain domain, ISortOption sortOption)
         {
             var field = domain.Fields.SingleOrDefault(f => f.Name == sortOption.FieldName);
-
-            if (field == null)
-                return null;
-
-            var type = GetSortFieldType(field);
-            var sortDescending = sortOption.Direction == SortDirection.Descending;
-            return new SortField(field.Name, type, sortDescending);
+            return field == null ? null : GetSortField(domain, sortOption, field);
         }
 
-        SortFieldType GetSortFieldType(IField field)
+        SortField GetSortField(ISearchDomain domain, ISortOption sortOption, IField field)
         {
             switch (field.Type)
             {
                 case FieldType.Date:
                 case FieldType.DateArray:
-                    return SortFieldType.INT64;
-
                 case FieldType.Double:
                 case FieldType.DoubleArray:
-                    return SortFieldType.DOUBLE;
-
                 case FieldType.Bool:
                 case FieldType.BoolArray:
                 case FieldType.Int:
                 case FieldType.IntArray:
-                    return SortFieldType.INT32;
+                    return new NumericSortBuilder().Build(domain, sortOption, field);
 
                 case FieldType.Literal:
                 case FieldType.LiteralArray:
+                    return new LiteralSortBuilder().Build(domain, sortOption, field);
+
                 case FieldType.Text:
                 case FieldType.TextArray:
-                    return SortFieldType.STRING;
+                    return new TextSortBuilder().Build(domain, sortOption, field);
 
                 default:
                 case FieldType.LatLng:

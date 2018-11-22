@@ -82,7 +82,9 @@
     <Compile Include="Internals\Builders\FilterBuilder.Types.cs" />
     <Compile Include="Internals\Builders\FilterBuilder.cs" />
     <Compile Include="Internals\Builders\IndexDocumentBuilder.cs" />
+    <Compile Include="Internals\Builders\SortBuilder.Types.cs" />
     <Compile Include="Internals\CompositeIndex.cs" />
+    <Compile Include="Internals\Converters\IndexableFieldConverter.Types.cs" />
     <Compile Include="Internals\Converters\TypeConverters.cs" />
     <Compile Include="Internals\IndexFactories\IndexReaderFactory.cs" />
     <Compile Include="Internals\IndexFactories\IndexWriterFactory.cs" />
@@ -108,6 +110,7 @@
     <Compile Include="Internals\SpecializedFields\AnalyzedField.cs" />
     <Compile Include="Internals\SpecializedFields\ISpecializedField.cs" />
     <Compile Include="Internals\SpecializedFields\ISpecializedFieldSpecification.cs" />
+    <Compile Include="Internals\SpecializedFields\SortableTextField.cs" />
     <Compile Include="Internals\SpecializedFields\SynonymField.cs" />
     <Compile Include="Analysis\SynonymsAnalyzer.cs" />
     <Compile Include="LuceneIndexOptions.cs" />

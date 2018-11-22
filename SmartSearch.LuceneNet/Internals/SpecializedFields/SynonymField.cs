@@ -12,11 +12,16 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
 
         public Type AnalyzerType => typeof(SynonymsAnalyzer);
 
+        public bool AnalyzeField => true;
+
         public SynonymField(string name, FieldType type, FieldRelevance relevance, bool enableFaceting, bool enableSearching, bool enableSorting)
             : base(name + Suffix, type, relevance, enableFaceting, enableSearching, enableSorting)
         {
             OriginalName = name;
         }
+
+        public object PrepareFieldValueForIndexing(object value) => value;
+
     }
 
     class SynonymFieldSpecification : ISpecializedFieldSpecification

@@ -23,6 +23,7 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
         public IEnumerable<ISpecializedFieldSpecification> ListAll()
         {
             yield return new AnalyzedFieldSpecification();
+            yield return new SortableTextFieldSpecification();
 
             if (searchDomain.AnalysisSettings != null && searchDomain.AnalysisSettings.Synonyms.Any())
                 yield return new SynonymFieldSpecification();

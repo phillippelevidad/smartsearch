@@ -1,8 +1,6 @@
 ﻿using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using SmartSearch.Abstractions;
-using SmartSearch.LuceneNet.Internals.SpecializedFields;
-using System;
 using System.Collections.Generic;
 using LuceneDocument = Lucene.Net.Documents.Document;
 using LuceneField = Lucene.Net.Documents.Field;
@@ -25,99 +23,44 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             return luceneDocument;
         }
 
-        IEnumerable<IIndexableField> GetIndexFields(InternalSearchDomain domain, InternalDocument sourceDocument)
+        IEnumerable<IIndexableField> GetIndexFields(InternalSearchDomain domain, InternalDocument document)
         {
             foreach (var field in domain.AllFields)
-            {
-                if (field.IsArray())
-                    foreach (var f in ConvertArrayField(field, sourceDocument))
-                        yield return f;
-
-                else
-                {
-                    var indexField = ConvertSimpleField(field, sourceDocument);
-
-                    if (indexField != null)
-                        yield return indexField;
-                }
-            }
+                foreach (var f in GetIndexFields(domain, document, field))
+                    yield return f;
         }
 
-        IIndexableField[] ConvertArrayField(IField field, InternalDocument sourceDocument)
+        IEnumerable<IIndexableField> GetIndexFields(InternalSearchDomain domain, InternalDocument document, IField field)
         {
-            if (!sourceDocument.Fields.ContainsKey(field.Name) ||
-                !(sourceDocument.Fields[field.Name] is Array array) || array.Length == 0)
-                return new IIndexableField[0];
-
-            var indexFields = new IIndexableField[array.Length];
-            for (int i = 0; i < array.Length; i++)
-            {
-                var value = array.GetValue(i);
-                indexFields[i] = ConvertFieldInternal(field, value);
-            }
-
-            return indexFields;
-        }
-
-        IIndexableField ConvertSimpleField(IField field, InternalDocument sourceDocument)
-        {
-            var value = sourceDocument.Fields[field.Name];
-            return value == null ? null : ConvertFieldInternal(field, value);
-        }
-
-        IIndexableField ConvertFieldInternal(IField field, object value)
-        {
-            var store = field is ISpecializedField
-                ? LuceneField.Store.NO /* analyzed fields, built for searching, cannot be returned */
-                : LuceneField.Store.YES /* not-analyzed fields, only exact matches, can be returned */;
-
             switch (field.Type)
             {
                 case SourceFieldType.Bool:
                 case SourceFieldType.BoolArray:
-                    return new Int32Field(field.Name, BoolConverter.ConvertToInt(value), store) { Boost = GetFieldBoost(field) };
+                    return new BoolIndexableFieldConverter().Convert(domain, field, document);
 
                 case SourceFieldType.Date:
                 case SourceFieldType.DateArray:
-                    return new Int64Field(field.Name, DateTimeConverter.ConvertToLong(value), store) { Boost = GetFieldBoost(field) };
+                    return new DateIndexableFieldConverter().Convert(domain, field, document);
 
                 case SourceFieldType.Double:
                 case SourceFieldType.DoubleArray:
-                    return new DoubleField(field.Name, DoubleConverter.Convert(value), store) { Boost = GetFieldBoost(field) };
+                    return new DoubleIndexableFieldConverter().Convert(domain, field, document);
 
                 case SourceFieldType.Int:
                 case SourceFieldType.IntArray:
-                    return new Int64Field(field.Name, LongConverter.Convert(value), store) { Boost = GetFieldBoost(field) };
+                    return new IntIndexableFieldConverter().Convert(domain, field, document);
 
                 case SourceFieldType.Text:
                 case SourceFieldType.TextArray:
-                    return new TextField(field.Name, StringConverter.Convert(value), store) { Boost = GetFieldBoost(field) };
+                    return new TextIndexableFieldConverter().Convert(domain, field, document);
 
                 case SourceFieldType.Literal:
                 case SourceFieldType.LiteralArray:
-                    return new StringField(field.Name, StringConverter.Convert(value), store) { Boost = GetFieldBoost(field) };
+                    return new LiteralIndexableFieldConverter().Convert(domain, field, document);
 
                 default:
                 case SourceFieldType.LatLng:
                     throw new UnknownFieldTypeException(field.Type);
-            }
-        }
-
-        float GetFieldBoost(IField field)
-        {
-            switch (field.Relevance)
-            {
-                case FieldRelevance.Normal:
-                    return 1f;
-
-                case FieldRelevance.High:
-                    return 2f;
-
-                case FieldRelevance.Higher:
-                    return 4f;
-
-                default:
-                    throw new UnknownFieldRelevanceException(field.Relevance);
             }
         }
     }
