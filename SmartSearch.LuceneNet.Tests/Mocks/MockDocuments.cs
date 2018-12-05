@@ -17,7 +17,8 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "PromotionalPrice", null },
                 { "IsInPromotion", false },
                 { "Category", "Eletrodomésticos" },
-                { "AddedDate", new DateTime(2018, 1, 1) }
+                { "AddedDate", new DateTime(2018, 1, 1) },
+                { "Geolocation", new GeoCoordinate(-25.428180, -49.257910) }
             }),
             new DocumentOperation("BC64C1F2", new Dictionary<string, object>
             {
@@ -28,7 +29,9 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "PromotionalPrice", 950.00 },
                 { "IsInPromotion", true },
                 { "Category", "Eletrônicos" },
-                { "AddedDate", new DateTime(2018, 2, 1) }
+                { "AddedDate", new DateTime(2018, 2, 1) },
+                { "Geolocation", new GeoCoordinate(-20.508980, -43.712210) }
+
             }),
             new DocumentOperation("6EFEEED7", new Dictionary<string, object>
             {
@@ -39,7 +42,8 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "PromotionalPrice", null },
                 { "IsInPromotion", false },
                 { "Category", "Portáteis" },
-                { "AddedDate", new DateTime(2018, 1, 16) }
+                { "AddedDate", new DateTime(2018, 1, 16) },
+                { "Geolocation", new GeoCoordinate(36.778259, -119.417931) }
             }),
             new DocumentOperation("48BDDFA8", new Dictionary<string, object>
             {
@@ -50,7 +54,8 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "PromotionalPrice", null },
                 { "IsInPromotion", false },
                 { "Category", "Informática" },
-                { "AddedDate", new DateTime(2018, 3, 5) }
+                { "AddedDate", new DateTime(2018, 3, 5) },
+                { "Geolocation", new GeoCoordinate(51.507351, -0.127758) }
             }),
             new DocumentOperation("FC940BFB", new Dictionary<string, object>
             {
@@ -61,7 +66,8 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "PromotionalPrice", null },
                 { "IsInPromotion", false },
                 { "Category", "Smartphones" },
-                { "AddedDate", new DateTime(2018, 9, 10) }
+                { "AddedDate", new DateTime(2018, 9, 10) },
+                { "Geolocation", new GeoCoordinate(46.431320, 6.910610) }
             }),
             new DocumentOperation("222B6FC6", new Dictionary<string, object>
             {
@@ -72,7 +78,8 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "PromotionalPrice", null },
                 { "IsInPromotion", false },
                 { "Category", "Móveis" },
-                { "AddedDate", new DateTime(2018, 10, 1) }
+                { "AddedDate", new DateTime(2018, 10, 1) },
+                { "Geolocation", new GeoCoordinate(46.519630, 6.632130) }
             })
         };
     }

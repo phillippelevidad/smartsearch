@@ -1,7 +1,10 @@
 ﻿using Lucene.Net.Documents;
 using Lucene.Net.Index;
+using Lucene.Net.Spatial.Prefix;
+using Lucene.Net.Spatial.Prefix.Tree;
 using SmartSearch.Abstractions;
 using SmartSearch.LuceneNet.Internals.SpecializedFields;
+using Spatial4n.Core.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +13,7 @@ using LuceneField = Lucene.Net.Documents.Field;
 
 namespace SmartSearch.LuceneNet.Internals.Converters
 {
-    class BoolIndexableFieldConverter : TypedIndexableFieldConverterBase
+    class BoolIndexableFieldConverter : TypedSimpleOrArrayIndexableFieldConverterBase
     {
         public BoolIndexableFieldConverter() : base(FieldType.Bool, FieldType.BoolArray) { }
 
@@ -18,7 +21,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             new Int32Field(field.Name, BoolConverter.ConvertToInt(value), GetFieldStore(field)) { Boost = GetFieldBoost(field) };
     }
 
-    class DateIndexableFieldConverter : TypedIndexableFieldConverterBase
+    class DateIndexableFieldConverter : TypedSimpleOrArrayIndexableFieldConverterBase
     {
         public DateIndexableFieldConverter() : base(FieldType.Date, FieldType.DateArray) { }
 
@@ -26,7 +29,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             new Int64Field(field.Name, DateTimeConverter.ConvertToLong(value), GetFieldStore(field)) { Boost = GetFieldBoost(field) };
     }
 
-    class DoubleIndexableFieldConverter : TypedIndexableFieldConverterBase
+    class DoubleIndexableFieldConverter : TypedSimpleOrArrayIndexableFieldConverterBase
     {
         public DoubleIndexableFieldConverter() : base(FieldType.Double, FieldType.DoubleArray) { }
 
@@ -34,7 +37,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             new DoubleField(field.Name, DoubleConverter.Convert(value), GetFieldStore(field)) { Boost = GetFieldBoost(field) };
     }
 
-    class IntIndexableFieldConverter : TypedIndexableFieldConverterBase
+    class IntIndexableFieldConverter : TypedSimpleOrArrayIndexableFieldConverterBase
     {
         public IntIndexableFieldConverter() : base(FieldType.Int, FieldType.IntArray) { }
 
@@ -42,7 +45,43 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             new Int64Field(field.Name, LongConverter.Convert(value), GetFieldStore(field)) { Boost = GetFieldBoost(field) };
     }
 
-    class LiteralIndexableFieldConverter : TypedIndexableFieldConverterBase
+    class LatLngIndexableFieldConverter : TypedIndexableFieldConverterBase
+    {
+        const int MaxLevels = 11; // Sub-meter precision for geohash.
+        readonly SpatialContext context;
+        readonly GeohashPrefixTree grid;
+
+        public LatLngIndexableFieldConverter() : base(FieldType.LatLng)
+        {
+            context = SpatialContext.GEO;
+            grid = new GeohashPrefixTree(context, MaxLevels);
+        }
+
+        public override IEnumerable<IIndexableField> Convert(InternalSearchDomain domain, IField field, InternalDocument sourceDocument)
+        {
+            if (sourceDocument.Fields[field.Name] == null)
+                return new IIndexableField[0];
+
+            if (!(sourceDocument.Fields[field.Name] is IGeoCoordinate coordinate))
+                throw new LatLngFieldValueMustImplementIGeoCoordinateException(field.Name);
+
+            var strategy = new RecursivePrefixTreeStrategy(grid, field.Name);
+
+            var value = PrepareValueIfFieldIsSpecialized(domain, field, sourceDocument.Fields[field.Name]) as IGeoCoordinate;
+            var lat = value.Latitude;
+            var lng = value.Longitude;
+
+            var store = GetFieldStore(field);
+            var point = context.MakePoint(lng, lat);
+
+            if (store == LuceneField.Store.YES)
+                return new IIndexableField[] { new StoredField(field.Name, value.ToWellKnownText()) };
+
+            return strategy.CreateIndexableFields(point);
+        }
+    }
+
+    class LiteralIndexableFieldConverter : TypedSimpleOrArrayIndexableFieldConverterBase
     {
         public LiteralIndexableFieldConverter() : base(FieldType.Literal, FieldType.LiteralArray) { }
 
@@ -55,7 +94,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
         }
     }
 
-    class TextIndexableFieldConverter : TypedIndexableFieldConverterBase
+    class TextIndexableFieldConverter : TypedSimpleOrArrayIndexableFieldConverterBase
     {
         public TextIndexableFieldConverter() : base(FieldType.Text, FieldType.TextArray) { }
 
@@ -68,16 +107,15 @@ namespace SmartSearch.LuceneNet.Internals.Converters
         IEnumerable<IIndexableField> Convert(InternalSearchDomain domain, IField field, InternalDocument sourceDocument);
     }
 
-    abstract class TypedIndexableFieldConverterBase : ITypedIndexableFieldConverter
-    {
-        readonly FieldType[] types;
+    #region Base classes
 
-        public TypedIndexableFieldConverterBase(params FieldType[] validForTypes)
+    abstract class TypedSimpleOrArrayIndexableFieldConverterBase : TypedIndexableFieldConverterBase
+    {
+        public TypedSimpleOrArrayIndexableFieldConverterBase(params FieldType[] validForTypes) : base(validForTypes)
         {
-            types = validForTypes ?? throw new ArgumentNullException(nameof(validForTypes));
         }
 
-        public IEnumerable<IIndexableField> Convert(InternalSearchDomain domain, IField field, InternalDocument sourceDocument)
+        public override IEnumerable<IIndexableField> Convert(InternalSearchDomain domain, IField field, InternalDocument sourceDocument)
         {
             if (field.IsArray())
                 foreach (var f in ConvertArrayField(domain, field, sourceDocument))
@@ -90,8 +128,6 @@ namespace SmartSearch.LuceneNet.Internals.Converters
                     yield return indexField;
             }
         }
-
-        protected virtual bool IsValidFieldType(IField field) => types.Any(t => t == field.Type);
 
         protected virtual IIndexableField[] ConvertArrayField(InternalSearchDomain domain, IField field, InternalDocument document)
         {
@@ -115,6 +151,22 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             return value == null ? null : GetIndexableField(domain, field, value);
         }
 
+        protected abstract IIndexableField GetIndexableField(InternalSearchDomain domain, IField field, object value);
+    }
+
+    abstract class TypedIndexableFieldConverterBase : ITypedIndexableFieldConverter
+    {
+        readonly FieldType[] types;
+
+        public TypedIndexableFieldConverterBase(params FieldType[] validForTypes)
+        {
+            types = validForTypes ?? throw new ArgumentNullException(nameof(validForTypes));
+        }
+
+        public abstract IEnumerable<IIndexableField> Convert(InternalSearchDomain domain, IField field, InternalDocument sourceDocument);
+
+        protected virtual bool IsValidFieldType(IField field) => types.Any(t => t == field.Type);
+
         protected virtual object PrepareValueIfFieldIsSpecialized(InternalSearchDomain domain, IField field, object value)
         {
             if (field is ISpecializedField specialized)
@@ -123,7 +175,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             return value;
         }
 
-        protected LuceneField.Store GetFieldStore(IField field)
+        protected virtual LuceneField.Store GetFieldStore(IField field)
         {
             // NO = analyzed fields, best for searching
             // YES = not-analyzed fields, only exact matches, can be returned
@@ -135,7 +187,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
                 ? LuceneField.Store.NO : LuceneField.Store.YES;
         }
 
-        protected float GetFieldBoost(IField field)
+        protected virtual float GetFieldBoost(IField field)
         {
             switch (field.Relevance)
             {
@@ -152,7 +204,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
                     throw new UnknownFieldRelevanceException(field.Relevance);
             }
         }
-
-        protected abstract IIndexableField GetIndexableField(InternalSearchDomain domain, IField field, object value);
     }
+
+    #endregion
 }

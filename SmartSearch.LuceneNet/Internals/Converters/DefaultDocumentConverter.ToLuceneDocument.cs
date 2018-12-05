@@ -50,16 +50,18 @@ namespace SmartSearch.LuceneNet.Internals.Converters
                 case SourceFieldType.IntArray:
                     return new IntIndexableFieldConverter().Convert(domain, field, document);
 
-                case SourceFieldType.Text:
-                case SourceFieldType.TextArray:
-                    return new TextIndexableFieldConverter().Convert(domain, field, document);
+                case SourceFieldType.LatLng:
+                    return new LatLngIndexableFieldConverter().Convert(domain, field, document);
 
                 case SourceFieldType.Literal:
                 case SourceFieldType.LiteralArray:
                     return new LiteralIndexableFieldConverter().Convert(domain, field, document);
 
+                case SourceFieldType.Text:
+                case SourceFieldType.TextArray:
+                    return new TextIndexableFieldConverter().Convert(domain, field, document);
+
                 default:
-                case SourceFieldType.LatLng:
                     throw new UnknownFieldTypeException(field.Type);
             }
         }

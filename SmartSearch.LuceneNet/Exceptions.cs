@@ -39,6 +39,12 @@ namespace SmartSearch.LuceneNet
             : base($"Invalid name for search domain: '{domainName}'. A valid name should be comprised only of alphanumeric characteres and underscores.") { }
     }
 
+    public class LatLngFieldValueMustImplementIGeoCoordinateException : Exception
+    {
+        public LatLngFieldValueMustImplementIGeoCoordinateException(string fieldName)
+            : base($"Field '{fieldName}' must implement {typeof(IGeoCoordinate).FullName}.") { }
+    }
+
     public class RangeFilterNotSupportedForTextAndLiteralFieldsException : Exception
     {
         public RangeFilterNotSupportedForTextAndLiteralFieldsException(string fieldName)

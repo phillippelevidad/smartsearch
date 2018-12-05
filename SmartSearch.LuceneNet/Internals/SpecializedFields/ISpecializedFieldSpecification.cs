@@ -22,6 +22,7 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
 
         public IEnumerable<ISpecializedFieldSpecification> ListAll()
         {
+            yield return new ActionableLatLngFieldSpecification();
             yield return new AnalyzedFieldSpecification();
             yield return new SortableTextFieldSpecification();
 

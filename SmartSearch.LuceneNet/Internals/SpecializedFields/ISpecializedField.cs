@@ -7,7 +7,7 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
     {
         string OriginalName { get; }
 
-        Type AnalyzerType { get; }
+        Type SpecialAnalyzerType { get; }
 
         bool AnalyzeField { get; }
 

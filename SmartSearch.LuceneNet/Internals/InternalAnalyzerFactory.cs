@@ -33,10 +33,10 @@ namespace SmartSearch.LuceneNet.Internals
 
             foreach (var field in domain.SpecializedFields)
             {
-                if (field.AnalyzerType == null)
+                if (field.SpecialAnalyzerType == null)
                     continue;
 
-                var analyzer = knownAnalyzers[field.AnalyzerType.FullName];
+                var analyzer = knownAnalyzers[field.SpecialAnalyzerType.FullName];
                 fieldAnalyzers.Add(field.Name, analyzer);
             }
 

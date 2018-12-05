@@ -65,14 +65,16 @@ namespace SmartSearch.LuceneNet.Internals.Converters
                 case SourceFieldType.IntArray:
                     return luceneField.GetInt64Value().Value;
 
-                case SourceFieldType.Text:
+                case SourceFieldType.LatLng:
+                    return new GeoCoordinate(luceneField.GetStringValue());
+
                 case SourceFieldType.Literal:
-                case SourceFieldType.TextArray:
                 case SourceFieldType.LiteralArray:
+                case SourceFieldType.Text:
+                case SourceFieldType.TextArray:
                     return luceneField.GetStringValue();
 
                 default:
-                case SourceFieldType.LatLng:
                     throw new UnknownFieldTypeException(field.Type);
             }
         }

@@ -10,7 +10,7 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
 
         public string OriginalName { get; }
 
-        public Type AnalyzerType => typeof(SynonymsAnalyzer);
+        public Type SpecialAnalyzerType => typeof(SynonymsAnalyzer);
 
         public bool AnalyzeField => true;
 
