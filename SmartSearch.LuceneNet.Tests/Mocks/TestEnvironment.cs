@@ -40,7 +40,7 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 DocumentProvider = new DocumentProvider(documents),
 
                 SearchDomain = new MockSearchDomain(),
-                IndexContext = new PhysicalIndexContext(@"C:\Temp\SmartSearchIndexes\testlatlng", false), // new MemoryIndexContext(),
+                IndexContext = new PhysicalIndexContext(@"C:\Temp\SmartSearchIndexes\testlatlng", true), // new MemoryIndexContext(),
                 IndexService = new LuceneIndexService(options),
                 SearchService = new LuceneSearchService(options),
 

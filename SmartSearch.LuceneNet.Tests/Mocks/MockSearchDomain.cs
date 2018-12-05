@@ -16,6 +16,7 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
             new Field("IsInPromotion", FieldType.Bool, FieldRelevance.Normal, enableSearching: true),
             new Field("Category", FieldType.Text, FieldRelevance.High, enableFaceting: true, enableSearching: true),
             new Field("AddedDate", FieldType.Date, FieldRelevance.Normal, enableSorting: true),
+            new Field("GeolocationName", FieldType.Literal, FieldRelevance.Normal),
             new Field("Geolocation", FieldType.LatLng, FieldRelevance.Normal, enableSearching: true, enableSorting: true)
         };
 

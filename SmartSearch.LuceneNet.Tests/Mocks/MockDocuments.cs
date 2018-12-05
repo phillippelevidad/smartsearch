@@ -18,7 +18,8 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "IsInPromotion", false },
                 { "Category", "Eletrodomésticos" },
                 { "AddedDate", new DateTime(2018, 1, 1) },
-                { "Geolocation", new GeoCoordinate(-25.428180, -49.257910) }
+                { "GeolocationName", "Impact Hub Curitiba" },
+                { "Geolocation", new LatLng(-25.428079, -49.257083) }
             }),
             new DocumentOperation("BC64C1F2", new Dictionary<string, object>
             {
@@ -30,7 +31,8 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "IsInPromotion", true },
                 { "Category", "Eletrônicos" },
                 { "AddedDate", new DateTime(2018, 2, 1) },
-                { "Geolocation", new GeoCoordinate(-20.508980, -43.712210) }
+                { "GeolocationName", "Parque Barigui" },
+                { "Geolocation", new LatLng(-25.418865, -49.305416) }
 
             }),
             new DocumentOperation("6EFEEED7", new Dictionary<string, object>
@@ -43,7 +45,8 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "IsInPromotion", false },
                 { "Category", "Portáteis" },
                 { "AddedDate", new DateTime(2018, 1, 16) },
-                { "Geolocation", new GeoCoordinate(36.778259, -119.417931) }
+                { "GeolocationName", "Ouro Branco MG" },
+                { "Geolocation", new LatLng(-20.509879, -43.712664) }
             }),
             new DocumentOperation("48BDDFA8", new Dictionary<string, object>
             {
@@ -55,7 +58,8 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "IsInPromotion", false },
                 { "Category", "Informática" },
                 { "AddedDate", new DateTime(2018, 3, 5) },
-                { "Geolocation", new GeoCoordinate(51.507351, -0.127758) }
+                { "GeolocationName", "Geneva Switzerland" },
+                { "Geolocation", new LatLng(46.204391, 6.143158) }
             }),
             new DocumentOperation("FC940BFB", new Dictionary<string, object>
             {
@@ -67,7 +71,8 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "IsInPromotion", false },
                 { "Category", "Smartphones" },
                 { "AddedDate", new DateTime(2018, 9, 10) },
-                { "Geolocation", new GeoCoordinate(46.431320, 6.910610) }
+                { "GeolocationName", "Lausanne Switzerland" },
+                { "Geolocation", new LatLng(46.519653, 6.632273) }
             }),
             new DocumentOperation("222B6FC6", new Dictionary<string, object>
             {
@@ -79,7 +84,8 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "IsInPromotion", false },
                 { "Category", "Móveis" },
                 { "AddedDate", new DateTime(2018, 10, 1) },
-                { "Geolocation", new GeoCoordinate(46.519630, 6.632130) }
+                { "GeolocationName", "San Francisco US" },
+                { "Geolocation", new LatLng(37.774929, -122.419418) }
             })
         };
     }

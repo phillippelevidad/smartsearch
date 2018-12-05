@@ -36,7 +36,7 @@ namespace SmartSearch.LuceneNet.Tests
             var fst_results = env.Search(new SearchRequest());
             var fst_a = fst_results.Documents.Single(d => d.Id == aId);
 
-            Assert.AreEqual(fst_results.TotalCount, 1);
+            Assert.AreEqual(1, fst_results.TotalCount);
             Assert.AreEqual(fst_a.Fields["Name"], "A");
             Assert.AreEqual(fst_a.Fields["Age"], 30L);
 
@@ -59,11 +59,11 @@ namespace SmartSearch.LuceneNet.Tests
             var sec_a = sec_results.Documents.Single(d => d.Id == aId);
             var sec_b = sec_results.Documents.Single(d => d.Id == bId);
 
-            Assert.AreEqual(sec_results.TotalCount, 2);
-            Assert.AreEqual(sec_a.Fields["Name"], "A");
-            Assert.AreEqual(sec_a.Fields["Age"], 35L);
-            Assert.AreEqual(sec_b.Fields["Name"], "B");
-            Assert.AreEqual(sec_b.Fields["Age"], 40L);
+            Assert.AreEqual(2, sec_results.TotalCount);
+            Assert.AreEqual("A", sec_a.Fields["Name"]);
+            Assert.AreEqual(35L, sec_a.Fields["Age"]);
+            Assert.AreEqual("B", sec_b.Fields["Name"], "B");
+            Assert.AreEqual(40L, sec_b.Fields["Age"]);
         }
     }
 }

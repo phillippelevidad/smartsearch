@@ -33,16 +33,30 @@ namespace SmartSearch.LuceneNet
             : base($"Type '{type?.FullName}' is not valid as an IndexContext.") { }
     }
 
+    public class InvalidGeoCoordinateFilterValue :Exception
+    {
+        public InvalidGeoCoordinateFilterValue(string fieldName)
+            : base($"Invalid filter value for field '{fieldName}'. Use an implementation of '{typeof(ILatLngFilterValue).FullName}'.") { }
+    }
+
     public class InvalidSearchDomainNameException : Exception
     {
         public InvalidSearchDomainNameException(string domainName)
             : base($"Invalid name for search domain: '{domainName}'. A valid name should be comprised only of alphanumeric characteres and underscores.") { }
     }
 
+
+
     public class LatLngFieldValueMustImplementIGeoCoordinateException : Exception
     {
         public LatLngFieldValueMustImplementIGeoCoordinateException(string fieldName)
-            : base($"Field '{fieldName}' must implement {typeof(IGeoCoordinate).FullName}.") { }
+            : base($"Field '{fieldName}' must implement {typeof(ILatLng).FullName}.") { }
+    }
+
+    public class RangeFilterNotSupportedForLatLngFieldsException : Exception
+    {
+        public RangeFilterNotSupportedForLatLngFieldsException(string fieldName)
+            : base($"Range filter is not supported for LatLng fields. Attempted field: '{fieldName}'.") { }
     }
 
     public class RangeFilterNotSupportedForTextAndLiteralFieldsException : Exception

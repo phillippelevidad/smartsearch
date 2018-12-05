@@ -1,10 +1,12 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using SmartSearch.Abstractions;
 
 namespace SmartSearch
 {
-    public class GeoCoordinate : IGeoCoordinate
+    [DebuggerDisplay("Lat {Latitude}, Lng {Longitude}")]
+    public class LatLng : ILatLng
     {
         readonly Regex rgxPointWkt = new Regex(@"POINT\((\-?\d+(?:\.\d+))\s(\-?\d+(?:\.\d+))\)", RegexOptions.Compiled);
 
@@ -12,12 +14,12 @@ namespace SmartSearch
 
         public double Longitude { get; private set; }
 
-        public GeoCoordinate(double latitude, double longitude)
+        public LatLng(double latitude, double longitude)
         {
             Initialize(latitude, longitude);
         }
 
-        public GeoCoordinate(string wellKnownText)
+        public LatLng(string wellKnownText)
         {
             if (!rgxPointWkt.IsMatch(wellKnownText))
                 throw new MalformedPointWellKnownTextException(wellKnownText);
@@ -38,7 +40,7 @@ namespace SmartSearch
             return string.Format(CultureInfo.InvariantCulture, "POINT({0:N8} {1:N8})", Longitude, Latitude);
         }
 
-        public bool Equals(IGeoCoordinate other)
+        public bool Equals(ILatLng other)
         {
             if (other == null)
                 return false;

@@ -2,7 +2,7 @@
 
 namespace SmartSearch.Abstractions
 {
-    public interface IGeoCoordinate : IEquatable<IGeoCoordinate>
+    public interface ILatLng : IEquatable<ILatLng>
     {
         double Latitude { get; }
 

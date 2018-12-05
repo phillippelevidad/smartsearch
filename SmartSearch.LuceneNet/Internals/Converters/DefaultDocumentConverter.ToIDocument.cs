@@ -66,7 +66,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
                     return luceneField.GetInt64Value().Value;
 
                 case SourceFieldType.LatLng:
-                    return new GeoCoordinate(luceneField.GetStringValue());
+                    return new LatLng(luceneField.GetStringValue());
 
                 case SourceFieldType.Literal:
                 case SourceFieldType.LiteralArray:

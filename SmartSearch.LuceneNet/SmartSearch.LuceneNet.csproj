@@ -101,6 +101,7 @@
     <Compile Include="Internals\Builders\QueryExpressionBuilder.cs" />
     <Compile Include="Internals\Builders\SortBuilder.cs" />
     <Compile Include="Internals\SearchDomainValidator.cs" />
+    <Compile Include="Internals\SpatialFactory.cs" />
     <Compile Include="Internals\SpecializedFields\ActionableLatLngField.cs" />
     <Compile Include="Internals\SpecializedFields\AnalyzedField.cs" />
     <Compile Include="Internals\SpecializedFields\ISpecializedField.cs" />

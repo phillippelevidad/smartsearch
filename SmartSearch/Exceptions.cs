@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using SmartSearch.Abstractions;
 
 namespace SmartSearch
 {
-    public class MalformedPointWellKnownTextException : Exception
+    public class FirstAndLastPointsInAPolygonMustBeEqualException : Exception
     {
-        public MalformedPointWellKnownTextException(string wkt)
-            : base($"Malformed Well Known-Text '{wkt}'. Must be in the format: 'POINT(<longitude> <latitude>)'.") { }
+        public IEnumerable<ILatLng> Points { get; }
+
+        public FirstAndLastPointsInAPolygonMustBeEqualException(IEnumerable<ILatLng> points)
+            : base("The first and last points in a polygon must be equal in order to form a closed shape.") { Points = points; }
     }
 
     public class InvalidLatitudeException : Exception
@@ -19,6 +22,12 @@ namespace SmartSearch
     {
         public InvalidLongitudeException(double latitude)
             : base($"Invalid longitude value: {latitude}. Must be between -180 and 180 (inclusive).") { }
+    }
+
+    public class MalformedPointWellKnownTextException : Exception
+    {
+        public MalformedPointWellKnownTextException(string wkt)
+            : base($"Malformed Well Known-Text '{wkt}'. Must be in the format: 'POINT(<longitude> <latitude>)'.") { }
     }
 
     public class UnknownQueryFilterTypeException : Exception

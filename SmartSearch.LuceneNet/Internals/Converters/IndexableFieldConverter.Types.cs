@@ -47,14 +47,13 @@ namespace SmartSearch.LuceneNet.Internals.Converters
 
     class LatLngIndexableFieldConverter : TypedIndexableFieldConverterBase
     {
-        const int MaxLevels = 11; // Sub-meter precision for geohash.
         readonly SpatialContext context;
         readonly GeohashPrefixTree grid;
 
         public LatLngIndexableFieldConverter() : base(FieldType.LatLng)
         {
-            context = SpatialContext.GEO;
-            grid = new GeohashPrefixTree(context, MaxLevels);
+            context = SpatialFactory.CreateSpatialContext();
+            grid = SpatialFactory.CreatePrefixTree();
         }
 
         public override IEnumerable<IIndexableField> Convert(InternalSearchDomain domain, IField field, InternalDocument sourceDocument)
@@ -62,12 +61,12 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             if (sourceDocument.Fields[field.Name] == null)
                 return new IIndexableField[0];
 
-            if (!(sourceDocument.Fields[field.Name] is IGeoCoordinate coordinate))
+            if (!(sourceDocument.Fields[field.Name] is ILatLng coordinate))
                 throw new LatLngFieldValueMustImplementIGeoCoordinateException(field.Name);
 
-            var strategy = new RecursivePrefixTreeStrategy(grid, field.Name);
+            var strategy = SpatialFactory.CreatePrefixTreeStrategy(field.Name);
 
-            var value = PrepareValueIfFieldIsSpecialized(domain, field, sourceDocument.Fields[field.Name]) as IGeoCoordinate;
+            var value = PrepareValueIfFieldIsSpecialized(domain, field, sourceDocument.Fields[field.Name]) as ILatLng;
             var lat = value.Latitude;
             var lng = value.Longitude;
 

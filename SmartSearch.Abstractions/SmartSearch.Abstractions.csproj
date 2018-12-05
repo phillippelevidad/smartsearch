@@ -47,7 +47,8 @@
     <Compile Include="IDocumentProvider.cs" />
     <Compile Include="IDocumentReader.cs" />
     <Compile Include="IFacetResult.cs" />
-    <Compile Include="IGeoCoordinate.cs" />
+    <Compile Include="ILatLng.cs" />
+    <Compile Include="ILatLngFilterValue.cs" />
     <Compile Include="IIndexContext.cs" />
     <Compile Include="IQueryFilter.cs" />
     <Compile Include="ISearchDomain.cs" />

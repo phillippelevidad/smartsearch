@@ -2,8 +2,13 @@
 using Lucene.Net.Index;
 using Lucene.Net.QueryParsers.Classic;
 using Lucene.Net.Search;
+using Lucene.Net.Spatial.Prefix.Tree;
+using Lucene.Net.Spatial.Queries;
 using SmartSearch.Abstractions;
 using SmartSearch.LuceneNet.Internals.Converters;
+using SmartSearch.LuceneNet.Internals.SpecializedFields;
+using Spatial4n.Core.Context;
+using Spatial4n.Core.Shapes;
 using System;
 using System.Linq;
 using LuceneFilter = Lucene.Net.Search.Filter;
@@ -79,6 +84,42 @@ namespace SmartSearch.LuceneNet.Internals.Builders
         {
             var value = LongConverter.Convert(filter.SingleValue);
             return NumericRangeFilter.NewInt64Range(field.Name, value, value, true, true);
+        }
+    }
+
+    class LatLngFilterBuilder : TypedFilterBuilderBase
+    {
+        readonly SpatialContext context;
+        readonly GeohashPrefixTree grid;
+
+        public LatLngFilterBuilder() : base(FieldType.LatLng)
+        {
+            context = SpatialFactory.CreateSpatialContext();
+            grid = SpatialFactory.CreatePrefixTree();
+        }
+
+        protected override LuceneFilter BuildForRange(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
+        {
+            throw new RangeFilterNotSupportedForLatLngFieldsException(field.Name);
+        }
+
+        protected override LuceneFilter BuildForSingleValue(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
+        {
+            if (!(filter.SingleValue is ILatLngFilterValue geoFilter))
+                throw new InvalidGeoCoordinateFilterValue(field.Name);
+
+            var actionableCoordField = new ActionableLatLngFieldSpecification().CreateFrom(field);
+            var points = geoFilter.Points.Select(p => context.MakePoint(p.Longitude, p.Latitude) as IShape).ToList();
+
+            var args = new SpatialArgs(SpatialOperation.Intersects, context.MakeRectangle(
+                geoFilter.Points.Min(p => p.Longitude),
+                geoFilter.Points.Max(p => p.Longitude),
+                geoFilter.Points.Min(p => p.Latitude),
+                geoFilter.Points.Max(p => p.Latitude)));
+
+            var strategy = SpatialFactory.CreatePrefixTreeStrategy(actionableCoordField.Name);
+            var query = strategy.MakeQuery(args);
+            return new QueryWrapperFilter(query);
         }
     }
 

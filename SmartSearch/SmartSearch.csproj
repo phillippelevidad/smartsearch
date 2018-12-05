@@ -47,8 +47,9 @@
     <Compile Include="DocumentProvider.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="Facet.cs" />
-    <Compile Include="GeoCoordinate.cs" />
-    <Compile Include="QueryFilter.cs" />
+    <Compile Include="LatLng.cs" />
+    <Compile Include="LatLngFilterValues.cs" />
+    <Compile Include="Filter.cs" />
     <Compile Include="SearchDomain.cs" />
     <Compile Include="Field.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -55,6 +55,9 @@ namespace SmartSearch.LuceneNet.Internals.Builders
                 case FieldType.IntArray:
                     return new IntFilterBuilder().Build(request, requestFilter, field, perFieldAnalyzer);
 
+                case FieldType.LatLng:
+                    return new LatLngFilterBuilder().Build(request, requestFilter, field, perFieldAnalyzer);
+
                 case FieldType.Literal:
                 case FieldType.LiteralArray:
                     return new LiteralFilterBuilder().Build(request, requestFilter, field, perFieldAnalyzer);
@@ -62,9 +65,8 @@ namespace SmartSearch.LuceneNet.Internals.Builders
                 case FieldType.Text:
                 case FieldType.TextArray:
                     return new TextFilterBuilder().Build(request, requestFilter, field, perFieldAnalyzer);
-
+                
                 default:
-                case FieldType.LatLng:
                     throw new UnknownFieldTypeException(field.Type);
             }
         }
