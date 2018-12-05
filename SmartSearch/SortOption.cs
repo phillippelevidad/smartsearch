@@ -3,10 +3,12 @@ using System.Diagnostics;
 
 namespace SmartSearch
 {
-    [DebuggerDisplay("{FieldName}, {Direction}")]
+    [DebuggerDisplay("{FieldName}, {Direction}, Reference = {Reference}")]
     public class SortOption : ISortOption
     {
         public string FieldName { get; set; }
+
+        public object Reference { get; set; }
 
         public SortDirection Direction { get; set; }
 
@@ -18,6 +20,13 @@ namespace SmartSearch
         {
             FieldName = fieldName;
             Direction = direction;
+        }
+
+        public SortOption(string fieldName, SortDirection direction, object reference)
+        {
+            FieldName = fieldName;
+            Direction = direction;
+            Reference = reference;
         }
     }
 }

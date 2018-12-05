@@ -46,13 +46,23 @@ namespace SmartSearch
     {
         LatLngRadiusFilterValue(IEnumerable<ILatLng> points) : base(points) { }
 
-        public static LatLngRadiusFilterValue Create(ILatLng origin, double radius)
+        public static LatLngRadiusFilterValue CreateFromMiRadius(ILatLng origin, double radiusInMi)
+        {
+            var earthRadius = 3960d;
+            return Create(origin, radiusInMi / earthRadius);
+        }
+
+        public static LatLngRadiusFilterValue CreateFromKmRadius(ILatLng origin, double radiusInKm)
         {
             var earthRadius = 6371d;
+            return Create(origin, radiusInKm / earthRadius);
+        }
+
+        static LatLngRadiusFilterValue Create(ILatLng origin, double d)
+        {
             var lat = (origin.Latitude * Math.PI) / 180;
             var lon = (origin.Longitude * Math.PI) / 180;
 
-            var d = radius / earthRadius;
             var polyPoints = new List<ILatLng>(361);
 
             for (var i = 0; i <= 360; i++)

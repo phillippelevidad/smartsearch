@@ -33,10 +33,16 @@ namespace SmartSearch.LuceneNet
             : base($"Type '{type?.FullName}' is not valid as an IndexContext.") { }
     }
 
-    public class InvalidGeoCoordinateFilterValue :Exception
+    public class InvalidLatLngFilterValue :Exception
     {
-        public InvalidGeoCoordinateFilterValue(string fieldName)
+        public InvalidLatLngFilterValue(string fieldName)
             : base($"Invalid filter value for field '{fieldName}'. Use an implementation of '{typeof(ILatLngFilterValue).FullName}'.") { }
+    }
+
+    public class InvalidLatLngReferenceForSortingException : Exception
+    {
+        public InvalidLatLngReferenceForSortingException(string fieldName)
+            : base($"Invalid sort reference for field '{fieldName}'. Use an implementatino of '{typeof(ILatLngSortOptionReference).FullName}'.") { }
     }
 
     public class InvalidSearchDomainNameException : Exception
@@ -45,12 +51,16 @@ namespace SmartSearch.LuceneNet
             : base($"Invalid name for search domain: '{domainName}'. A valid name should be comprised only of alphanumeric characteres and underscores.") { }
     }
 
-
-
     public class LatLngFieldValueMustImplementIGeoCoordinateException : Exception
     {
         public LatLngFieldValueMustImplementIGeoCoordinateException(string fieldName)
             : base($"Field '{fieldName}' must implement {typeof(ILatLng).FullName}.") { }
+    }
+
+    public class MissingLatLngReferenceForSortingException : Exception
+    {
+        public MissingLatLngReferenceForSortingException()
+            : base("Must provide a LatLng reference when sorting by a LatLng field.") { }
     }
 
     public class RangeFilterNotSupportedForLatLngFieldsException : Exception

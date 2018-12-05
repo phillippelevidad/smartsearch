@@ -6,10 +6,12 @@ namespace SmartSearch.LuceneNet.Internals.Builders
 {
     class SortBuilder
     {
+        readonly IndexSearcher indexSearcher;
         readonly InternalSearchDomain domain;
 
-        public SortBuilder(InternalSearchDomain domain)
+        public SortBuilder(IndexSearcher indexSearcher, InternalSearchDomain domain)
         {
+            this.indexSearcher = indexSearcher;
             this.domain = domain;
         }
 
@@ -47,6 +49,9 @@ namespace SmartSearch.LuceneNet.Internals.Builders
                 case FieldType.IntArray:
                     return new NumericSortBuilder().Build(domain, sortOption, field);
 
+                case FieldType.LatLng:
+                    return new LatLngSortBuilder(indexSearcher).Build(domain, sortOption, field);
+
                 case FieldType.Literal:
                 case FieldType.LiteralArray:
                     return new LiteralSortBuilder().Build(domain, sortOption, field);
@@ -56,7 +61,6 @@ namespace SmartSearch.LuceneNet.Internals.Builders
                     return new TextSortBuilder().Build(domain, sortOption, field);
 
                 default:
-                case FieldType.LatLng:
                     throw new UnknownFieldTypeException(field.Type);
             }
         }

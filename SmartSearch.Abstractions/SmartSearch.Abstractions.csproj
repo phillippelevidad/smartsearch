@@ -50,6 +50,7 @@
     <Compile Include="ILatLng.cs" />
     <Compile Include="ILatLngFilterValue.cs" />
     <Compile Include="IIndexContext.cs" />
+    <Compile Include="ILatLngSortOptionReference.cs" />
     <Compile Include="IQueryFilter.cs" />
     <Compile Include="ISearchDomain.cs" />
     <Compile Include="IField.cs" />

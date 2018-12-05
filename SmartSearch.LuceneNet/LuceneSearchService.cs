@@ -52,7 +52,7 @@ namespace SmartSearch.LuceneNet
 
                     var searcher = new IndexSearcher(indexReader);
                     var query = new QueryBuilder(internalDomain).Build(request, analyzer);
-                    var sort = new SortBuilder(internalDomain).Build(request);
+                    var sort = new SortBuilder(searcher, internalDomain).Build(request);
 
                     return SearchInternal(internalDomain, request, searcher, facetsReader, query, sort);
                 }

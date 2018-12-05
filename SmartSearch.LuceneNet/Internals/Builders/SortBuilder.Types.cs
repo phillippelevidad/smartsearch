@@ -1,11 +1,46 @@
 ﻿using Lucene.Net.Search;
+using Lucene.Net.Spatial.Prefix.Tree;
 using SmartSearch.Abstractions;
 using SmartSearch.LuceneNet.Internals.SpecializedFields;
+using Spatial4n.Core.Context;
+using Spatial4n.Core.Distance;
 using System;
 using System.Linq;
 
 namespace SmartSearch.LuceneNet.Internals.Builders
 {
+    class LatLngSortBuilder : TypedSortBuilderBase
+    {
+        readonly SpatialContext context;
+        readonly GeohashPrefixTree grid;
+        readonly IndexSearcher indexSearcher;
+
+        public LatLngSortBuilder(IndexSearcher indexSearcher) : base(FieldType.LatLng)
+        {
+            context = SpatialFactory.CreateSpatialContext();
+            grid = SpatialFactory.CreatePrefixTree();
+            this.indexSearcher = indexSearcher;
+        }
+
+        protected override SortField BuildTypedSortField(ISearchDomain domain, ISortOption sortOption, IField field)
+        {
+            if (sortOption.Reference == null)
+                throw new MissingLatLngReferenceForSortingException();
+
+            if (!(sortOption.Reference is ILatLngSortOptionReference latLngReference))
+                throw new InvalidLatLngReferenceForSortingException(field.Name);
+
+            var actionableCoordField = new ActionableLatLngFieldSpecification().CreateFrom(field);
+            var strategy = SpatialFactory.CreatePrefixTreeStrategy(actionableCoordField.Name);
+
+            var point = context.MakePoint(latLngReference.Origin.Longitude, latLngReference.Origin.Latitude);
+            var valueSource = strategy.MakeDistanceValueSource(point, DistanceUtils.DEG_TO_KM);
+
+            var sortField = valueSource.GetSortField(sortOption.Direction == SortDirection.Descending);
+            return sortField.Rewrite(indexSearcher);
+        }
+    }
+
     class LiteralSortBuilder : TypedSortBuilderBase
     {
         public LiteralSortBuilder() : base(FieldType.Literal, FieldType.LiteralArray) { }

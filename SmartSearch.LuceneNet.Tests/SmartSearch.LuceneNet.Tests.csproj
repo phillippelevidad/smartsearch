@@ -52,7 +52,8 @@
     <Compile Include="BoolFieldFilterShould.cs" />
     <Compile Include="EmptyQueryShould.cs" />
     <Compile Include="IndexServiceShould.cs" />
-    <Compile Include="LngFilterShould.cs" />
+    <Compile Include="LatLngFilterShould.cs" />
+    <Compile Include="LatLngSortingShould.cs" />
     <Compile Include="Mocks\MockDocuments.cs" />
     <Compile Include="Mocks\MockSearchDomain.cs" />
     <Compile Include="Mocks\TestEnvironment.cs" />

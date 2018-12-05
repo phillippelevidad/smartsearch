@@ -1,26 +1,18 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SmartSearch.Abstractions;
 using SmartSearch.LuceneNet.Tests.Mocks;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmartSearch.LuceneNet.Tests
 {
     [TestClass]
-    public class LngFilterShould
+    public class LatLngFilterShould
     {
         const string LocationField = "Geolocation";
         const string LocationNameField = "GeolocationName";
 
         readonly TestEnvironment environment;
-
-        public LngFilterShould()
-        {
-            environment = TestEnvironment.Build();
-        }
+        public LatLngFilterShould() => environment = TestEnvironment.Build();
 
         [TestMethod]
         public void Work(/* :) */)
@@ -45,12 +37,10 @@ namespace SmartSearch.LuceneNet.Tests
                 Filters = new[] { new Filter(LocationField, filterValue) }
             });
 
-            Assert.AreEqual(locationNames.Length, results.TotalCount);
+            var resultNames = results.Documents.Select(d => d.Fields[LocationNameField].ToString()).ToArray();
+            var intersectionCount = locationNames.Intersect(resultNames).Count();
 
-            var expectedNames = string.Join(",", locationNames);
-            var resultNames = string.Join(",", results.Documents.Select(d => d.Fields[LocationNameField].ToString()));
-
-            Assert.AreEqual(expectedNames, resultNames);
+            Assert.AreEqual(locationNames.Length, intersectionCount);
         }
     }
 }

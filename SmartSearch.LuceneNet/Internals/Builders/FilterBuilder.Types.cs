@@ -106,7 +106,7 @@ namespace SmartSearch.LuceneNet.Internals.Builders
         protected override LuceneFilter BuildForSingleValue(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
             if (!(filter.SingleValue is ILatLngFilterValue geoFilter))
-                throw new InvalidGeoCoordinateFilterValue(field.Name);
+                throw new InvalidLatLngFilterValue(field.Name);
 
             var actionableCoordField = new ActionableLatLngFieldSpecification().CreateFrom(field);
             var points = geoFilter.Points.Select(p => context.MakePoint(p.Longitude, p.Latitude) as IShape).ToList();

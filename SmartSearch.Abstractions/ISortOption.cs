@@ -4,6 +4,8 @@
     {
         string FieldName { get; }
 
+        object Reference { get; }
+
         SortDirection Direction { get; }
     }
 
