@@ -79,7 +79,7 @@ namespace SmartSearch.LuceneNet
 
             var start = request.StartIndex;
             var end = Math.Min(searchResults.TotalHits, request.StartIndex + request.PageSize);
-            var resultSize = end - start;
+            var resultSize = Math.Max(end - start, 0);
 
             var items = new IDocument[resultSize];
             var itemIndex = 0;
