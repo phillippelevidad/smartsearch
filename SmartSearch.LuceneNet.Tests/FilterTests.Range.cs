@@ -4,11 +4,10 @@ using System.Linq;
 
 namespace SmartSearch.LuceneNet.Tests
 {
-    [TestClass]
-    public class RangeFilterShould
+    public partial class FilterTests
     {
         [TestMethod]
-        public void WorkForNumericGreaterThan()
+        public void NumericGreaterThenWorks()
         {
             var fieldName = "Price";
             var fromValue = 1000d;
@@ -26,7 +25,7 @@ namespace SmartSearch.LuceneNet.Tests
         }
 
         [TestMethod]
-        public void WorkForNumericLowerThan()
+        public void NumericLowerThanWorks()
         {
             var fieldName = "Price";
             var toValue = 1000d;
@@ -44,7 +43,7 @@ namespace SmartSearch.LuceneNet.Tests
         }
 
         [TestMethod]
-        public void WorkForNumericFullySpecifiedRange()
+        public void NumericFullySpecifiedRangeWorks()
         {
             var fieldName = "Price";
             var fromValue = 100d;

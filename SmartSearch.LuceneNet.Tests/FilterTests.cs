@@ -2,14 +2,49 @@
 using SmartSearch.Abstractions;
 using SmartSearch.LuceneNet.Tests.Mocks;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SmartSearch.LuceneNet.Tests
 {
     [TestClass]
-    public class StringFieldShould
+    public partial class FilterTests
     {
         [TestMethod]
-        public void HandleTextAndLiteralFiltersRight()
+        public void BoolFilterWorksWhenValueIsTrue()
+        {
+            var fieldName = "IsInPromotion";
+
+            var env = TestEnvironment.Build();
+            var results = env.Search(new SearchRequest
+            {
+                Filters = new[] { new Filter(fieldName, true) }
+            });
+
+            var expectedCount = env.Documents.Count(d =>
+                d.Fields.ContainsKey(fieldName) && (bool)d.Fields[fieldName] == true);
+
+            Assert.AreEqual(expectedCount, results.TotalCount);
+        }
+
+        [TestMethod]
+        public void BoolFilterWorksWhenValueIsFalse()
+        {
+            var fieldName = "IsInPromotion";
+
+            var env = TestEnvironment.Build();
+            var results = env.Search(new SearchRequest
+            {
+                Filters = new[] { new Filter(fieldName, false) }
+            });
+
+            var expectedCount = env.Documents.Count(d =>
+                d.Fields.ContainsKey(fieldName) && (bool)d.Fields[fieldName] == false);
+
+            Assert.AreEqual(expectedCount, results.TotalCount);
+        }
+
+        [TestMethod]
+        public void TextAndLiteralFiltersWork()
         {
             var env = TestEnvironment.Build(createIndex: false);
             env.SearchDomain = new SearchDomain("websites", new IField[]

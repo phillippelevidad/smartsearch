@@ -5,26 +5,24 @@ using System.Linq;
 
 namespace SmartSearch.LuceneNet.Tests
 {
-    [TestClass]
-    public class LatLngSortingShould
+    public partial class SortTests
     {
         const string LocationField = "Geolocation";
         const string LocationNameField = "GeolocationName";
 
-        readonly TestEnvironment environment;
-        public LatLngSortingShould() => environment = TestEnvironment.Build();
-
         [TestMethod]
-        public void Work()
+        public void LatLngSortingWorks()
         {
-            TestInternal(new LatLngSortOptionReference(-25.427177, -49.256169),
+            var environment = TestEnvironment.Build();
+
+            TestInternal(environment, new LatLngSortOptionReference(-25.427177, -49.256169),
                 "Impact Hub Curitiba", "Parque Barigui", "Ouro Branco MG");
 
-            TestInternal(new LatLngSortOptionReference(-20.669430, -43.785820),
+            TestInternal(environment, new LatLngSortOptionReference(-20.669430, -43.785820),
                 "Ouro Branco MG", "Impact Hub Curitiba", "Parque Barigui");
         }
 
-        void TestInternal(ILatLngSortOptionReference reference, params string[] locationNamesInOrder)
+        void TestInternal(TestEnvironment environment, ILatLngSortOptionReference reference, params string[] locationNamesInOrder)
         {
             var brazilBoxFilter = new Filter(LocationField, LatLngBoxFilterValue.Create(
                 new LatLng(2.232406, -72.908444),

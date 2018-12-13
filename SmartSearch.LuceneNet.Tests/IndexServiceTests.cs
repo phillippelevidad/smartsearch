@@ -8,10 +8,10 @@ using System.Linq;
 namespace SmartSearch.LuceneNet.Tests
 {
     [TestClass]
-    public class IndexServiceShould
+    public class IndexServiceTests
     {
         [TestMethod]
-        public void UpdateDocumentsWithExistingIds()
+        public void ExistingDocumentsAreUpdated()
         {
             var env = TestEnvironment.Build(createIndex: false);
             env.SearchDomain = new SearchDomain("indexupdate", new IField[]

@@ -49,19 +49,17 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BoolFieldFilterShould.cs" />
-    <Compile Include="EmptyQueryShould.cs" />
-    <Compile Include="IndexServiceShould.cs" />
-    <Compile Include="LatLngFilterShould.cs" />
-    <Compile Include="LatLngSortingShould.cs" />
+    <Compile Include="QueryTests.cs" />
+    <Compile Include="IndexServiceTests.cs" />
+    <Compile Include="FilterTests.LatLng.cs" />
+    <Compile Include="SortTests.LatLng.cs" />
     <Compile Include="Mocks\MockDocuments.cs" />
     <Compile Include="Mocks\MockSearchDomain.cs" />
     <Compile Include="Mocks\TestEnvironment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RangeFilterShould.cs" />
-    <Compile Include="SortingShould.cs" />
-    <Compile Include="StringFieldShould.cs" />
-    <Compile Include="WhitespaceQueryShould.cs" />
+    <Compile Include="FilterTests.Range.cs" />
+    <Compile Include="SortTests.cs" />
+    <Compile Include="FilterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -5,17 +5,16 @@ using System.Linq;
 
 namespace SmartSearch.LuceneNet.Tests
 {
-    [TestClass]
-    public class LatLngFilterShould
+    public partial class LatLngFilterTests
     {
         const string LocationField = "Geolocation";
         const string LocationNameField = "GeolocationName";
 
         readonly TestEnvironment environment;
-        public LatLngFilterShould() => environment = TestEnvironment.Build();
+        public LatLngFilterTests() => environment = TestEnvironment.Build();
 
         [TestMethod]
-        public void Work(/* :) */)
+        public void LatLngFilterWorks(/* :) */)
         {
             TestInternal(LatLngBoxFilterValue.Create(new LatLng(-25.573163, -49.368852), new LatLng(-25.353702, -49.181480)),
                 "Impact Hub Curitiba", "Parque Barigui");

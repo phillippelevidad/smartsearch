@@ -6,19 +6,19 @@ using System;
 namespace SmartSearch.LuceneNet.Tests
 {
     [TestClass]
-    public class SortingShould
+    public partial class SortTests
     {
         [TestMethod]
-        public void WorkForDateFields() => TestInternal("AddedDate");
+        public void DateSortingWorks() => TestInternal("AddedDate");
 
         [TestMethod]
-        public void WorkForLiteralFields() => TestInternal("Id");
+        public void LiteralSortingWorks() => TestInternal("Id");
 
         [TestMethod]
-        public void WorkForNumericFields() => TestInternal("Price");
+        public void NumericSortingWorks() => TestInternal("Price");
 
         [TestMethod]
-        public void WorkForTextFields() => TestInternal("Name");
+        public void TextSortingWorks() => TestInternal("Name");
 
         void TestInternal(string fieldName)
         {
