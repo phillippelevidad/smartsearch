@@ -43,18 +43,6 @@ namespace SmartSearch
             return Latitude.Equals(other.Latitude) && Longitude.Equals(other.Longitude);
         }
 
-        // https://stackoverflow.com/a/5221407/484108
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int hash = 17;
-                hash = hash * 23 + Latitude.GetHashCode();
-                hash = hash * 23 + Longitude.GetHashCode();
-                return hash;
-            }
-        }
-
         public string ToWellKnownText()
         {
             return string.Format(CultureInfo.InvariantCulture, "POINT({0:N8} {1:N8})", Longitude, Latitude);

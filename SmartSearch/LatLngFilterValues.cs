@@ -50,7 +50,7 @@ namespace SmartSearch
             if (points == null || !points.Any())
                 throw new ArgumentNullException(nameof(points));
 
-            if (points.First() != points.Last())
+            if (!points.First().Equals(points.Last()))
                 throw new FirstAndLastPointsInAPolygonMustBeEqualException(points);
 
             Points = points;
