@@ -4,33 +4,18 @@ using System.Collections.Generic;
 
 namespace ConsoleApp
 {
-    class MockSearchDomain : SearchDomain
+    internal class MockDocumentProvider : IDocumentProvider
     {
-        public MockSearchDomain()
+        public void Dispose()
         {
-            Name = "mock";
-            Fields = new[]
-            {
-                new Field("Id", FieldType.Literal, FieldRelevance.Normal, enableSearching: true),
-                new Field("Name", FieldType.Text, FieldRelevance.Normal, enableSearching: true),
-                new Field("Color", FieldType.Literal, FieldRelevance.Normal, enableFaceting: true, enableSearching: true),
-                new Field("Sizes", FieldType.LiteralArray, FieldRelevance.Normal, enableFaceting: true, enableSearching: true)
-            };
         }
-    }
-
-    class MockDocumentProvider : IDocumentProvider
-    {
-        public void Dispose() { }
 
         public IDocumentReader GetDocumentReader() => new MockDocumentReader();
     }
 
-    class MockDocumentReader : IDocumentReader
+    internal class MockDocumentReader : IDocumentReader
     {
-        int index = -1;
-
-        readonly IDocumentOperation[] documents = new[]
+        private readonly IDocumentOperation[] documents = new[]
         {
             new DocumentOperation("a53be0d5-f7fe-4c01-9845-9fffa5cd24f9", new Dictionary<string, object>
             {
@@ -55,10 +40,28 @@ namespace ConsoleApp
             })
         };
 
+        private int index = -1;
         public IDocumentOperation CurrentDocument => documents[index];
 
-        public bool ReadNext() => ++index < documents.Length;
+        public void Dispose()
+        {
+        }
 
-        public void Dispose() { }
+        public bool ReadNext() => ++index < documents.Length;
+    }
+
+    internal class MockSearchDomain : SearchDomain
+    {
+        public MockSearchDomain()
+        {
+            Name = "mock";
+            Fields = new[]
+            {
+                new Field("Id", FieldType.Literal, FieldRelevance.Normal, enableSearching: true),
+                new Field("Name", FieldType.Text, FieldRelevance.Normal, enableSearching: true),
+                new Field("Color", FieldType.Literal, FieldRelevance.Normal, enableFaceting: true, enableSearching: true),
+                new Field("Sizes", FieldType.LiteralArray, FieldRelevance.Normal, enableFaceting: true, enableSearching: true)
+            };
+        }
     }
 }

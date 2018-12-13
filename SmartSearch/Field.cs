@@ -6,17 +6,14 @@ namespace SmartSearch
     [DebuggerDisplay("{Name}, Type: {Type}, Relevance: {Relevance}")]
     public class Field : IField
     {
+        public bool EnableFaceting { get; set; }
+        public bool EnableSearching { get; set; }
+        public bool EnableSorting { get; set; }
         public string Name { get; set; }
 
         public FieldRelevance Relevance { get; set; }
 
         public FieldType Type { get; set; }
-
-        public bool EnableFaceting { get; set; }
-
-        public bool EnableSearching { get; set; }
-
-        public bool EnableSorting { get; set; }
 
         public Field()
         {

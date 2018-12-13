@@ -4,11 +4,9 @@ namespace SmartSearch
 {
     public class SearchDomain : ISearchDomain
     {
-        public string Name { get; set; }
-
-        public IField[] Fields { get; set; }
-
         public IAnalysisSettings AnalysisSettings { get; set; }
+        public IField[] Fields { get; set; }
+        public string Name { get; set; }
 
         public SearchDomain()
         {

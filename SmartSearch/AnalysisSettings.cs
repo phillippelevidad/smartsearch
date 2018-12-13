@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-using SmartSearch.Abstractions;
+﻿using SmartSearch.Abstractions;
+using System.Collections.Generic;
 
 namespace SmartSearch
 {
     public class AnalysisSettings : IAnalysisSettings
     {
-        public IEnumerable<string[]> Synonyms { get; set; }
-
         public string[] Stopwords { get; set; }
+        public IEnumerable<string[]> Synonyms { get; set; }
 
         public AnalysisSettings() : this(null, null)
         {

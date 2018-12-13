@@ -4,14 +4,14 @@ using System.Linq;
 
 namespace SmartSearch.LuceneNet.Internals.SpecializedFields
 {
-    interface ISpecializedFieldSpecification
+    internal interface ISpecializedFieldSpecification
     {
-        bool IsEligibleForSpecialization(IField field);
-
         ISpecializedField CreateFrom(IField field);
+
+        bool IsEligibleForSpecialization(IField field);
     }
 
-    class SpecializedFieldSpecifications
+    internal class SpecializedFieldSpecifications
     {
         private readonly InternalSearchDomain searchDomain;
 

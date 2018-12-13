@@ -5,15 +5,14 @@ using System.Text;
 
 namespace SmartSearch.LuceneNet.Internals.SpecializedFields
 {
-    class SortableTextField : Field, ISpecializedField
+    internal class SortableTextField : Field, ISpecializedField
     {
-        const string Suffix = "_srt";
+        private const string Suffix = "_srt";
 
+        public bool AnalyzeField => false;
         public string OriginalName { get; }
 
         public Type SpecialAnalyzerType => null;
-
-        public bool AnalyzeField => false;
 
         public SortableTextField(string name, FieldType type, FieldRelevance relevance, bool enableFaceting, bool enableSearching, bool enableSorting)
             : base(name + Suffix, type, relevance, enableFaceting, enableSearching, enableSorting)
@@ -24,7 +23,7 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
         public object PrepareFieldValueForIndexing(object value) => value == null
             ? null : Normalize(value.ToString());
 
-        string Normalize(string text)
+        private string Normalize(string text)
         {
             text = text.ToLowerInvariant();
 
@@ -42,11 +41,8 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
         }
     }
 
-    class SortableTextFieldSpecification : ISpecializedFieldSpecification
+    internal class SortableTextFieldSpecification : ISpecializedFieldSpecification
     {
-        public bool IsEligibleForSpecialization(IField field) =>
-            field.EnableSorting && (field.Type == FieldType.Text || field.Type == FieldType.TextArray);
-
         public ISpecializedField CreateFrom(IField field)
         {
             var newFieldType =
@@ -57,5 +53,8 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
             return new SortableTextField(field.Name, newFieldType, field.Relevance,
                 field.EnableFaceting, field.EnableSearching, field.EnableSorting);
         }
+
+        public bool IsEligibleForSpecialization(IField field) =>
+                    field.EnableSorting && (field.Type == FieldType.Text || field.Type == FieldType.TextArray);
     }
 }

@@ -2,10 +2,8 @@
 {
     public interface IFacet
     {
-        string Name { get; }
-
-        string Label { get; }
-
         int Count { get; }
+        string Label { get; }
+        string Name { get; }
     }
 }

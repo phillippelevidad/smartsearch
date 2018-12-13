@@ -7,9 +7,9 @@ using LuceneFilter = Lucene.Net.Search.Filter;
 
 namespace SmartSearch.LuceneNet.Internals.Builders
 {
-    class FilterBuilder
+    internal class FilterBuilder
     {
-        readonly InternalSearchDomain domain;
+        private readonly InternalSearchDomain domain;
 
         public FilterBuilder(InternalSearchDomain domain)
         {
@@ -35,7 +35,7 @@ namespace SmartSearch.LuceneNet.Internals.Builders
             return booleanFilter;
         }
 
-        LuceneFilter BuildFilterForField(ISearchRequest request, IFilter requestFilter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
+        private LuceneFilter BuildFilterForField(ISearchRequest request, IFilter requestFilter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
             switch (field.Type)
             {
@@ -65,7 +65,7 @@ namespace SmartSearch.LuceneNet.Internals.Builders
                 case FieldType.Text:
                 case FieldType.TextArray:
                     return new TextFilterBuilder().Build(request, requestFilter, field, perFieldAnalyzer);
-                
+
                 default:
                     throw new UnknownFieldTypeException(field.Type);
             }

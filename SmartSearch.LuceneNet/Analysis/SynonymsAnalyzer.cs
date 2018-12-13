@@ -6,10 +6,10 @@ using System.IO;
 
 namespace SmartSearch.LuceneNet.Analysis
 {
-    class SynonymsAnalyzer : Analyzer
+    internal class SynonymsAnalyzer : Analyzer
     {
-        SynonymMap synonymMap;
-        readonly InternalSearchDomain domain;
+        private readonly InternalSearchDomain domain;
+        private SynonymMap synonymMap;
 
         public SynonymsAnalyzer(InternalSearchDomain domain)
         {
@@ -30,7 +30,7 @@ namespace SmartSearch.LuceneNet.Analysis
             return new TokenStreamComponents(source, stream);
         }
 
-        void BuildSynonymMap()
+        private void BuildSynonymMap()
         {
             var builder = new SynonymMap.Builder(true);
 

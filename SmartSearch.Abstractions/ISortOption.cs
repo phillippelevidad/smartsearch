@@ -1,16 +1,15 @@
 ﻿namespace SmartSearch.Abstractions
 {
-    public interface ISortOption
-    {
-        string FieldName { get; }
-
-        object Reference { get; }
-
-        SortDirection Direction { get; }
-    }
-
     public enum SortDirection
     {
         Ascending, Descending
+    }
+
+    public interface ISortOption
+    {
+        SortDirection Direction { get; }
+        string FieldName { get; }
+
+        object Reference { get; }
     }
 }

@@ -3,13 +3,12 @@ using System;
 
 namespace SmartSearch.LuceneNet.Internals.SpecializedFields
 {
-    interface ISpecializedField : IField
+    internal interface ISpecializedField : IField
     {
+        bool AnalyzeField { get; }
         string OriginalName { get; }
 
         Type SpecialAnalyzerType { get; }
-
-        bool AnalyzeField { get; }
 
         object PrepareFieldValueForIndexing(object value);
     }

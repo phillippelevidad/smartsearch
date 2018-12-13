@@ -4,8 +4,7 @@ namespace SmartSearch.Abstractions
 {
     public interface IDocument
     {
-        string Id { get; }
-
         IDictionary<string, object> Fields { get; }
+        string Id { get; }
     }
 }

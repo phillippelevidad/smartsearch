@@ -3,15 +3,14 @@ using System;
 
 namespace SmartSearch.LuceneNet.Internals.SpecializedFields
 {
-    class AnalyzedField : Field, ISpecializedField
+    internal class AnalyzedField : Field, ISpecializedField
     {
-        const string Suffix = "_anlyzed";
+        private const string Suffix = "_anlyzed";
 
+        public bool AnalyzeField => true;
         public string OriginalName { get; }
 
         public Type SpecialAnalyzerType => null;
-
-        public bool AnalyzeField => true;
 
         public AnalyzedField(string name, FieldType type, FieldRelevance relevance, bool enableFaceting, bool enableSearching, bool enableSorting)
             : base(name + Suffix, type, relevance, enableFaceting, enableSearching, enableSorting)
@@ -22,12 +21,12 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
         public object PrepareFieldValueForIndexing(object value) => value;
     }
 
-    class AnalyzedFieldSpecification : ISpecializedFieldSpecification
+    internal class AnalyzedFieldSpecification : ISpecializedFieldSpecification
     {
-        public bool IsEligibleForSpecialization(IField field) =>
-            field.EnableSearching && field.IsString();
-
         public ISpecializedField CreateFrom(IField field) =>
             new AnalyzedField(field.Name, field.Type, field.Relevance, field.EnableFaceting, field.EnableSearching, field.EnableSorting);
+
+        public bool IsEligibleForSpecialization(IField field) =>
+                    field.EnableSearching && field.IsString();
     }
 }

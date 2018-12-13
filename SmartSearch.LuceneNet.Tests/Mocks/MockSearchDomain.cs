@@ -2,9 +2,13 @@
 
 namespace SmartSearch.LuceneNet.Tests.Mocks
 {
-    class MockSearchDomain : ISearchDomain
+    internal class MockSearchDomain : ISearchDomain
     {
-        public string Name => "MockSearchDomain";
+        public IAnalysisSettings AnalysisSettings => new AnalysisSettings
+        {
+            Stopwords = new string[0],
+            Synonyms = new string[0][]
+        };
 
         public IField[] Fields => new[]
         {
@@ -20,10 +24,6 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
             new Field("Geolocation", FieldType.LatLng, FieldRelevance.Normal, enableSearching: true, enableSorting: true)
         };
 
-        public IAnalysisSettings AnalysisSettings => new AnalysisSettings
-        {
-            Stopwords = new string[0],
-            Synonyms = new string[0][]
-        };
+        public string Name => "MockSearchDomain";
     }
 }

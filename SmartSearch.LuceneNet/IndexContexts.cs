@@ -8,18 +8,18 @@ namespace SmartSearch.LuceneNet
 {
     public class MemoryIndexContext : IIndexContext
     {
-        readonly BaseIndexContext baseContext;
+        private readonly BaseIndexContext baseContext;
 
         public MemoryIndexContext()
         {
             baseContext = new BaseIndexContext(InitializeCompositeIndex);
         }
 
-        public object GetContext() => baseContext.GetContext();
-
         public void Dispose() => baseContext.Dispose();
 
-        CompositeIndex InitializeCompositeIndex()
+        public object GetContext() => baseContext.GetContext();
+
+        private CompositeIndex InitializeCompositeIndex()
         {
             var facetsDir = new RAMDirectory();
             var indexDir = new RAMDirectory();
@@ -29,11 +29,10 @@ namespace SmartSearch.LuceneNet
 
     public class PhysicalIndexContext : IIndexContext
     {
-        readonly BaseIndexContext baseContext;
-
-        public string IndexDirectory { get; }
+        private readonly BaseIndexContext baseContext;
 
         public bool ForceRecreate { get; }
+        public string IndexDirectory { get; }
 
         public PhysicalIndexContext(string indexDirectory, bool forceRecreate)
         {
@@ -42,11 +41,11 @@ namespace SmartSearch.LuceneNet
             ForceRecreate = forceRecreate;
         }
 
-        public object GetContext() => baseContext.GetContext();
-
         public void Dispose() => baseContext.Dispose();
 
-        CompositeIndex InitializeCompositeIndex()
+        public object GetContext() => baseContext.GetContext();
+
+        private CompositeIndex InitializeCompositeIndex()
         {
             var facetsPath = IndexDirectoryHelper.GetFacetsDirectoryPath(IndexDirectory);
             var facetsDir = FSDirectory.Open(facetsPath);
@@ -58,16 +57,18 @@ namespace SmartSearch.LuceneNet
         }
     }
 
-    class BaseIndexContext : IIndexContext
+    internal class BaseIndexContext : IIndexContext
     {
-        readonly Func<CompositeIndex> initializeCompositeIndex;
+        private readonly Func<CompositeIndex> initializeCompositeIndex;
 
-        CompositeIndex compositeIndex;
+        private CompositeIndex compositeIndex;
 
         public BaseIndexContext(Func<CompositeIndex> initializeCompositeIndex)
         {
             this.initializeCompositeIndex = initializeCompositeIndex;
         }
+
+        public void Dispose() => compositeIndex?.Dispose();
 
         public object GetContext()
         {
@@ -76,7 +77,5 @@ namespace SmartSearch.LuceneNet
 
             return compositeIndex;
         }
-
-        public void Dispose() => compositeIndex?.Dispose();
     }
 }

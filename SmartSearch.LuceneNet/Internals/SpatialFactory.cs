@@ -4,14 +4,14 @@ using Spatial4n.Core.Context;
 
 namespace SmartSearch.LuceneNet.Internals
 {
-    class SpatialFactory
+    internal class SpatialFactory
     {
         public const int MaxLevels = 11;
-
-        public static SpatialContext CreateSpatialContext() => SpatialContext.GEO;
 
         public static GeohashPrefixTree CreatePrefixTree() => new GeohashPrefixTree(CreateSpatialContext(), MaxLevels);
 
         public static RecursivePrefixTreeStrategy CreatePrefixTreeStrategy(string fieldName) => new RecursivePrefixTreeStrategy(CreatePrefixTree(), fieldName);
+
+        public static SpatialContext CreateSpatialContext() => SpatialContext.GEO;
     }
 }

@@ -6,11 +6,9 @@ namespace SmartSearch
     [DebuggerDisplay("{Name}: {Label} ({Count})")]
     public class Facet : IFacet
     {
-        public string Name { get; set; }
-
-        public string Label { get; set; }
-
         public int Count { get; set; }
+        public string Label { get; set; }
+        public string Name { get; set; }
 
         public Facet()
         {

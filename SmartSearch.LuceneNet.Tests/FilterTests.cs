@@ -10,23 +10,6 @@ namespace SmartSearch.LuceneNet.Tests
     public partial class FilterTests
     {
         [TestMethod]
-        public void BoolFilterWorksWhenValueIsTrue()
-        {
-            var fieldName = "IsInPromotion";
-
-            var env = TestEnvironment.Build();
-            var results = env.Search(new SearchRequest
-            {
-                Filters = new[] { new Filter(fieldName, true) }
-            });
-
-            var expectedCount = env.Documents.Count(d =>
-                d.Fields.ContainsKey(fieldName) && (bool)d.Fields[fieldName] == true);
-
-            Assert.AreEqual(expectedCount, results.TotalCount);
-        }
-
-        [TestMethod]
         public void BoolFilterWorksWhenValueIsFalse()
         {
             var fieldName = "IsInPromotion";
@@ -39,6 +22,23 @@ namespace SmartSearch.LuceneNet.Tests
 
             var expectedCount = env.Documents.Count(d =>
                 d.Fields.ContainsKey(fieldName) && (bool)d.Fields[fieldName] == false);
+
+            Assert.AreEqual(expectedCount, results.TotalCount);
+        }
+
+        [TestMethod]
+        public void BoolFilterWorksWhenValueIsTrue()
+        {
+            var fieldName = "IsInPromotion";
+
+            var env = TestEnvironment.Build();
+            var results = env.Search(new SearchRequest
+            {
+                Filters = new[] { new Filter(fieldName, true) }
+            });
+
+            var expectedCount = env.Documents.Count(d =>
+                d.Fields.ContainsKey(fieldName) && (bool)d.Fields[fieldName] == true);
 
             Assert.AreEqual(expectedCount, results.TotalCount);
         }

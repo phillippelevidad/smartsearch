@@ -15,9 +15,16 @@ using LuceneFilter = Lucene.Net.Search.Filter;
 
 namespace SmartSearch.LuceneNet.Internals.Builders
 {
-    class BoolFilterBuilder : TypedFilterBuilderBase
+    internal interface ITypedFilterBuilder
     {
-        public BoolFilterBuilder() : base(FieldType.Bool, FieldType.BoolArray) { }
+        LuceneFilter Build(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer);
+    }
+
+    internal class BoolFilterBuilder : TypedFilterBuilderBase
+    {
+        public BoolFilterBuilder() : base(FieldType.Bool, FieldType.BoolArray)
+        {
+        }
 
         protected override LuceneFilter BuildForRange(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
@@ -33,9 +40,11 @@ namespace SmartSearch.LuceneNet.Internals.Builders
         }
     }
 
-    class DateFilterBuilder : TypedFilterBuilderBase
+    internal class DateFilterBuilder : TypedFilterBuilderBase
     {
-        public DateFilterBuilder() : base(FieldType.Date, FieldType.DateArray) { }
+        public DateFilterBuilder() : base(FieldType.Date, FieldType.DateArray)
+        {
+        }
 
         protected override LuceneFilter BuildForRange(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
@@ -51,9 +60,11 @@ namespace SmartSearch.LuceneNet.Internals.Builders
         }
     }
 
-    class DoubleFilterBuilder : TypedFilterBuilderBase
+    internal class DoubleFilterBuilder : TypedFilterBuilderBase
     {
-        public DoubleFilterBuilder() : base(FieldType.Double, FieldType.DoubleArray) { }
+        public DoubleFilterBuilder() : base(FieldType.Double, FieldType.DoubleArray)
+        {
+        }
 
         protected override LuceneFilter BuildForRange(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
@@ -69,9 +80,11 @@ namespace SmartSearch.LuceneNet.Internals.Builders
         }
     }
 
-    class IntFilterBuilder : TypedFilterBuilderBase
+    internal class IntFilterBuilder : TypedFilterBuilderBase
     {
-        public IntFilterBuilder() : base(FieldType.Int, FieldType.IntArray) { }
+        public IntFilterBuilder() : base(FieldType.Int, FieldType.IntArray)
+        {
+        }
 
         protected override LuceneFilter BuildForRange(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
@@ -87,10 +100,10 @@ namespace SmartSearch.LuceneNet.Internals.Builders
         }
     }
 
-    class LatLngFilterBuilder : TypedFilterBuilderBase
+    internal class LatLngFilterBuilder : TypedFilterBuilderBase
     {
-        readonly SpatialContext context;
-        readonly GeohashPrefixTree grid;
+        private readonly SpatialContext context;
+        private readonly GeohashPrefixTree grid;
 
         public LatLngFilterBuilder() : base(FieldType.LatLng)
         {
@@ -123,9 +136,11 @@ namespace SmartSearch.LuceneNet.Internals.Builders
         }
     }
 
-    class LiteralFilterBuilder : TypedFilterBuilderBase
+    internal class LiteralFilterBuilder : TypedFilterBuilderBase
     {
-        public LiteralFilterBuilder() : base(FieldType.Literal, FieldType.LiteralArray) { }
+        public LiteralFilterBuilder() : base(FieldType.Literal, FieldType.LiteralArray)
+        {
+        }
 
         protected override LuceneFilter BuildForRange(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
@@ -140,12 +155,14 @@ namespace SmartSearch.LuceneNet.Internals.Builders
         }
     }
 
-    class TextFilterBuilder : TypedFilterBuilderBase
+    internal class TextFilterBuilder : TypedFilterBuilderBase
     {
         // https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#_reserved_characters
-        static readonly string[] reservedCharacters = new string[] { "\\", "+", "-", "=", "&&", "||", ">", "<", "!", "(", ")", "{", "}", "[", "]", "^", "\"", "~", "*", "?", ":", "/" };
+        private static readonly string[] reservedCharacters = new string[] { "\\", "+", "-", "=", "&&", "||", ">", "<", "!", "(", ")", "{", "}", "[", "]", "^", "\"", "~", "*", "?", ":", "/" };
 
-        public TextFilterBuilder() : base(FieldType.Literal, FieldType.LiteralArray, FieldType.Text, FieldType.TextArray) { }
+        public TextFilterBuilder() : base(FieldType.Literal, FieldType.LiteralArray, FieldType.Text, FieldType.TextArray)
+        {
+        }
 
         protected override LuceneFilter BuildForRange(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
@@ -163,7 +180,7 @@ namespace SmartSearch.LuceneNet.Internals.Builders
             return new QueryWrapperFilter(query);
         }
 
-        string EscapeReservedCharacters(string input)
+        private string EscapeReservedCharacters(string input)
         {
             foreach (var item in reservedCharacters)
                 input = input.Replace(item, "\\" + item);
@@ -174,14 +191,9 @@ namespace SmartSearch.LuceneNet.Internals.Builders
 
     #region Abstractions
 
-    interface ITypedFilterBuilder
+    internal abstract class TypedFilterBuilderBase : ITypedFilterBuilder
     {
-        LuceneFilter Build(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer);
-    }
-
-    abstract class TypedFilterBuilderBase : ITypedFilterBuilder
-    {
-        readonly FieldType[] types;
+        private readonly FieldType[] types;
 
         public TypedFilterBuilderBase(params FieldType[] validForTypes)
         {
@@ -209,12 +221,12 @@ namespace SmartSearch.LuceneNet.Internals.Builders
             }
         }
 
-        protected virtual bool IsValidFieldType(IField field) => types.Any(t => t == field.Type);
+        protected abstract LuceneFilter BuildForRange(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer);
 
         protected abstract LuceneFilter BuildForSingleValue(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer);
 
-        protected abstract LuceneFilter BuildForRange(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer);
+        protected virtual bool IsValidFieldType(IField field) => types.Any(t => t == field.Type);
     }
 
-    #endregion
+    #endregion Abstractions
 }

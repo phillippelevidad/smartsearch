@@ -3,13 +3,12 @@ using System.Collections.Generic;
 
 namespace SmartSearch.LuceneNet.Internals
 {
-    class InternalDocument : IDocument
+    internal class InternalDocument : IDocument
     {
+        public IDictionary<string, object> Fields { get; private set; }
         public string Id { get; private set; }
 
-        public IDictionary<string, object> Fields { get; private set; }
-
-        InternalDocument(string id, IDictionary<string, object> fields)
+        private InternalDocument(string id, IDictionary<string, object> fields)
         {
             Id = id;
             Fields = fields;

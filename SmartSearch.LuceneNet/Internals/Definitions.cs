@@ -2,7 +2,7 @@
 
 namespace SmartSearch.LuceneNet.Internals
 {
-    static class Definitions
+    internal static class Definitions
     {
         public static readonly string DocumentIdFieldName = "__docid";
 

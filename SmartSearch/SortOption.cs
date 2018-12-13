@@ -6,11 +6,9 @@ namespace SmartSearch
     [DebuggerDisplay("{FieldName}, {Direction}, Reference = {Reference}")]
     public class SortOption : ISortOption
     {
-        public string FieldName { get; set; }
-
-        public object Reference { get; set; }
-
         public SortDirection Direction { get; set; }
+        public string FieldName { get; set; }
+        public object Reference { get; set; }
 
         public SortOption()
         {

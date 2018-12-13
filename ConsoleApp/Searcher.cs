@@ -5,7 +5,7 @@ using System;
 
 namespace ConsoleApp
 {
-    static class Searcher
+    internal static class Searcher
     {
         public static void SearchIndex(IIndexContext context)
         {
@@ -21,7 +21,7 @@ namespace ConsoleApp
             }
         }
 
-        static void DoSearchAndOutputResults(IIndexContext context, string query)
+        private static void DoSearchAndOutputResults(IIndexContext context, string query)
         {
             var domain = new MegaSoaresSearchDomain();
             var options = Configuration.GetLuceneIndexOptions();
@@ -58,10 +58,9 @@ namespace ConsoleApp
                 PrintFieldAndValue(f.Name, $"{f.Label} ({f.Count})");
 
             Console.WriteLine();
-
         }
 
-        static void PrintFieldAndValue(string field, object value)
+        private static void PrintFieldAndValue(string field, object value)
         {
             var colSize = 35;
             var spaceCount = colSize - field.Length;

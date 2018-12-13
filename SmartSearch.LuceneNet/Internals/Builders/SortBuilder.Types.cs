@@ -9,11 +9,16 @@ using System.Linq;
 
 namespace SmartSearch.LuceneNet.Internals.Builders
 {
-    class LatLngSortBuilder : TypedSortBuilderBase
+    internal interface ITypedSortBuilder
     {
-        readonly SpatialContext context;
-        readonly GeohashPrefixTree grid;
-        readonly IndexSearcher indexSearcher;
+        SortField Build(ISearchDomain domain, ISortOption sortOption, IField field);
+    }
+
+    internal class LatLngSortBuilder : TypedSortBuilderBase
+    {
+        private readonly SpatialContext context;
+        private readonly GeohashPrefixTree grid;
+        private readonly IndexSearcher indexSearcher;
 
         public LatLngSortBuilder(IndexSearcher indexSearcher) : base(FieldType.LatLng)
         {
@@ -41,9 +46,11 @@ namespace SmartSearch.LuceneNet.Internals.Builders
         }
     }
 
-    class LiteralSortBuilder : TypedSortBuilderBase
+    internal class LiteralSortBuilder : TypedSortBuilderBase
     {
-        public LiteralSortBuilder() : base(FieldType.Literal, FieldType.LiteralArray) { }
+        public LiteralSortBuilder() : base(FieldType.Literal, FieldType.LiteralArray)
+        {
+        }
 
         protected override SortField BuildTypedSortField(ISearchDomain domain, ISortOption sortOption, IField field)
         {
@@ -52,7 +59,7 @@ namespace SmartSearch.LuceneNet.Internals.Builders
         }
     }
 
-    class NumericSortBuilder : TypedSortBuilderBase
+    internal class NumericSortBuilder : TypedSortBuilderBase
     {
         public NumericSortBuilder() : base(
             FieldType.Bool, FieldType.BoolArray,
@@ -68,7 +75,7 @@ namespace SmartSearch.LuceneNet.Internals.Builders
             return new SortField(field.Name, type, sortDescending);
         }
 
-        SortFieldType GetSortFieldType(IField field)
+        private SortFieldType GetSortFieldType(IField field)
         {
             switch (field.Type)
             {
@@ -92,9 +99,11 @@ namespace SmartSearch.LuceneNet.Internals.Builders
         }
     }
 
-    class TextSortBuilder : TypedSortBuilderBase
+    internal class TextSortBuilder : TypedSortBuilderBase
     {
-        public TextSortBuilder() : base(FieldType.Text, FieldType.TextArray) { }
+        public TextSortBuilder() : base(FieldType.Text, FieldType.TextArray)
+        {
+        }
 
         protected override SortField BuildTypedSortField(ISearchDomain domain, ISortOption sortOption, IField field)
         {
@@ -106,14 +115,9 @@ namespace SmartSearch.LuceneNet.Internals.Builders
 
     #region Abstractions
 
-    interface ITypedSortBuilder
+    internal abstract class TypedSortBuilderBase : ITypedSortBuilder
     {
-        SortField Build(ISearchDomain domain, ISortOption sortOption, IField field);
-    }
-
-    abstract class TypedSortBuilderBase : ITypedSortBuilder
-    {
-        readonly FieldType[] types;
+        private readonly FieldType[] types;
 
         public TypedSortBuilderBase(params FieldType[] validForTypes)
         {
@@ -131,10 +135,10 @@ namespace SmartSearch.LuceneNet.Internals.Builders
             return BuildTypedSortField(domain, sortOption, field);
         }
 
-        protected virtual bool IsValidFieldType(IField field) => types.Any(t => t == field.Type);
-
         protected abstract SortField BuildTypedSortField(ISearchDomain domain, ISortOption sortOption, IField field);
+
+        protected virtual bool IsValidFieldType(IField field) => types.Any(t => t == field.Type);
     }
 
-    #endregion
+    #endregion Abstractions
 }

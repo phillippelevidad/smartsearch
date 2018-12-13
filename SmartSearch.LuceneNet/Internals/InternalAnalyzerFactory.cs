@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 namespace SmartSearch.LuceneNet.Internals
 {
-    class InternalAnalyzerFactory : IAnalyzerFactory
+    internal class InternalAnalyzerFactory : IAnalyzerFactory
     {
-        readonly InternalSearchDomain domain;
-        readonly IAnalyzerFactory defaultAnalyzerFactory;
+        private readonly IAnalyzerFactory defaultAnalyzerFactory;
+        private readonly InternalSearchDomain domain;
 
         public InternalAnalyzerFactory(InternalSearchDomain domain, IAnalyzerFactory defaultAnalyzerFactory)
         {
@@ -23,7 +23,7 @@ namespace SmartSearch.LuceneNet.Internals
             return new PerFieldAnalyzerWrapper(defaultAnalyzer, fieldAnalyzers);
         }
 
-        Dictionary<string, Analyzer> AddSpecializedAnalyzers()
+        private Dictionary<string, Analyzer> AddSpecializedAnalyzers()
         {
             var fieldAnalyzers = new Dictionary<string, Analyzer>();
             var knownAnalyzers = new Dictionary<string, Analyzer>

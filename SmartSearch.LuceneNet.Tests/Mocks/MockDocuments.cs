@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace SmartSearch.LuceneNet.Tests.Mocks
 {
-    static class MockDocuments
+    internal static class MockDocuments
     {
         public static IDocumentOperation[] ListAll() => new[]
         {
@@ -33,7 +33,6 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "AddedDate", new DateTime(2018, 2, 1) },
                 { "GeolocationName", "Parque Barigui" },
                 { "Geolocation", new LatLng(-25.418865, -49.305416) }
-
             }),
             new DocumentOperation("6EFEEED7", new Dictionary<string, object>
             {

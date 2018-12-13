@@ -2,10 +2,8 @@
 {
     public interface ISearchDomain
     {
-        string Name { get; }
-
-        IField[] Fields { get; }
-
         IAnalysisSettings AnalysisSettings { get; }
+        IField[] Fields { get; }
+        string Name { get; }
     }
 }

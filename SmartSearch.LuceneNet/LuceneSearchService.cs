@@ -5,8 +5,8 @@ using SmartSearch.Abstractions;
 using SmartSearch.LuceneNet.Internals;
 using SmartSearch.LuceneNet.Internals.Builders;
 using SmartSearch.LuceneNet.Internals.Converters;
-using SmartSearch.LuceneNet.Internals.IndexFactories;
 using SmartSearch.LuceneNet.Internals.Helpers;
+using SmartSearch.LuceneNet.Internals.IndexFactories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +15,8 @@ namespace SmartSearch.LuceneNet
 {
     public class LuceneSearchService : ISearchService
     {
-        readonly LuceneIndexOptions options;
-        readonly IDocumentConverter documentConverter;
+        private readonly IDocumentConverter documentConverter;
+        private readonly LuceneIndexOptions options;
 
         public LuceneSearchService() : this(new LuceneIndexOptions())
         {
@@ -59,21 +59,7 @@ namespace SmartSearch.LuceneNet
             }
         }
 
-        ISearchResult SearchInternal(
-            InternalSearchDomain domain, ISearchRequest request,
-            IndexSearcher searcher, TaxonomyReader facetsReader,
-            Query query, Sort sort)
-        {
-            var facetsCollector = new FacetsCollector();
-            var results = FacetsCollector.Search(searcher, query, null, int.MaxValue, sort, facetsCollector);
-
-            var documents = CollectDocumentResults(domain, request, searcher, results);
-            var facets = CollectFacetResults(domain, results, facetsCollector, facetsReader);
-
-            return new SearchResult(documents, facets, results.TotalHits);
-        }
-
-        IDocument[] CollectDocumentResults(InternalSearchDomain domain, ISearchRequest request, IndexSearcher searcher, TopDocs searchResults)
+        private IDocument[] CollectDocumentResults(InternalSearchDomain domain, ISearchRequest request, IndexSearcher searcher, TopDocs searchResults)
         {
             var hits = searchResults.ScoreDocs;
 
@@ -95,7 +81,7 @@ namespace SmartSearch.LuceneNet
             return items;
         }
 
-        IFacet[] CollectFacetResults(ISearchDomain domain, TopDocs searchResults, FacetsCollector facetsCollector, TaxonomyReader facetsReader)
+        private IFacet[] CollectFacetResults(ISearchDomain domain, TopDocs searchResults, FacetsCollector facetsCollector, TaxonomyReader facetsReader)
         {
             var facetFields = domain.Fields.Where(f => f.EnableFaceting);
 
@@ -115,6 +101,20 @@ namespace SmartSearch.LuceneNet
             }
 
             return results.ToArray();
+        }
+
+        private ISearchResult SearchInternal(
+                            InternalSearchDomain domain, ISearchRequest request,
+            IndexSearcher searcher, TaxonomyReader facetsReader,
+            Query query, Sort sort)
+        {
+            var facetsCollector = new FacetsCollector();
+            var results = FacetsCollector.Search(searcher, query, null, int.MaxValue, sort, facetsCollector);
+
+            var documents = CollectDocumentResults(domain, request, searcher, results);
+            var facets = CollectFacetResults(domain, results, facetsCollector, facetsReader);
+
+            return new SearchResult(documents, facets, results.TotalHits);
         }
     }
 }

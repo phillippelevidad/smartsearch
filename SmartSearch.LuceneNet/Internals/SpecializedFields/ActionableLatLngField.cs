@@ -3,15 +3,14 @@ using System;
 
 namespace SmartSearch.LuceneNet.Internals.SpecializedFields
 {
-    class ActionableLatLngField : Field, ISpecializedField
+    internal class ActionableLatLngField : Field, ISpecializedField
     {
-        const string Suffix = "_latlng";
+        private const string Suffix = "_latlng";
 
+        public bool AnalyzeField => true;
         public string OriginalName { get; }
 
         public Type SpecialAnalyzerType => null;
-
-        public bool AnalyzeField => true;
 
         public ActionableLatLngField(string name, FieldType type, FieldRelevance relevance)
             : base(name + Suffix, type, relevance)
@@ -23,12 +22,12 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
             value;
     }
 
-    class ActionableLatLngFieldSpecification : ISpecializedFieldSpecification
+    internal class ActionableLatLngFieldSpecification : ISpecializedFieldSpecification
     {
-        public bool IsEligibleForSpecialization(IField field) =>
-            field.Type == FieldType.LatLng;
-
         public ISpecializedField CreateFrom(IField field) =>
             new ActionableLatLngField(field.Name, field.Type, field.Relevance);
+
+        public bool IsEligibleForSpecialization(IField field) =>
+                    field.Type == FieldType.LatLng;
     }
 }

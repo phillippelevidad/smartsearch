@@ -4,15 +4,13 @@ using System.Threading;
 
 namespace SmartSearch.LuceneNet.Internals.Helpers
 {
-    class CultureContext : IDisposable
+    internal class CultureContext : IDisposable
     {
         public static CultureContext Invariant => new CultureContext();
 
-        public CultureInfo Culture { get; }
-
         public CultureInfo BackupCulture { get; }
-
         public CultureInfo BackupUICulture { get; }
+        public CultureInfo Culture { get; }
 
         public CultureContext() : this(CultureInfo.InvariantCulture)
         {

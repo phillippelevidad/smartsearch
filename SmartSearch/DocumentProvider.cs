@@ -17,14 +17,16 @@ namespace SmartSearch
             reader = new DocumentReader(documents);
         }
 
-        public IDocumentReader GetDocumentReader() => reader;
+        public void Dispose()
+        {
+        }
 
-        public void Dispose() { }
+        public IDocumentReader GetDocumentReader() => reader;
     }
 
     public class DocumentReader : IDocumentReader
     {
-        int currentIndex = -1;
+        private int currentIndex = -1;
 
         public IDocumentOperation CurrentDocument { get; private set; }
 
@@ -33,6 +35,10 @@ namespace SmartSearch
         public DocumentReader(IEnumerable<IDocumentOperation> documents)
         {
             Documents = documents.ToArray();
+        }
+
+        public void Dispose()
+        {
         }
 
         public bool ReadNext()
@@ -48,7 +54,5 @@ namespace SmartSearch
                 return false;
             }
         }
-
-        public void Dispose() { }
     }
 }

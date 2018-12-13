@@ -4,7 +4,7 @@ using Lucene.Net.Index;
 
 namespace SmartSearch.LuceneNet.Internals.IndexFactories
 {
-    static class IndexWriterFactory
+    internal static class IndexWriterFactory
     {
         public static ITaxonomyWriter CreateFacetWriter(IndexContextWrapper contextWrapper, InternalSearchDomain domain, LuceneIndexOptions options)
         {
@@ -22,7 +22,7 @@ namespace SmartSearch.LuceneNet.Internals.IndexFactories
             return new IndexWriter(contextWrapper.IndexDirectory, config);
         }
 
-        static OpenMode GetOpenMode(IndexContextWrapper contextWrapper)
+        private static OpenMode GetOpenMode(IndexContextWrapper contextWrapper)
         {
             var forceRecreate = false;
 

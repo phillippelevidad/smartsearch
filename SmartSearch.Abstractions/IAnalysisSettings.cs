@@ -4,8 +4,7 @@ namespace SmartSearch.Abstractions
 {
     public interface IAnalysisSettings
     {
-        IEnumerable<string[]> Synonyms { get; }
-
         string[] Stopwords { get; }
+        IEnumerable<string[]> Synonyms { get; }
     }
 }

@@ -4,10 +4,10 @@ using System.Linq;
 
 namespace SmartSearch.LuceneNet.Internals.Builders
 {
-    class SortBuilder
+    internal class SortBuilder
     {
-        readonly IndexSearcher indexSearcher;
-        readonly InternalSearchDomain domain;
+        private readonly InternalSearchDomain domain;
+        private readonly IndexSearcher indexSearcher;
 
         public SortBuilder(IndexSearcher indexSearcher, InternalSearchDomain domain)
         {
@@ -29,13 +29,13 @@ namespace SmartSearch.LuceneNet.Internals.Builders
             return new Sort(sortFields.ToArray());
         }
 
-        SortField GetSortField(ISearchDomain domain, ISortOption sortOption)
+        private SortField GetSortField(ISearchDomain domain, ISortOption sortOption)
         {
             var field = domain.Fields.SingleOrDefault(f => f.Name == sortOption.FieldName);
             return field == null ? null : GetSortField(domain, sortOption, field);
         }
 
-        SortField GetSortField(ISearchDomain domain, ISortOption sortOption, IField field)
+        private SortField GetSortField(ISearchDomain domain, ISortOption sortOption, IField field)
         {
             switch (field.Type)
             {

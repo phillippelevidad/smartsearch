@@ -6,13 +6,13 @@ using LuceneDocument = Lucene.Net.Documents.Document;
 
 namespace SmartSearch.LuceneNet.Internals.Builders
 {
-    class IndexDocumentBuilder
+    internal class IndexDocumentBuilder
     {
-        readonly InternalSearchDomain domain;
-        readonly FacetsConfig facetsConfig;
-        readonly ITaxonomyWriter taxonomyWriter;
-        readonly IDocumentConverter defaultDocumentConverter;
-        readonly IDocumentConverter facetDocumentConverter;
+        private readonly IDocumentConverter defaultDocumentConverter;
+        private readonly InternalSearchDomain domain;
+        private readonly IDocumentConverter facetDocumentConverter;
+        private readonly FacetsConfig facetsConfig;
+        private readonly ITaxonomyWriter taxonomyWriter;
 
         public IndexDocumentBuilder(InternalSearchDomain domain, FacetsConfig facetsConfig, ITaxonomyWriter taxonomyWriter)
         {

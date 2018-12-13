@@ -6,7 +6,7 @@ using LuceneDocument = Lucene.Net.Documents.Document;
 
 namespace SmartSearch.LuceneNet.Internals.Converters
 {
-    class FacetDocumentConverter : IDocumentConverter
+    internal class FacetDocumentConverter : IDocumentConverter
     {
         public LuceneDocument Convert(InternalSearchDomain domain, InternalDocument sourceDocument)
         {
@@ -18,28 +18,12 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             return luceneDocument;
         }
 
-        IEnumerable<FacetField> GetFacetFields(InternalSearchDomain domain, IDocument sourceDocument)
+        public IDocument Convert(InternalSearchDomain domain, LuceneDocument luceneDocument)
         {
-            var fields = domain.GetFacetEnabledFields();
-
-            foreach (var field in fields)
-            {
-                if (field.IsArray())
-                {
-                    foreach (var f in ConvertArrayField(field, sourceDocument))
-                        yield return f;
-                }
-                else
-                {
-                    var indexField = ConvertSingleValuedField(field, sourceDocument);
-
-                    if (indexField != null)
-                        yield return indexField;
-                }
-            }
+            throw new InvalidOperationException("A facet document is not supposed to be converted back into a result document.");
         }
 
-        FacetField[] ConvertArrayField(IField field, IDocument sourceDocument)
+        private FacetField[] ConvertArrayField(IField field, IDocument sourceDocument)
         {
             if (!sourceDocument.Fields.ContainsKey(field.Name) ||
                 !(sourceDocument.Fields[field.Name] is Array array) || array.Length == 0)
@@ -58,13 +42,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             return facetFields.ToArray();
         }
 
-        FacetField ConvertSingleValuedField(IField field, IDocument sourceDocument)
-        {
-            var value = sourceDocument.Fields[field.Name];
-            return ConvertFieldInternal(field, value);
-        }
-
-        FacetField ConvertFieldInternal(IField field, object value)
+        private FacetField ConvertFieldInternal(IField field, object value)
         {
             if (value == null)
                 return null;
@@ -72,9 +50,31 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             return new FacetField(field.Name, value.ToString());
         }
 
-        public IDocument Convert(InternalSearchDomain domain, LuceneDocument luceneDocument)
+        private FacetField ConvertSingleValuedField(IField field, IDocument sourceDocument)
         {
-            throw new InvalidOperationException("A facet document is not supposed to be converted back into a result document.");
+            var value = sourceDocument.Fields[field.Name];
+            return ConvertFieldInternal(field, value);
+        }
+
+        private IEnumerable<FacetField> GetFacetFields(InternalSearchDomain domain, IDocument sourceDocument)
+        {
+            var fields = domain.GetFacetEnabledFields();
+
+            foreach (var field in fields)
+            {
+                if (field.IsArray())
+                {
+                    foreach (var f in ConvertArrayField(field, sourceDocument))
+                        yield return f;
+                }
+                else
+                {
+                    var indexField = ConvertSingleValuedField(field, sourceDocument);
+
+                    if (indexField != null)
+                        yield return indexField;
+                }
+            }
         }
     }
 }

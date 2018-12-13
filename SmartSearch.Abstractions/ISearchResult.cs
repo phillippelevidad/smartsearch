@@ -2,10 +2,8 @@
 {
     public interface ISearchResult
     {
-        int TotalCount { get; }
-
         IDocument[] Documents { get; }
-
         IFacet[] Facets { get; }
+        int TotalCount { get; }
     }
 }

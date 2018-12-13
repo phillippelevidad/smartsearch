@@ -6,21 +6,32 @@ namespace SmartSearch
     [DebuggerDisplay("{FieldName} = {SingleValue} | {RangeFrom} to {RangeTo}")]
     public class Filter : IFilter
     {
-        object singleValue;
-        object rangeFrom;
-        object rangeTo;
-        FilterType filterType;
-
+        private FilterType filterType;
+        private object rangeFrom;
+        private object rangeTo;
+        private object singleValue;
         public string FieldName { get; set; }
 
-        public object SingleValue
+        public FilterType FilterType
         {
-            get => singleValue;
+            get => filterType;
             set
             {
-                singleValue = value;
-                rangeFrom = rangeTo = null;
-                filterType = FilterType.SingleValue;
+                filterType = value;
+
+                switch (filterType)
+                {
+                    case FilterType.SingleValue:
+                        rangeFrom = rangeTo = null;
+                        break;
+
+                    case FilterType.Range:
+                        singleValue = null;
+                        break;
+
+                    default:
+                        throw new UnknownQueryFilterTypeException(filterType);
+                }
             }
         }
 
@@ -46,24 +57,14 @@ namespace SmartSearch
             }
         }
 
-        public FilterType FilterType
+        public object SingleValue
         {
-            get => filterType;
+            get => singleValue;
             set
             {
-                filterType = value;
-
-                switch (filterType)
-                {
-                    case FilterType.SingleValue:
-                        rangeFrom = rangeTo = null;
-                        break;
-                    case FilterType.Range:
-                        singleValue = null;
-                        break;
-                    default:
-                        throw new UnknownQueryFilterTypeException(filterType);
-                }
+                singleValue = value;
+                rangeFrom = rangeTo = null;
+                filterType = FilterType.SingleValue;
             }
         }
 

@@ -4,7 +4,7 @@ using Lucene.Net.Index;
 
 namespace SmartSearch.LuceneNet.Internals.IndexFactories
 {
-    static class IndexReaderFactory
+    internal static class IndexReaderFactory
     {
         public static TaxonomyReader CreateFacetsReader(IndexContextWrapper contextWrapper)
         {

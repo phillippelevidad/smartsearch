@@ -2,9 +2,9 @@
 
 namespace SmartSearch.LuceneNet.Internals.Converters
 {
-    class BoolConverter
+    internal class BoolConverter
     {
-        static readonly Type boolType = typeof(bool);
+        private static readonly Type boolType = typeof(bool);
 
         public static bool ConvertFromInt(int value)
         {
@@ -16,7 +16,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             return Convert(value) ? 1 : 0;
         }
 
-        static bool Convert(object value)
+        private static bool Convert(object value)
         {
             if (value.GetType() == boolType)
                 return (bool)value;
@@ -25,9 +25,9 @@ namespace SmartSearch.LuceneNet.Internals.Converters
         }
     }
 
-    class DateTimeConverter
+    internal class DateTimeConverter
     {
-        static readonly Type dateTimeType = typeof(DateTime);
+        private static readonly Type dateTimeType = typeof(DateTime);
 
         public static DateTime ConvertFromLong(long value)
         {
@@ -39,7 +39,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             return Convert(value).Ticks;
         }
 
-        static DateTime Convert(object value)
+        private static DateTime Convert(object value)
         {
             if (value.GetType() == dateTimeType)
                 return (DateTime)value; ;
@@ -48,9 +48,9 @@ namespace SmartSearch.LuceneNet.Internals.Converters
         }
     }
 
-    class DoubleConverter
+    internal class DoubleConverter
     {
-        static readonly Type doubleType = typeof(double);
+        private static readonly Type doubleType = typeof(double);
 
         public static double Convert(object value)
         {
@@ -61,9 +61,9 @@ namespace SmartSearch.LuceneNet.Internals.Converters
         }
     }
 
-    class LongConverter
+    internal class LongConverter
     {
-        static readonly Type longType = typeof(long);
+        private static readonly Type longType = typeof(long);
 
         public static long Convert(object value)
         {
@@ -74,9 +74,9 @@ namespace SmartSearch.LuceneNet.Internals.Converters
         }
     }
 
-    class StringConverter
+    internal class StringConverter
     {
-        static readonly Type stringType = typeof(string);
+        private static readonly Type stringType = typeof(string);
 
         public static string Convert(object value)
         {

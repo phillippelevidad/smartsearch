@@ -5,17 +5,13 @@ using System.Linq;
 
 namespace SmartSearch.LuceneNet.Internals
 {
-    class InternalSearchDomain : ISearchDomain
+    internal class InternalSearchDomain : ISearchDomain
     {
-        public string Name { get; private set; }
-
-        public IField[] Fields { get; private set; }
-
-        public ISpecializedField[] SpecializedFields { get; private set; }
-
         public IField[] AllFields => Fields.Union(SpecializedFields).ToArray();
-
         public IAnalysisSettings AnalysisSettings { get; private set; }
+        public IField[] Fields { get; private set; }
+        public string Name { get; private set; }
+        public ISpecializedField[] SpecializedFields { get; private set; }
 
         public static InternalSearchDomain CreateFrom(ISearchDomain domain)
         {
@@ -33,8 +29,8 @@ namespace SmartSearch.LuceneNet.Internals
 
         public IField[] GetFacetEnabledFields() =>
             Fields.Where(f => f.EnableFaceting).ToArray();
-        
-        void BuildSpecializedFields()
+
+        private void BuildSpecializedFields()
         {
             var specializedFields = new List<ISpecializedField>();
             var specifications = new SpecializedFieldSpecifications(this).ListAll();

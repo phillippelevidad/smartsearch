@@ -7,8 +7,8 @@ namespace SmartSearch.LuceneNet.Tests
 {
     public partial class SortTests
     {
-        const string LocationField = "Geolocation";
-        const string LocationNameField = "GeolocationName";
+        private const string LocationField = "Geolocation";
+        private const string LocationNameField = "GeolocationName";
 
         [TestMethod]
         public void LatLngSortingWorks()
@@ -22,7 +22,7 @@ namespace SmartSearch.LuceneNet.Tests
                 "Ouro Branco MG", "Impact Hub Curitiba", "Parque Barigui");
         }
 
-        void TestInternal(TestEnvironment environment, ILatLngSortOptionReference reference, params string[] locationNamesInOrder)
+        private void TestInternal(TestEnvironment environment, ILatLngSortOptionReference reference, params string[] locationNamesInOrder)
         {
             var brazilBoxFilter = new Filter(LocationField, LatLngBoxFilterValue.Create(
                 new LatLng(2.232406, -72.908444),

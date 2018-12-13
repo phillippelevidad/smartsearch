@@ -3,7 +3,7 @@ using LuceneDocument = Lucene.Net.Documents.Document;
 
 namespace SmartSearch.LuceneNet.Internals.Converters
 {
-    interface IDocumentConverter
+    internal interface IDocumentConverter
     {
         LuceneDocument Convert(InternalSearchDomain domain, InternalDocument sourceDocument);
 

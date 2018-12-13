@@ -1,6 +1,6 @@
-﻿using System;
+﻿using SmartSearch.Abstractions;
+using System;
 using System.Collections.Generic;
-using SmartSearch.Abstractions;
 
 namespace SmartSearch
 {

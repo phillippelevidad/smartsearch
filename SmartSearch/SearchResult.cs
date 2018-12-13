@@ -5,9 +5,7 @@ namespace SmartSearch
     public class SearchResult : ISearchResult
     {
         public IDocument[] Documents { get; set; }
-
         public IFacet[] Facets { get; set; }
-
         public int TotalCount { get; set; }
 
         public SearchResult() : this(null, null, 0)

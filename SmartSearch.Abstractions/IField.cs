@@ -1,20 +1,5 @@
 ﻿namespace SmartSearch.Abstractions
 {
-    public interface IField
-    {
-        string Name { get; }
-
-        FieldRelevance Relevance { get; }
-
-        FieldType Type { get; }
-
-        bool EnableFaceting { get; }
-
-        bool EnableSearching { get; }
-
-        bool EnableSorting { get; }
-    }
-
     public enum FieldRelevance
     {
         Normal, High, Higher
@@ -29,5 +14,17 @@
         LatLng,
         Literal, LiteralArray,
         Text, TextArray
+    }
+
+    public interface IField
+    {
+        bool EnableFaceting { get; }
+        bool EnableSearching { get; }
+        bool EnableSorting { get; }
+        string Name { get; }
+
+        FieldRelevance Relevance { get; }
+
+        FieldType Type { get; }
     }
 }

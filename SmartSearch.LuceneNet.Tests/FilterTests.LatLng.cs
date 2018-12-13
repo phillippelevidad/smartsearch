@@ -7,10 +7,11 @@ namespace SmartSearch.LuceneNet.Tests
 {
     public partial class LatLngFilterTests
     {
-        const string LocationField = "Geolocation";
-        const string LocationNameField = "GeolocationName";
+        private const string LocationField = "Geolocation";
+        private const string LocationNameField = "GeolocationName";
 
-        readonly TestEnvironment environment;
+        private readonly TestEnvironment environment;
+
         public LatLngFilterTests() => environment = TestEnvironment.Build();
 
         [TestMethod]
@@ -29,7 +30,7 @@ namespace SmartSearch.LuceneNet.Tests
                 /* no results expected */);
         }
 
-        void TestInternal(ILatLngFilterValue filterValue, params string[] locationNames)
+        private void TestInternal(ILatLngFilterValue filterValue, params string[] locationNames)
         {
             var results = environment.Search(new SearchRequest
             {

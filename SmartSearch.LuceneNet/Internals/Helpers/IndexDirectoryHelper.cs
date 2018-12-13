@@ -2,7 +2,7 @@
 
 namespace SmartSearch.LuceneNet.Internals.Helpers
 {
-    static class IndexDirectoryHelper
+    internal static class IndexDirectoryHelper
     {
         public static string GetDirectoryPath(string baseDirectory) =>
             Path.Combine(baseDirectory, "mainindex");

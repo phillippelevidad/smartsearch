@@ -3,9 +3,9 @@ using System;
 
 namespace SmartSearch.LuceneNet.Internals
 {
-    class CompositeIndex : IDisposable
+    internal class CompositeIndex : IDisposable
     {
-        bool disposed;
+        private bool disposed;
 
         internal Directory FacetsDirectory { get; }
 

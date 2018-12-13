@@ -41,24 +41,45 @@ namespace SmartSearch
         }
     }
 
+    public abstract class LatLngFilterValueBase : ILatLngFilterValue
+    {
+        public IEnumerable<ILatLng> Points { get; protected set; }
+
+        public LatLngFilterValueBase(IEnumerable<ILatLng> points)
+        {
+            if (points == null || !points.Any())
+                throw new ArgumentNullException(nameof(points));
+
+            if (points.First() != points.Last())
+                throw new FirstAndLastPointsInAPolygonMustBeEqualException(points);
+
+            Points = points;
+        }
+    }
+
     // https://social.msdn.microsoft.com/Forums/sqlserver/en-US/46ec0b60-ec57-46bf-9873-9a16620b3f63/convert-circle-to-polygon?forum=sqlspatial
     public class LatLngRadiusFilterValue : LatLngFilterValueBase
     {
-        LatLngRadiusFilterValue(IEnumerable<ILatLng> points) : base(points) { }
+        private const double EarthRadiusInKm = 6371d;
+        private const double EarthRadiusInMi = 3960d;
+        private const double MaxRadiusInKm = 40008d;
+        private const double MaxRadiusInMi = 24860d;
 
-        public static LatLngRadiusFilterValue CreateFromMiRadius(ILatLng origin, double radiusInMi)
+        private LatLngRadiusFilterValue(IEnumerable<ILatLng> points) : base(points)
         {
-            var earthRadius = 3960d;
-            return Create(origin, radiusInMi / earthRadius);
         }
 
         public static LatLngRadiusFilterValue CreateFromKmRadius(ILatLng origin, double radiusInKm)
         {
-            var earthRadius = 6371d;
-            return Create(origin, radiusInKm / earthRadius);
+            return Create(origin, Math.Min(radiusInKm, MaxRadiusInKm) / EarthRadiusInKm);
         }
 
-        static LatLngRadiusFilterValue Create(ILatLng origin, double d)
+        public static LatLngRadiusFilterValue CreateFromMiRadius(ILatLng origin, double radiusInMi)
+        {
+            return Create(origin, Math.Min(radiusInMi, MaxRadiusInMi) / EarthRadiusInMi);
+        }
+
+        private static LatLngRadiusFilterValue Create(ILatLng origin, double d)
         {
             var lat = (origin.Latitude * Math.PI) / 180;
             var lon = (origin.Longitude * Math.PI) / 180;
@@ -77,22 +98,6 @@ namespace SmartSearch
             }
 
             return new LatLngRadiusFilterValue(polyPoints);
-        }
-    }
-
-    public abstract class LatLngFilterValueBase : ILatLngFilterValue
-    {
-        public IEnumerable<ILatLng> Points { get; protected set; }
-
-        public LatLngFilterValueBase(IEnumerable<ILatLng> points)
-        {
-            if (points == null || !points.Any())
-                throw new ArgumentNullException(nameof(points));
-
-            if (points.First() != points.Last())
-                throw new FirstAndLastPointsInAPolygonMustBeEqualException(points);
-
-            Points = points;
         }
     }
 }

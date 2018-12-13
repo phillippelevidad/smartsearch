@@ -4,9 +4,9 @@ using System.Text.RegularExpressions;
 
 namespace SmartSearch.LuceneNet.Internals
 {
-    class SearchDomainValidator
+    internal class SearchDomainValidator
     {
-        static readonly Regex regexName = new Regex(@"^[\w_]+$", RegexOptions.Compiled);
+        private static readonly Regex regexName = new Regex(@"^[\w_]+$", RegexOptions.Compiled);
 
         public void Validate(ISearchDomain domain)
         {
@@ -14,19 +14,13 @@ namespace SmartSearch.LuceneNet.Internals
             ValidateFields(domain);
         }
 
-        void ValidateDomainName(ISearchDomain domain)
+        private void ValidateDomainName(ISearchDomain domain)
         {
             if (domain.Name == null || !regexName.IsMatch(domain.Name))
                 throw new InvalidSearchDomainNameException(domain.Name);
         }
 
-        void ValidateFields(ISearchDomain domain)
-        {
-            foreach (var field in domain.Fields)
-                ValidateField(domain, field);
-        }
-
-        void ValidateField(ISearchDomain domain, IField field)
+        private void ValidateField(ISearchDomain domain, IField field)
         {
             if (field.Name == null || !regexName.IsMatch(field.Name))
                 throw new InvalidFieldNameException(field.Name);
@@ -34,6 +28,12 @@ namespace SmartSearch.LuceneNet.Internals
             foreach (var name in domain.Fields.Select(f => f.Name))
                 if (domain.Fields.Count(f => f.Name.Equals(name)) > 1)
                     throw new DuplicatedFieldException(name);
+        }
+
+        private void ValidateFields(ISearchDomain domain)
+        {
+            foreach (var field in domain.Fields)
+                ValidateField(domain, field);
         }
     }
 }

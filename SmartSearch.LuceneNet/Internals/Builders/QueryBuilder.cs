@@ -7,9 +7,9 @@ using SmartSearch.Abstractions;
 
 namespace SmartSearch.LuceneNet.Internals.Builders
 {
-    class QueryBuilder
+    internal class QueryBuilder
     {
-        readonly InternalSearchDomain domain;
+        private readonly InternalSearchDomain domain;
 
         public QueryBuilder(InternalSearchDomain domain)
         {
@@ -23,10 +23,7 @@ namespace SmartSearch.LuceneNet.Internals.Builders
             return CreateFilteredQuery(query, filter);
         }
 
-        Query CreateFilteredQuery(Query query, Lucene.Net.Search.Filter filter) =>
-            filter == null ? query : new FilteredQuery(query, filter);
-
-        Query BuildInternal(ISearchRequest request, Analyzer analyzer)
+        private Query BuildInternal(ISearchRequest request, Analyzer analyzer)
         {
             var parser = new QueryParser(Definitions.LuceneVersion, "", analyzer);
             var queryExpression = new QueryExpressionBuilder(domain).Build(request);
@@ -53,7 +50,10 @@ namespace SmartSearch.LuceneNet.Internals.Builders
             }
         }
 
-        string FixQueryExpression(string queryExpression, ParseException parseEx)
+        private Query CreateFilteredQuery(Query query, Lucene.Net.Search.Filter filter) =>
+                    filter == null ? query : new FilteredQuery(query, filter);
+
+        private string FixQueryExpression(string queryExpression, ParseException parseEx)
         {
             if (parseEx.CurrentToken == null)
             {

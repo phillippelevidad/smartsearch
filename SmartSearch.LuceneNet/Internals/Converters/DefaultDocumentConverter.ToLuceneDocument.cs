@@ -23,14 +23,14 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             return luceneDocument;
         }
 
-        IEnumerable<IIndexableField> GetIndexFields(InternalSearchDomain domain, InternalDocument document)
+        private IEnumerable<IIndexableField> GetIndexFields(InternalSearchDomain domain, InternalDocument document)
         {
             foreach (var field in domain.AllFields)
                 foreach (var f in GetIndexFields(domain, document, field))
                     yield return f;
         }
 
-        IEnumerable<IIndexableField> GetIndexFields(InternalSearchDomain domain, InternalDocument document, IField field)
+        private IEnumerable<IIndexableField> GetIndexFields(InternalSearchDomain domain, InternalDocument document, IField field)
         {
             switch (field.Type)
             {

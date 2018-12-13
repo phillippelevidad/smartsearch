@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace SmartSearch.LuceneNet.Internals.Builders
 {
-    class QueryExpressionBuilder
+    internal class QueryExpressionBuilder
     {
-        readonly InternalSearchDomain domain;
+        private readonly InternalSearchDomain domain;
 
         public QueryExpressionBuilder(InternalSearchDomain domain)
         {
@@ -25,7 +25,7 @@ namespace SmartSearch.LuceneNet.Internals.Builders
             return BuildInternal(request);
         }
 
-        string BuildInternal(ISearchRequest request)
+        private string BuildInternal(ISearchRequest request)
         {
             var searchFields = domain.GetSearchEnabledFields();
 

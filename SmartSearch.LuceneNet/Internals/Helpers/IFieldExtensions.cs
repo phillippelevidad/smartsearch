@@ -1,6 +1,6 @@
 ﻿namespace SmartSearch.Abstractions
 {
-    static class IFieldExtensions
+    internal static class IFieldExtensions
     {
         public static bool IsArray(this IField field)
         {
@@ -12,6 +12,7 @@
                 case FieldType.LiteralArray:
                 case FieldType.TextArray:
                     return true;
+
                 default:
                     return false;
             }
@@ -26,6 +27,7 @@
                 case FieldType.Text:
                 case FieldType.TextArray:
                     return true;
+
                 default:
                     return false;
             }

@@ -33,7 +33,7 @@ namespace SmartSearch.LuceneNet
             : base($"Type '{type?.FullName}' is not valid as an IndexContext.") { }
     }
 
-    public class InvalidLatLngFilterValue :Exception
+    public class InvalidLatLngFilterValue : Exception
     {
         public InvalidLatLngFilterValue(string fieldName)
             : base($"Invalid filter value for field '{fieldName}'. Use an implementation of '{typeof(ILatLngFilterValue).FullName}'.") { }

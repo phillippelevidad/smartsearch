@@ -3,31 +3,16 @@ using SmartSearch.LuceneNet.Analysis;
 
 namespace SmartSearch.LuceneNet.Tests.Mocks
 {
-    class TestEnvironment
+    internal class TestEnvironment
     {
+        public IDocumentProvider DocumentProvider { get; set; }
         public IDocument[] Documents { get; set; }
 
-        public ISearchDomain SearchDomain { get; set; }
-
-        public IDocumentProvider DocumentProvider { get; set; }
-
         public IIndexContext IndexContext { get; set; }
-
         public IIndexService IndexService { get; set; }
-
-        public ISearchService SearchService { get; set; }
-
         public LuceneIndexOptions Options { get; set; }
-
-        public void CreateIndex()
-        {
-            IndexService.CreateIndex(IndexContext, SearchDomain, DocumentProvider);
-        }
-
-        public ISearchResult Search(ISearchRequest request)
-        {
-            return SearchService.Search(IndexContext, SearchDomain, request);
-        }
+        public ISearchDomain SearchDomain { get; set; }
+        public ISearchService SearchService { get; set; }
 
         public static TestEnvironment Build(bool createIndex = true)
         {
@@ -51,6 +36,16 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 env.CreateIndex();
 
             return env;
+        }
+
+        public void CreateIndex()
+        {
+            IndexService.CreateIndex(IndexContext, SearchDomain, DocumentProvider);
+        }
+
+        public ISearchResult Search(ISearchRequest request)
+        {
+            return SearchService.Search(IndexContext, SearchDomain, request);
         }
     }
 }

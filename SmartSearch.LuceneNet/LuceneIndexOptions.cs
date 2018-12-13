@@ -15,6 +15,6 @@ namespace SmartSearch.LuceneNet
             return this;
         }
 
-        #endregion
+        #endregion Fluent API
     }
 }
