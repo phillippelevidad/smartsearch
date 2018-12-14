@@ -18,6 +18,9 @@ namespace SmartSearch.LuceneNet.Tests
             TestInternal(env, LatLngRadiusFilterValue.CreateFromKmRadius(new LatLng(-25.428595, -49.258507), 1),
                 "Impact Hub Curitiba");
 
+            TestInternal(env, LatLngRadiusFilterValue.CreateFromKmRadius(new LatLng(-25.4285549, -49.25781069999999), 4500),
+                "Impact Hub Curitiba", "Parque Barigui");
+
             TestInternal(env, LatLngRadiusFilterValue.CreateFromKmRadius(new LatLng(-25.429596, -49.271271), 20),
                 "Impact Hub Curitiba", "Parque Barigui");
 

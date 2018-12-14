@@ -84,7 +84,7 @@ namespace SmartSearch
             var lat = (origin.Latitude * Math.PI) / 180;
             var lon = (origin.Longitude * Math.PI) / 180;
 
-            var polyPoints = new List<ILatLng>(361);
+            var polyPoints = new List<ILatLng>(362);
 
             for (var i = 0; i <= 360; i++)
             {
@@ -95,6 +95,12 @@ namespace SmartSearch
                 var pointLongitude = (lon + Math.Atan2(Math.Sin(bearing) * Math.Sin(d) * Math.Cos(lat), Math.Cos(d) - Math.Sin(lat) * Math.Sin(point.Latitude))) * 180 / Math.PI;
 
                 polyPoints.Add(new LatLng(pointLatitude, pointLongitude));
+            }
+
+            if (!polyPoints.First().Equals(polyPoints.Last()))
+            {
+                var first = polyPoints.First();
+                polyPoints[polyPoints.Count - 1] = new LatLng(first.Latitude, first.Longitude);
             }
 
             return new LatLngRadiusFilterValue(polyPoints);
