@@ -12,10 +12,13 @@ namespace SmartSearch.LuceneNet.Tests
         public void DateSortingWorks() => TestInternal("AddedDate");
 
         [TestMethod]
-        public void LiteralSortingWorks() => TestInternal("Id");
+        public void DoubleSortingWorks() => TestInternal("Price");
 
         [TestMethod]
-        public void NumericSortingWorks() => TestInternal("Price");
+        public void IntSortingWorks() => TestInternal("Score");
+
+        [TestMethod]
+        public void LiteralSortingWorks() => TestInternal("Id");
 
         [TestMethod]
         public void TextSortingWorks() => TestInternal("Name");

@@ -21,7 +21,8 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
             new Field("Category", FieldType.Text, FieldRelevance.High, enableFaceting: true, enableSearching: true),
             new Field("AddedDate", FieldType.Date, FieldRelevance.Normal, enableSorting: true),
             new Field("GeolocationName", FieldType.Literal, FieldRelevance.Normal),
-            new Field("Geolocation", FieldType.LatLng, FieldRelevance.Normal, enableSearching: true, enableSorting: true)
+            new Field("Geolocation", FieldType.LatLng, FieldRelevance.Normal, enableSearching: true, enableSorting: true),
+            new Field("Score", FieldType.Int, FieldRelevance.Normal, enableSorting: true)
         };
 
         public string Name => "MockSearchDomain";

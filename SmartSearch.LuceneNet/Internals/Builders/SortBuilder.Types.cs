@@ -81,6 +81,8 @@ namespace SmartSearch.LuceneNet.Internals.Builders
             {
                 case FieldType.Date:
                 case FieldType.DateArray:
+                case FieldType.Int:
+                case FieldType.IntArray:
                     return SortFieldType.INT64;
 
                 case FieldType.Double:
@@ -89,8 +91,6 @@ namespace SmartSearch.LuceneNet.Internals.Builders
 
                 case FieldType.Bool:
                 case FieldType.BoolArray:
-                case FieldType.Int:
-                case FieldType.IntArray:
                     return SortFieldType.INT32;
 
                 default:
