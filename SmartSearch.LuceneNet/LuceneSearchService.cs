@@ -15,6 +15,7 @@ namespace SmartSearch.LuceneNet
 {
     public class LuceneSearchService : ISearchService
     {
+        private const int maxFacetItems = 150;
         private readonly IDocumentConverter documentConverter;
         private readonly LuceneIndexOptions options;
 
@@ -91,7 +92,7 @@ namespace SmartSearch.LuceneNet
 
             foreach (var f in facetFields)
             {
-                var luceneFacet = facets.GetTopChildren(30, f.Name);
+                var luceneFacet = facets.GetTopChildren(maxFacetItems, f.Name);
 
                 if (luceneFacet == null)
                     continue;
@@ -104,7 +105,7 @@ namespace SmartSearch.LuceneNet
         }
 
         private ISearchResult SearchInternal(
-                            InternalSearchDomain domain, ISearchRequest request,
+            InternalSearchDomain domain, ISearchRequest request,
             IndexSearcher searcher, TaxonomyReader facetsReader,
             Query query, Sort sort)
         {

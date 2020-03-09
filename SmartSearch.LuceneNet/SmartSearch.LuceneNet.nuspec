@@ -2,13 +2,13 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>SmartSearch.LuceneNet</id>
-    <version>1.0.4-beta</version>
+    <version>1.0.5-beta</version>
     <title>SmartSearch.LuceneNet</title>
     <authors>Phillippe Santana</authors>
     <owners>phillippe.santana</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Implementation of SmartSearch based on Lucene.NET. Support is not provided, use at your own risk.</description>
-    <releaseNotes>Fixed - Sort by INT field would throw an exception, because INT fields are indexed as Int64, and sort was being made as if they were Int32.</releaseNotes>
+    <releaseNotes>Increased the number of facet results in search from 50 to 150.</releaseNotes>
     <tags>smart search ideianoar</tags>
     <dependencies>
       <dependency id="Lucene.Net" version="4.8.0-beta00005" />

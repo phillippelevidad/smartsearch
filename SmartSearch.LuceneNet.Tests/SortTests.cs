@@ -23,14 +23,32 @@ namespace SmartSearch.LuceneNet.Tests
         [TestMethod]
         public void TextSortingWorks() => TestInternal("Name");
 
+        private void TestInternal(string fieldName)
+        {
+            TestInternal(fieldName, SortDirection.Ascending);
+            TestInternal(fieldName, SortDirection.Descending);
+        }
+
+        private void TestInternal(string fieldName, SortDirection direction)
+        {
+            var env = TestEnvironment.Build();
+            var results = env.Search(new SearchRequest
+            {
+                SortOptions = new[] { new SortOption(fieldName, direction) }
+            });
+
+            var documentsAreSorted = AreDocumentsSorted(results.Documents, fieldName, direction == SortDirection.Descending);
+            Assert.AreEqual(true, documentsAreSorted);
+        }
+
         private bool AreDocumentsSorted(IDocument[] documents, string fieldName, bool descending)
         {
-            IComparable prev = null, current = null;
+            IComparable current = null;
             var allSorted = true;
 
             foreach (var item in documents)
             {
-                prev = current;
+                IComparable prev = current;
                 current = (IComparable)item.Fields[fieldName];
 
                 if (prev == null)
@@ -48,24 +66,6 @@ namespace SmartSearch.LuceneNet.Tests
             }
 
             return allSorted;
-        }
-
-        private void TestInternal(string fieldName)
-        {
-            TestInternal(fieldName, SortDirection.Ascending);
-            TestInternal(fieldName, SortDirection.Descending);
-        }
-
-        private void TestInternal(string fieldName, SortDirection direction)
-        {
-            var env = TestEnvironment.Build();
-            var results = env.Search(new SearchRequest
-            {
-                SortOptions = new[] { new SortOption(fieldName, direction) }
-            });
-
-            var documentsAreSorted = AreDocumentsSorted(results.Documents, fieldName, direction == SortDirection.Descending);
-            Assert.AreEqual(true, documentsAreSorted);
         }
     }
 }
