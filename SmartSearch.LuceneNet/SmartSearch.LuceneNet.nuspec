@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>SmartSearch.LuceneNet</id>
-    <version>1.0.5-beta</version>
+    <version>1.0.6-beta</version>
     <title>SmartSearch.LuceneNet</title>
     <authors>Phillippe Santana</authors>
     <owners>phillippe.santana</owners>
