@@ -32,13 +32,13 @@ namespace SmartSearch.LuceneNet.Internals.Builders
             if (sortOption.Reference == null)
                 throw new MissingLatLngReferenceForSortingException();
 
-            if (!(sortOption.Reference is ILatLngSortOptionReference latLngReference))
-                throw new InvalidLatLngReferenceForSortingException(field.Name);
+            if (!(sortOption.Reference is ILatLng latLngReference))
+                throw new ArgumentException($"Invalid sort reference for field '{sortOption.FieldName}'. Provide an implementation of '{typeof(ILatLng).FullName}'.");
 
             var actionableCoordField = new ActionableLatLngFieldSpecification().CreateFrom(field);
             var strategy = SpatialFactory.CreatePrefixTreeStrategy(actionableCoordField.Name);
 
-            var point = context.MakePoint(latLngReference.Origin.Longitude, latLngReference.Origin.Latitude);
+            var point = context.MakePoint(latLngReference.Longitude, latLngReference.Latitude);
             var valueSource = strategy.MakeDistanceValueSource(point, DistanceUtils.DEG_TO_KM);
 
             var sortField = valueSource.GetSortField(sortOption.Direction == SortDirection.Descending);

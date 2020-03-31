@@ -39,12 +39,6 @@ namespace SmartSearch.LuceneNet
             : base($"Invalid filter value for field '{fieldName}'. Use an implementation of '{typeof(ILatLngFilterValue).FullName}'.") { }
     }
 
-    public class InvalidLatLngReferenceForSortingException : Exception
-    {
-        public InvalidLatLngReferenceForSortingException(string fieldName)
-            : base($"Invalid sort reference for field '{fieldName}'. Use an implementatino of '{typeof(ILatLngSortOptionReference).FullName}'.") { }
-    }
-
     public class InvalidSearchDomainNameException : Exception
     {
         public InvalidSearchDomainNameException(string domainName)

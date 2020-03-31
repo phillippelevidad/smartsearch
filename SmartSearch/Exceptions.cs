@@ -29,10 +29,4 @@ namespace SmartSearch
         public MalformedPointWellKnownTextException(string wkt)
             : base($"Malformed Well Known-Text '{wkt}'. Must be in the format: 'POINT(<longitude> <latitude>)'.") { }
     }
-
-    public class UnknownQueryFilterTypeException : Exception
-    {
-        public UnknownQueryFilterTypeException(FilterType filterType)
-            : base($"Query filter type '{filterType}' is not recognized.") { }
-    }
 }

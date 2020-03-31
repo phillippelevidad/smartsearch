@@ -15,10 +15,9 @@ namespace SmartSearch.LuceneNet.Tests
             var fieldName = "IsInPromotion";
 
             var env = TestEnvironment.Build();
-            var results = env.Search(new SearchRequest
-            {
-                Filters = new[] { new Filter(fieldName, false) }
-            });
+            var results = env.Search(new SearchRequestBuilder()
+                .FilterBy(fieldName, false)
+                .Build());
 
             var expectedCount = env.Documents.Count(d =>
                 d.Fields.ContainsKey(fieldName) && (bool)d.Fields[fieldName] == false);
@@ -32,10 +31,9 @@ namespace SmartSearch.LuceneNet.Tests
             var fieldName = "IsInPromotion";
 
             var env = TestEnvironment.Build();
-            var results = env.Search(new SearchRequest
-            {
-                Filters = new[] { new Filter(fieldName, true) }
-            });
+            var results = env.Search(new SearchRequestBuilder()
+                .FilterBy(fieldName, true)
+                .Build());
 
             var expectedCount = env.Documents.Count(d =>
                 d.Fields.ContainsKey(fieldName) && (bool)d.Fields[fieldName] == true);
@@ -87,19 +85,19 @@ namespace SmartSearch.LuceneNet.Tests
 
             ISearchResult results;
 
-            results = env.Search(new SearchRequest { Query = "facebook" });
+            results = env.Search(new SearchRequest("facebook"));
             Assert.AreEqual(2, results.TotalCount);
 
-            results = env.Search(new SearchRequest { Filters = new[] { new Filter("Categories", "Social Network") } });
+            results = env.Search(new SearchRequestBuilder().FilterBy("Categories", "Social Network").Build());
             Assert.AreEqual(3, results.TotalCount);
 
-            results = env.Search(new SearchRequest { Filters = new[] { new Filter("Categories", "Mobile App") } });
+            results = env.Search(new SearchRequestBuilder().FilterBy("Categories", "Mobile App").Build());
             Assert.AreEqual(1, results.TotalCount);
 
-            results = env.Search(new SearchRequest { Filters = new[] { new Filter("Url", "www.google.com") } });
+            results = env.Search(new SearchRequestBuilder().FilterBy("Url", "www.google.com").Build());
             Assert.AreEqual(0, results.TotalCount);
 
-            results = env.Search(new SearchRequest { Filters = new[] { new Filter("Url", "https://www.google.com/") } });
+            results = env.Search(new SearchRequestBuilder().FilterBy("Url", "https://www.google.com/").Build());
             Assert.AreEqual(1, results.TotalCount);
         }
     }

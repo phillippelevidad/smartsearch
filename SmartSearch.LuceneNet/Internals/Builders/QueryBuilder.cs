@@ -31,8 +31,6 @@ namespace SmartSearch.LuceneNet.Internals.Builders
             if (string.IsNullOrEmpty(queryExpression))
                 return new MatchAllDocsQuery();
 
-            string prevExpression = null;
-
             while (true)
             {
                 try
@@ -41,7 +39,7 @@ namespace SmartSearch.LuceneNet.Internals.Builders
                 }
                 catch (ParseException parseEx)
                 {
-                    prevExpression = queryExpression;
+                    var prevExpression = queryExpression;
                     queryExpression = FixQueryExpression(queryExpression, parseEx);
 
                     if (queryExpression == prevExpression)
@@ -50,8 +48,8 @@ namespace SmartSearch.LuceneNet.Internals.Builders
             }
         }
 
-        private Query CreateFilteredQuery(Query query, Lucene.Net.Search.Filter filter) =>
-                    filter == null ? query : new FilteredQuery(query, filter);
+        private Query CreateFilteredQuery(Query query, Filter filter) =>
+            filter == null ? query : new FilteredQuery(query, filter);
 
         private string FixQueryExpression(string queryExpression, ParseException parseEx)
         {

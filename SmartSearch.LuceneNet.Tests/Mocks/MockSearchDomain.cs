@@ -4,11 +4,7 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
 {
     internal class MockSearchDomain : ISearchDomain
     {
-        public IAnalysisSettings AnalysisSettings => new AnalysisSettings
-        {
-            Stopwords = new string[0],
-            Synonyms = new string[0][]
-        };
+        public IAnalysisSettings AnalysisSettings => new AnalysisSettings();
 
         public IField[] Fields => new[]
         {

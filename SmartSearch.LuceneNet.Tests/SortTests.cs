@@ -32,10 +32,9 @@ namespace SmartSearch.LuceneNet.Tests
         private void TestInternal(string fieldName, SortDirection direction)
         {
             var env = TestEnvironment.Build();
-            var results = env.Search(new SearchRequest
-            {
-                SortOptions = new[] { new SortOption(fieldName, direction) }
-            });
+            var results = env.Search(new SearchRequestBuilder()
+                .SortBy(fieldName, direction)
+                .Build());
 
             var documentsAreSorted = AreDocumentsSorted(results.Documents, fieldName, direction == SortDirection.Descending);
             Assert.AreEqual(true, documentsAreSorted);

@@ -1,88 +1,50 @@
 ﻿using SmartSearch.Abstractions;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 
 namespace SmartSearch
 {
-    [DebuggerDisplay("{FieldName} = {SingleValue} | {RangeFrom} to {RangeTo}")]
-    public class Filter : IFilter
+    [DebuggerDisplay("{FieldName} = {Value}")]
+    public class ValueFilter : IValueFilter
     {
-        private FilterType filterType;
-        private object rangeFrom;
-        private object rangeTo;
-        private object singleValue;
-        public string FieldName { get; set; }
-
-        public FilterType FilterType
-        {
-            get => filterType;
-            set
-            {
-                filterType = value;
-
-                switch (filterType)
-                {
-                    case FilterType.SingleValue:
-                        rangeFrom = rangeTo = null;
-                        break;
-
-                    case FilterType.Range:
-                        singleValue = null;
-                        break;
-
-                    default:
-                        throw new UnknownQueryFilterTypeException(filterType);
-                }
-            }
-        }
-
-        public object RangeFrom
-        {
-            get => rangeFrom;
-            set
-            {
-                rangeFrom = value;
-                singleValue = null;
-                filterType = FilterType.Range;
-            }
-        }
-
-        public object RangeTo
-        {
-            get => rangeTo;
-            set
-            {
-                rangeTo = value;
-                singleValue = null;
-                filterType = FilterType.Range;
-            }
-        }
-
-        public object SingleValue
-        {
-            get => singleValue;
-            set
-            {
-                singleValue = value;
-                rangeFrom = rangeTo = null;
-                filterType = FilterType.SingleValue;
-            }
-        }
-
-        public Filter()
-        {
-        }
-
-        public Filter(string fieldName, object value)
+        public ValueFilter(string fieldName, object value)
         {
             FieldName = fieldName;
-            SingleValue = value;
+            Value = value;
         }
 
-        public Filter(string fieldName, object from, object to)
+        public string FieldName { get; }
+        public object Value { get; }
+    }
+
+    [DebuggerDisplay("{FieldName} = (from {FromValue} to {ToValue})")]
+    public class RangeFilter : IRangeFilter
+    {
+        public RangeFilter(string fieldName, object fromValue, object toValue)
         {
             FieldName = fieldName;
-            RangeFrom = from;
-            RangeTo = to;
+            FromValue = fromValue;
+            ToValue = toValue;
         }
+
+        public string FieldName { get; }
+        public object FromValue { get; }
+        public object ToValue { get; }
+    }
+
+    [DebuggerDisplay("[{GroupingClause}] {Filters.Count} filter(s)")]
+    public class FilterGroup : IFilterGroup
+    {
+        public FilterGroup(GroupingClause groupingClause, IEnumerable<IFilter> filters)
+        {
+            GroupingClause = groupingClause;
+            Filters = (filters ?? Array.Empty<IFilter>()).ToList().AsReadOnly();
+        }
+
+        public GroupingClause GroupingClause { get; }
+        public ReadOnlyCollection<IFilter> Filters { get; }
     }
 }
