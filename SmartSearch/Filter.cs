@@ -44,6 +44,9 @@ namespace SmartSearch
             Filters = (filters ?? Array.Empty<IFilter>()).ToList().AsReadOnly();
         }
 
+        public FilterGroup(GroupingClause groupingClause, params IFilter[] filters)
+            : this(groupingClause, (IEnumerable<IFilter>)filters) { }
+
         public GroupingClause GroupingClause { get; }
         public ReadOnlyCollection<IFilter> Filters { get; }
     }

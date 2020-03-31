@@ -24,7 +24,7 @@ namespace SmartSearch.Abstractions
 
     public interface IFilterGroup : IFilter
     {
-        ReadOnlyCollection<IFilter> Filters { get; }
         GroupingClause GroupingClause { get; }
+        ReadOnlyCollection<IFilter> Filters { get; }
     }
 }

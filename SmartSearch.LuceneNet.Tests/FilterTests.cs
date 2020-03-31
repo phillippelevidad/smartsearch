@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SmartSearch.Abstractions;
 using SmartSearch.LuceneNet.Tests.Mocks;
 using System.Collections.Generic;
@@ -99,6 +100,17 @@ namespace SmartSearch.LuceneNet.Tests
 
             results = env.Search(new SearchRequestBuilder().FilterBy("Url", "https://www.google.com/").Build());
             Assert.AreEqual(1, results.TotalCount);
+        }
+
+        private void TestLocations(TestEnvironment environment, IFilter filterValue, params string[] locationNames)
+        {
+            var results = environment.Search(new SearchRequestBuilder()
+                .FilterBy(filterValue)
+                .Build());
+
+            var resultNames = results.Documents.Select(d => d.Fields[LocationNameField].ToString()).ToArray();
+
+            resultNames.Should().BeEquivalentTo(locationNames);
         }
     }
 }
