@@ -14,6 +14,7 @@ namespace SmartSearch
 
         public DocumentOperationType OperationType { get; }
 
+        public static DocumentOperation AddOrUpdate(Document document) => new DocumentOperation(document.Id, DocumentOperationType.AddOrUpdate, document.Fields);
         public static DocumentOperation AddOrUpdate(string id, IDictionary<string, object> fields) => new DocumentOperation(id, DocumentOperationType.AddOrUpdate, fields);
         public static DocumentOperation Delete(string id) => new DocumentOperation(id, DocumentOperationType.Delete, null);
     }
