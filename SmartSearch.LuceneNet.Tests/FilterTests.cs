@@ -57,25 +57,25 @@ namespace SmartSearch.LuceneNet.Tests
 
             env.IndexService.CreateIndex(env.IndexContext, env.SearchDomain, new DocumentProvider(new IDocumentOperation[]
             {
-                new DocumentOperation("1", new Dictionary<string, object>
+                DocumentOperation.AddOrUpdate("1", new Dictionary<string, object>
                 {
                     { "Name", "Google" },
                     { "Categories", new[] { "Web Search" } },
                     { "Url", "https://www.google.com/" }
                 }),
-                new DocumentOperation("2", new Dictionary<string, object>
+                DocumentOperation.AddOrUpdate("2", new Dictionary<string, object>
                 {
                     { "Name", "Facebook" },
                     { "Categories", new[] { "Social Network" } },
                     { "Url", "https://www.facebook.com/" }
                 }),
-                new DocumentOperation("3", new Dictionary<string, object>
+                DocumentOperation.AddOrUpdate("3", new Dictionary<string, object>
                 {
                     { "Name", "Facebook Messenger" },
                     { "Categories", new[] { "Chat", "Social Network" } },
                     { "Url", "https://www.facebook.com/messenger/" }
                 }),
-                new DocumentOperation("4", new Dictionary<string, object>
+                DocumentOperation.AddOrUpdate("4", new Dictionary<string, object>
                 {
                     { "Name", "Instagram" },
                     { "Categories", new[] { "Social Network", "Mobile App" } },

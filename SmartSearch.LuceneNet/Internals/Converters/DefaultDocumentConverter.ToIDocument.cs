@@ -1,6 +1,5 @@
 ﻿using Lucene.Net.Index;
 using SmartSearch.Abstractions;
-using System.Collections.Generic;
 using LuceneDocument = Lucene.Net.Documents.Document;
 using SourceFieldType = SmartSearch.Abstractions.FieldType;
 
@@ -10,22 +9,19 @@ namespace SmartSearch.LuceneNet.Internals.Converters
     {
         public IDocument Convert(InternalSearchDomain domain, LuceneDocument luceneDocument)
         {
-            var result = new Document
-            {
-                Id = luceneDocument.Get(Definitions.DocumentIdFieldName),
-                Fields = new Dictionary<string, object>(domain.Fields.Length)
-            };
+            var builder = new DocumentBuilder(
+                luceneDocument.Get(Definitions.DocumentIdFieldName),
+                domain.Fields.Count);
 
             foreach (var field in domain.Fields)
             {
                 var value = field.IsArray()
                     ? ParseArrayField(field, luceneDocument)
                     : ParseSingleValuedField(field, luceneDocument);
-
-                result.Fields.Add(field.Name, value);
+                builder.Add(field.Name, value);
             }
 
-            return result;
+            return builder.Build();
         }
 
         private object[] ParseArrayField(IField field, LuceneDocument luceneDocument)

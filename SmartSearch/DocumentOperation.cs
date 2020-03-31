@@ -7,29 +7,14 @@ namespace SmartSearch
     [DebuggerDisplay("{Id}, Operation = {OperationType}")]
     public class DocumentOperation : Document, IDocumentOperation
     {
-        public DocumentOperationType OperationType { get; set; }
-
-        public DocumentOperation() : this(null, null)
+        private DocumentOperation(string id, DocumentOperationType operationType, IDictionary<string, object> fields) : base(id, fields)
         {
-        }
-
-        public DocumentOperation(string id) : this(id, DocumentOperationType.AddOrUpdate, null)
-        {
-        }
-
-        public DocumentOperation(string id, DocumentOperationType operationType) : this(id, operationType, null)
-        {
-        }
-
-        public DocumentOperation(string id, IDictionary<string, object> fields) : this(id, DocumentOperationType.AddOrUpdate, fields)
-        {
-        }
-
-        public DocumentOperation(string id, DocumentOperationType operationType, IDictionary<string, object> fields)
-        {
-            Id = id;
             OperationType = operationType;
-            Fields = fields ?? new Dictionary<string, object>();
         }
+
+        public DocumentOperationType OperationType { get; }
+
+        public static DocumentOperation AddOrUpdate(string id, IDictionary<string, object> fields) => new DocumentOperation(id, DocumentOperationType.AddOrUpdate, fields);
+        public static DocumentOperation Delete(string id) => new DocumentOperation(id, DocumentOperationType.Delete, null);
     }
 }

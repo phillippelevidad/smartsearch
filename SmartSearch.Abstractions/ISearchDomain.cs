@@ -1,9 +1,11 @@
-﻿namespace SmartSearch.Abstractions
+﻿using System.Collections.ObjectModel;
+
+namespace SmartSearch.Abstractions
 {
     public interface ISearchDomain
     {
-        IAnalysisSettings AnalysisSettings { get; }
-        IField[] Fields { get; }
         string Name { get; }
+        ReadOnlyCollection<IField> Fields { get; }
+        IAnalysisSettings AnalysisSettings { get; }
     }
 }

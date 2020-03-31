@@ -1,12 +1,14 @@
 ﻿using SmartSearch.Abstractions;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace SmartSearch.LuceneNet.Tests.Mocks
 {
     internal class MockSearchDomain : ISearchDomain
     {
-        public IAnalysisSettings AnalysisSettings => new AnalysisSettings();
+        public string Name => "MockSearchDomain";
 
-        public IField[] Fields => new[]
+        public ReadOnlyCollection<IField> Fields => new List<IField>
         {
             new Field("Id", FieldType.Literal, FieldRelevance.Normal, enableSorting: true),
             new Field("Name", FieldType.Text, FieldRelevance.Higher, enableSorting: true),
@@ -19,8 +21,8 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
             new Field("GeolocationName", FieldType.Literal, FieldRelevance.Normal),
             new Field("Geolocation", FieldType.LatLng, FieldRelevance.Normal, enableSearching: true, enableSorting: true),
             new Field("Score", FieldType.Int, FieldRelevance.Normal, enableSorting: true)
-        };
+        }.AsReadOnly();
 
-        public string Name => "MockSearchDomain";
+        public IAnalysisSettings AnalysisSettings => new AnalysisSettings();
     }
 }
