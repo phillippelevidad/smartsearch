@@ -138,10 +138,10 @@ namespace SmartSearch.LuceneNet.Internals.Converters
                     return 1f;
 
                 case FieldRelevance.High:
-                    return 2f;
+                    return 3f;
 
                 case FieldRelevance.Higher:
-                    return 4f;
+                    return 9f;
 
                 default:
                     throw new UnknownFieldRelevanceException(field.Relevance);
@@ -151,7 +151,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
         protected virtual LuceneField.Store GetFieldStore(IField field)
         {
             // NO = analyzed fields, best for searching
-            // YES = not-analyzed fields, only exact matches, can be returned
+            // YES = not-analyzed fields, only exact matches are returned
 
             if (!(field is ISpecializedField specialized))
                 return LuceneField.Store.YES;
