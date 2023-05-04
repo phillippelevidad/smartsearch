@@ -42,7 +42,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
         private static DateTime Convert(object value)
         {
             if (value.GetType() == dateTimeType)
-                return (DateTime)value; ;
+                return (DateTime)value;
 
             return System.Convert.ToDateTime(value);
         }
@@ -55,7 +55,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
         public static double Convert(object value)
         {
             if (value.GetType() == doubleType)
-                return (double)value; ;
+                return (double)value;
 
             return System.Convert.ToDouble(value);
         }
@@ -68,7 +68,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
         public static long Convert(object value)
         {
             if (value.GetType() == longType)
-                return (long)value; ;
+                return (long)value;
 
             return System.Convert.ToInt64(value);
         }
@@ -81,7 +81,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
         public static string Convert(object value)
         {
             if (value.GetType() == stringType)
-                return (string)value; ;
+                return (string)value;
 
             return System.Convert.ToString(value);
         }
