@@ -132,16 +132,20 @@ namespace SmartSearch.LuceneNet.Internals.Converters
 
         protected virtual float GetFieldBoost(IField field)
         {
+            var boost = 1f;
+            if (field is ISpecializedField specialized)
+                boost = specialized.RelevanceBoostingMultiplier;
+            
             switch (field.Relevance)
             {
                 case FieldRelevance.Normal:
-                    return 1f;
+                    return 1f * boost;
 
                 case FieldRelevance.High:
-                    return 3f;
+                    return 3f * boost;
 
                 case FieldRelevance.Higher:
-                    return 9f;
+                    return 9f * boost;
 
                 default:
                     throw new UnknownFieldRelevanceException(field.Relevance);

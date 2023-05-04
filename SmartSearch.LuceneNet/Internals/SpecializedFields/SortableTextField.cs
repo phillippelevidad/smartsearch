@@ -11,6 +11,7 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
 
         public bool AnalyzeField => false;
         public string OriginalName { get; }
+        public float RelevanceBoostingMultiplier => 1f;
 
         public Type SpecialAnalyzerType => null;
 
@@ -55,6 +56,6 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
         }
 
         public bool IsEligibleForSpecialization(IField field) =>
-                    field.EnableSorting && (field.Type == FieldType.Text || field.Type == FieldType.TextArray);
+            field.EnableSorting && (field.Type == FieldType.Text || field.Type == FieldType.TextArray);
     }
 }
