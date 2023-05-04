@@ -1,22 +1,23 @@
 ﻿using SmartSearch.Abstractions;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace SmartSearch.LuceneNet.Internals
 {
     internal class InternalDocument : IDocument
     {
-        public IDictionary<string, object> Fields { get; private set; }
         public string Id { get; private set; }
+        public ReadOnlyDictionary<string, object> Fields { get; private set; }
 
         private InternalDocument(string id, IDictionary<string, object> fields)
         {
             Id = id;
-            Fields = fields;
+            Fields = new ReadOnlyDictionary<string, object>(fields);
         }
 
         internal static InternalDocument CreateFrom(InternalSearchDomain domain, IDocument document)
         {
-            var fields = new Dictionary<string, object>(domain.Fields.Length + domain.SpecializedFields.Length);
+            var fields = new Dictionary<string, object>(domain.Fields.Count + domain.SpecializedFields.Count);
 
             foreach (var field in document.Fields)
                 fields.Add(field.Key, field.Value);

@@ -1,12 +1,13 @@
-﻿namespace SmartSearch.Abstractions
+﻿using System.Collections.ObjectModel;
+
+namespace SmartSearch.Abstractions
 {
     public interface ISearchRequest
     {
-        IFilter[] Filters { get; }
+        int StartIndex { get; }
         int PageSize { get; }
         string Query { get; }
-        ISortOption[] SortOptions { get; }
-
-        int StartIndex { get; }
+        ReadOnlyCollection<ISortOption> SortOptions { get; }
+        ReadOnlyCollection<IFilter> Filters { get; }
     }
 }

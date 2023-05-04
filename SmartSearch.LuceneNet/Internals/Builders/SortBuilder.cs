@@ -17,7 +17,7 @@ namespace SmartSearch.LuceneNet.Internals.Builders
 
         public Sort Build(ISearchRequest request)
         {
-            if (request.SortOptions == null || request.SortOptions.Length == 0)
+            if (request.SortOptions == null || request.SortOptions.Count == 0)
                 return new Sort();
 
             var sortFields = request.SortOptions

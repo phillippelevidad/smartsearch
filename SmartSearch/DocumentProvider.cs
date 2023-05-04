@@ -1,4 +1,5 @@
 ﻿using SmartSearch.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,7 +9,7 @@ namespace SmartSearch
     {
         private readonly IDocumentReader reader;
 
-        public DocumentProvider() : this(new IDocumentOperation[0])
+        public DocumentProvider() : this(Array.Empty<IDocumentOperation>())
         {
         }
 
@@ -19,6 +20,12 @@ namespace SmartSearch
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
         }
 
         public IDocumentReader GetDocumentReader() => reader;
@@ -28,16 +35,21 @@ namespace SmartSearch
     {
         private int currentIndex = -1;
 
-        public IDocumentOperation CurrentDocument { get; private set; }
-
-        public IDocumentOperation[] Documents { get; }
-
         public DocumentReader(IEnumerable<IDocumentOperation> documents)
         {
             Documents = documents.ToArray();
         }
 
+        public IDocumentOperation CurrentDocument { get; private set; }
+        public IDocumentOperation[] Documents { get; }
+
         public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
         {
         }
 

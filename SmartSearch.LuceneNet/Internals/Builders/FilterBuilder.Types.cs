@@ -26,16 +26,16 @@ namespace SmartSearch.LuceneNet.Internals.Builders
         {
         }
 
-        protected override LuceneFilter BuildForRange(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
+        protected override LuceneFilter BuildRangeFilter(ISearchRequest request, IRangeFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
-            var from = BoolConverter.ConvertToInt(filter.RangeFrom ?? false);
-            var to = BoolConverter.ConvertToInt(filter.RangeTo ?? false);
+            var from = BoolConverter.ConvertToInt(filter.FromValue ?? false);
+            var to = BoolConverter.ConvertToInt(filter.ToValue ?? false);
             return NumericRangeFilter.NewInt32Range(field.Name, from, to, true, true);
         }
 
-        protected override LuceneFilter BuildForSingleValue(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
+        protected override LuceneFilter BuildValueFilter(ISearchRequest request, IValueFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
-            var value = BoolConverter.ConvertToInt(filter.SingleValue);
+            var value = BoolConverter.ConvertToInt(filter.Value);
             return NumericRangeFilter.NewInt32Range(field.Name, value, value, true, true);
         }
     }
@@ -46,16 +46,16 @@ namespace SmartSearch.LuceneNet.Internals.Builders
         {
         }
 
-        protected override LuceneFilter BuildForRange(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
+        protected override LuceneFilter BuildRangeFilter(ISearchRequest request, IRangeFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
-            var from = DateTimeConverter.ConvertToLong(filter.RangeFrom ?? DateTime.MinValue);
-            var to = DateTimeConverter.ConvertToLong(filter.RangeTo ?? DateTime.MaxValue);
+            var from = DateTimeConverter.ConvertToLong(filter.FromValue ?? DateTime.MinValue);
+            var to = DateTimeConverter.ConvertToLong(filter.ToValue ?? DateTime.MaxValue);
             return NumericRangeFilter.NewInt64Range(field.Name, from, to, true, true);
         }
 
-        protected override LuceneFilter BuildForSingleValue(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
+        protected override LuceneFilter BuildValueFilter(ISearchRequest request, IValueFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
-            var value = DateTimeConverter.ConvertToLong(filter.SingleValue);
+            var value = DateTimeConverter.ConvertToLong(filter.Value);
             return NumericRangeFilter.NewInt64Range(field.Name, value, value, true, true);
         }
     }
@@ -66,16 +66,16 @@ namespace SmartSearch.LuceneNet.Internals.Builders
         {
         }
 
-        protected override LuceneFilter BuildForRange(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
+        protected override LuceneFilter BuildRangeFilter(ISearchRequest request, IRangeFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
-            var from = DoubleConverter.Convert(filter.RangeFrom ?? double.MinValue);
-            var to = DoubleConverter.Convert(filter.RangeTo ?? double.MaxValue);
+            var from = DoubleConverter.Convert(filter.FromValue ?? double.MinValue);
+            var to = DoubleConverter.Convert(filter.ToValue ?? double.MaxValue);
             return NumericRangeFilter.NewDoubleRange(field.Name, from, to, true, true);
         }
 
-        protected override LuceneFilter BuildForSingleValue(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
+        protected override LuceneFilter BuildValueFilter(ISearchRequest request, IValueFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
-            var value = DoubleConverter.Convert(filter.SingleValue);
+            var value = DoubleConverter.Convert(filter.Value);
             return NumericRangeFilter.NewDoubleRange(field.Name, value, value, true, true);
         }
     }
@@ -86,16 +86,16 @@ namespace SmartSearch.LuceneNet.Internals.Builders
         {
         }
 
-        protected override LuceneFilter BuildForRange(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
+        protected override LuceneFilter BuildRangeFilter(ISearchRequest request, IRangeFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
-            var from = LongConverter.Convert(filter.RangeFrom ?? long.MinValue);
-            var to = LongConverter.Convert(filter.RangeTo ?? long.MaxValue);
+            var from = LongConverter.Convert(filter.FromValue ?? long.MinValue);
+            var to = LongConverter.Convert(filter.ToValue ?? long.MaxValue);
             return NumericRangeFilter.NewInt64Range(field.Name, from, to, true, true);
         }
 
-        protected override LuceneFilter BuildForSingleValue(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
+        protected override LuceneFilter BuildValueFilter(ISearchRequest request, IValueFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
-            var value = LongConverter.Convert(filter.SingleValue);
+            var value = LongConverter.Convert(filter.Value);
             return NumericRangeFilter.NewInt64Range(field.Name, value, value, true, true);
         }
     }
@@ -111,14 +111,14 @@ namespace SmartSearch.LuceneNet.Internals.Builders
             grid = SpatialFactory.CreatePrefixTree();
         }
 
-        protected override LuceneFilter BuildForRange(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
+        protected override LuceneFilter BuildRangeFilter(ISearchRequest request, IRangeFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
             throw new RangeFilterNotSupportedForLatLngFieldsException(field.Name);
         }
 
-        protected override LuceneFilter BuildForSingleValue(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
+        protected override LuceneFilter BuildValueFilter(ISearchRequest request, IValueFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
-            if (!(filter.SingleValue is ILatLngFilterValue geoFilter))
+            if (!(filter.Value is ILatLngFilterValue geoFilter))
                 throw new InvalidLatLngFilterValue(field.Name);
 
             var actionableCoordField = new ActionableLatLngFieldSpecification().CreateFrom(field);
@@ -142,14 +142,14 @@ namespace SmartSearch.LuceneNet.Internals.Builders
         {
         }
 
-        protected override LuceneFilter BuildForRange(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
+        protected override LuceneFilter BuildRangeFilter(ISearchRequest request, IRangeFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
             throw new RangeFilterNotSupportedForTextAndLiteralFieldsException(field.Name);
         }
 
-        protected override LuceneFilter BuildForSingleValue(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
+        protected override LuceneFilter BuildValueFilter(ISearchRequest request, IValueFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
-            var value = StringConverter.Convert(filter.SingleValue);
+            var value = StringConverter.Convert(filter.Value);
             var query = new TermQuery(new Term(filter.FieldName, value));
             return new QueryWrapperFilter(query);
         }
@@ -164,14 +164,14 @@ namespace SmartSearch.LuceneNet.Internals.Builders
         {
         }
 
-        protected override LuceneFilter BuildForRange(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
+        protected override LuceneFilter BuildRangeFilter(ISearchRequest request, IRangeFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
             throw new RangeFilterNotSupportedForTextAndLiteralFieldsException(field.Name);
         }
 
-        protected override LuceneFilter BuildForSingleValue(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
+        protected override LuceneFilter BuildValueFilter(ISearchRequest request, IValueFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer)
         {
-            var value = EscapeReservedCharacters(StringConverter.Convert(filter.SingleValue));
+            var value = EscapeReservedCharacters(StringConverter.Convert(filter.Value));
             var filterExpression = $"+({value})";
 
             var parser = new QueryParser(Definitions.LuceneVersion, field.Name, perFieldAnalyzer);
@@ -208,22 +208,18 @@ namespace SmartSearch.LuceneNet.Internals.Builders
             if (!IsValidFieldType(field))
                 throw new InvalidFilterTypeForFilterBuilderException(GetType(), field.Type);
 
-            switch (filter.FilterType)
-            {
-                case FilterType.SingleValue:
-                    return filter.SingleValue == null ? null : BuildForSingleValue(request, filter, field, perFieldAnalyzer);
+            if (filter is IValueFilter valueFilter)
+                return valueFilter.Value == null ? null : BuildValueFilter(request, valueFilter, field, perFieldAnalyzer);
 
-                case FilterType.Range:
-                    return filter.RangeFrom == null && filter.RangeTo == null ? null : BuildForRange(request, filter, field, perFieldAnalyzer);
+            if (filter is IRangeFilter rangeFilter)
+                return rangeFilter.FromValue == null && rangeFilter.ToValue == null ? null : BuildRangeFilter(request, rangeFilter, field, perFieldAnalyzer);
 
-                default:
-                    throw new UnknownQueryFilterTypeException(filter.FilterType);
-            }
+            throw new NotImplementedException($"TypedFilterBuilderBase.Build: unknown IFilter type '{filter.GetType()}' in SmartSearch.LuceneNet.Internals.Builders.");
         }
 
-        protected abstract LuceneFilter BuildForRange(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer);
+        protected abstract LuceneFilter BuildRangeFilter(ISearchRequest request, IRangeFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer);
 
-        protected abstract LuceneFilter BuildForSingleValue(ISearchRequest request, IFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer);
+        protected abstract LuceneFilter BuildValueFilter(ISearchRequest request, IValueFilter filter, IField field, PerFieldAnalyzerWrapper perFieldAnalyzer);
 
         protected virtual bool IsValidFieldType(IField field) => types.Any(t => t == field.Type);
     }
