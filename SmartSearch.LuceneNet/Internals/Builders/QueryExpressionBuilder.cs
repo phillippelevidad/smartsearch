@@ -2,6 +2,7 @@
 using SmartSearch.Abstractions;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace SmartSearch.LuceneNet.Internals.Builders
 {
@@ -40,7 +41,18 @@ namespace SmartSearch.LuceneNet.Internals.Builders
                 var fieldExpressions = new List<string>(searchFields.Length);
 
                 foreach (var field in searchFields)
-                    fieldExpressions.Add($"{field.Name}:{word}");
+                {
+                    if (field.RelevanceBoost == 1f)
+                    {
+                        fieldExpressions.Add($"{field.Name}:{word}");
+
+                    }
+                    else
+                    {
+                        var boostExpression = field.RelevanceBoost.ToString("0.0", CultureInfo.InvariantCulture);
+                        fieldExpressions.Add($"({field.Name}:{word})^{boostExpression}");
+                    }
+                }
 
                 var expression = string.Join(" ", fieldExpressions);
                 wordExpressions.Add($"+({expression})");

@@ -48,7 +48,7 @@ namespace SmartSearch.LuceneNet.Internals.Builders
             }
         }
 
-        private Query CreateFilteredQuery(Query query, Lucene.Net.Search.Filter filter) =>
+        private Query CreateFilteredQuery(Query query, Filter filter) =>
             filter == null ? query : new FilteredQuery(query, filter);
 
         private string FixQueryExpression(string queryExpression, ParseException parseEx)
