@@ -1,4 +1,6 @@
-﻿using SmartSearch.Abstractions;
+﻿using Lucene.Net.Analysis.Core;
+using SmartSearch.Abstractions;
+using SmartSearch.LuceneNet.Analysis;
 using System;
 using System.Globalization;
 using System.Text;
@@ -9,11 +11,11 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
     {
         private const string Suffix = "_lit";
 
-        public bool AnalyzeField => false;
+        public bool AnalyzeField => true;
         public string OriginalName { get; }
-        public float RelevanceBoostingMultiplier => 3f;
+        public new float RelevanceBoost => FieldRelevanceBoost.GetBoostValue(Relevance) * 3f;
 
-        public Type SpecialAnalyzerType => null;
+        public Type SpecialAnalyzerType => typeof(AlmostExactMatchAnalyzer);
 
         public HigherRelevanceLiteralField(string name, FieldType type, FieldRelevance relevance)
             : base(name + Suffix, type, relevance, false, true, false)
