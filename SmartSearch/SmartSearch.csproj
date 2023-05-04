@@ -50,6 +50,7 @@
     <Compile Include="DocumentProvider.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="Facet.cs" />
+    <Compile Include="FieldRelevanceBoost.cs" />
     <Compile Include="LatLng.cs" />
     <Compile Include="LatLngFilterValues.cs" />
     <Compile Include="Filter.cs" />

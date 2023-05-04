@@ -11,6 +11,7 @@ namespace SmartSearch
         public bool EnableSorting { get; }
         public string Name { get; }
         public FieldRelevance Relevance { get; }
+        public float RelevanceBoost { get; }
         public FieldType Type { get; }
 
         public Field(string name, FieldType type) : this(name, type, FieldRelevance.Normal)
@@ -25,7 +26,10 @@ namespace SmartSearch
         {
             Name = name;
             Type = type;
+
             Relevance = relevance;
+            RelevanceBoost = FieldRelevanceBoost.GetBoostValue(relevance);
+
             EnableFaceting = enableFaceting;
             EnableSearching = enableSearching;
             EnableSorting = enableSorting;
