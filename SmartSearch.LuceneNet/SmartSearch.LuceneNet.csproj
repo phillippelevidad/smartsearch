@@ -71,8 +71,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analysis\AlmostExactMatchAnalyzer.cs" />
     <Compile Include="Analysis\BrazilianAnalyzerFactory.cs" />
     <Compile Include="Analysis\IAnalyzerFactory.cs" />
+    <Compile Include="Analysis\SingularPortugueseFilter.cs" />
     <Compile Include="Internals\Builders\FilterBuilder.Types.cs" />
     <Compile Include="Internals\Builders\FilterBuilder.cs" />
     <Compile Include="Internals\Builders\IndexDocumentBuilder.cs" />

@@ -1,5 +1,4 @@
-﻿using Lucene.Net.Analysis.Core;
-using SmartSearch.Abstractions;
+﻿using SmartSearch.Abstractions;
 using SmartSearch.LuceneNet.Analysis;
 using System;
 using System.Globalization;
