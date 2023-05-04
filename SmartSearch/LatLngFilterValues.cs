@@ -5,7 +5,43 @@ using System.Linq;
 
 namespace SmartSearch
 {
-    public class LatLngBoxFilterValue : LatLngFilterValueBase
+    public class LatLngFilter : IValueFilter
+    {
+        private LatLngFilter(string fieldName, object value)
+        {
+            FieldName = fieldName;
+            Value = value;
+        }
+
+        public string FieldName { get; }
+        public object Value { get; }
+
+        public static LatLngFilter CreateBox(string fieldName, ILatLng bottomLeft, ILatLng topRight)
+        {
+            var value = LatLngBoxFilterValue.Create(bottomLeft, topRight);
+            return new LatLngFilter(fieldName, value);
+        }
+
+        public static LatLngFilter CreateRadiusInKm(string fieldName, ILatLng origin, double radiusInKm)
+        {
+            var value = LatLngRadiusFilterValue.CreateFromKmRadius(origin, radiusInKm);
+            return new LatLngFilter(fieldName, value);
+        }
+
+        public static LatLngFilter CreateRadiusInKm(string fieldName, double latitude, double longitude, double radiusInKm)
+            => CreateRadiusInKm(fieldName, new LatLng(latitude, longitude), radiusInKm);
+
+        public static LatLngFilter CreateRadiusInMi(string fieldName, ILatLng origin, double radiusInMi)
+        {
+            var value = LatLngRadiusFilterValue.CreateFromMiRadius(origin, radiusInMi);
+            return new LatLngFilter(fieldName, value);
+        }
+
+        public static LatLngFilter CreateRadiusInMi(string fieldName, double latitude, double longitude, double radiusInMi)
+            => CreateRadiusInMi(fieldName, new LatLng(latitude, longitude), radiusInMi);
+    }
+
+    internal class LatLngBoxFilterValue : LatLngFilterValueBase
     {
         public LatLngBoxFilterValue(ILatLng topLeft, ILatLng topRight, ILatLng bottomRight, ILatLng bottomLeft)
             : base(new[] { topLeft, topRight, bottomRight, bottomLeft, topLeft }) { }
@@ -41,11 +77,11 @@ namespace SmartSearch
         }
     }
 
-    public abstract class LatLngFilterValueBase : ILatLngFilterValue
+    internal abstract class LatLngFilterValueBase : ILatLngFilterValue
     {
-        public IEnumerable<ILatLng> Points { get; protected set; }
+        public IEnumerable<ILatLng> Points { get; }
 
-        public LatLngFilterValueBase(IEnumerable<ILatLng> points)
+        protected LatLngFilterValueBase(IEnumerable<ILatLng> points)
         {
             if (points == null || !points.Any())
                 throw new ArgumentNullException(nameof(points));
@@ -58,7 +94,7 @@ namespace SmartSearch
     }
 
     // https://social.msdn.microsoft.com/Forums/sqlserver/en-US/46ec0b60-ec57-46bf-9873-9a16620b3f63/convert-circle-to-polygon?forum=sqlspatial
-    public class LatLngRadiusFilterValue : LatLngFilterValueBase
+    internal class LatLngRadiusFilterValue : LatLngFilterValueBase
     {
         private const double EarthRadiusInKm = 6371d;
         private const double EarthRadiusInMi = 3960d;

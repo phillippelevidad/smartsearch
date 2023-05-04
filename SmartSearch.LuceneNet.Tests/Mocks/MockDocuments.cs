@@ -8,7 +8,7 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
     {
         public static IDocumentOperation[] ListAll() => new[]
         {
-            new DocumentOperation("D42428A9", new Dictionary<string, object>
+            DocumentOperation.AddOrUpdate("D42428A9", new Dictionary<string, object>
             {
                 { "Id", "D42428A9" },
                 { "Name", "Geladeira / Refrigerador Electrolux 454 Litros 2 Portas Frost Free Inverse DB53" },
@@ -22,7 +22,7 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "Geolocation", new LatLng(-25.428079, -49.257083) },
                 { "Score", 58 }
             }),
-            new DocumentOperation("BC64C1F2", new Dictionary<string, object>
+            DocumentOperation.AddOrUpdate("BC64C1F2", new Dictionary<string, object>
             {
                 { "Id", "BC64C1F2" },
                 { "Name", "TV Led HD 28 Polegadas Philco USB HDMI PH28N91D" },
@@ -36,7 +36,7 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "Geolocation", new LatLng(-25.418865, -49.305416) },
                 { "Score", 36 }
             }),
-            new DocumentOperation("6EFEEED7", new Dictionary<string, object>
+            DocumentOperation.AddOrUpdate("6EFEEED7", new Dictionary<string, object>
             {
                 { "Id", "6EFEEED7" },
                 { "Name", "Ventilador Britânia de Mesa Ventus 3 Velocidades" },
@@ -50,7 +50,7 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "Geolocation", new LatLng(-20.509879, -43.712664) },
                 { "Score", 12 }
             }),
-            new DocumentOperation("48BDDFA8", new Dictionary<string, object>
+            DocumentOperation.AddOrUpdate("48BDDFA8", new Dictionary<string, object>
             {
                 { "Id", "48BDDFA8" },
                 { "Name", "Multifuncional HP Deskjet WI-FI INK Advantage 3776 J9V88AAK4" },
@@ -64,7 +64,7 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "Geolocation", new LatLng(46.204391, 6.143158) },
                 { "Score", 23 }
             }),
-            new DocumentOperation("FC940BFB", new Dictionary<string, object>
+            DocumentOperation.AddOrUpdate("FC940BFB", new Dictionary<string, object>
             {
                 { "Id", "FC940BFB" },
                 { "Name", "iPhone X A1901 - 5.8 Polegadas - Single-Sim - 256GB - 4G LTE - Cinza-Espacial" },
@@ -78,7 +78,7 @@ namespace SmartSearch.LuceneNet.Tests.Mocks
                 { "Geolocation", new LatLng(46.519653, 6.632273) },
                 { "Score", 59 }
             }),
-            new DocumentOperation("222B6FC6", new Dictionary<string, object>
+            DocumentOperation.AddOrUpdate("222B6FC6", new Dictionary<string, object>
             {
                 { "Id", "222B6FC6" },
                 { "Name", "Tabua de Passar Melissa 2 Portas - Nicioli" },

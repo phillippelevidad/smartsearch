@@ -14,10 +14,9 @@ namespace SmartSearch.LuceneNet.Tests
             var toValue = 1000d;
 
             var env = TestEnvironment.Build();
-            var results = env.Search(new SearchRequest
-            {
-                Filters = new[] { new Filter(fieldName, fromValue, toValue) }
-            });
+            var results = env.Search(new SearchRequestBuilder()
+                .FilterBy(fieldName, fromValue, toValue)
+                .Build());
 
             var expectedCount = env.Documents.Count(d =>
                 d.Fields.ContainsKey(fieldName) &&
@@ -34,10 +33,9 @@ namespace SmartSearch.LuceneNet.Tests
             var fromValue = 1000d;
 
             var env = TestEnvironment.Build();
-            var results = env.Search(new SearchRequest
-            {
-                Filters = new[] { new Filter(fieldName, fromValue, null) }
-            });
+            var results = env.Search(new SearchRequestBuilder()
+                .FilterBy(fieldName, fromValue, null)
+                .Build());
 
             var expectedCount = env.Documents.Count(d =>
                 d.Fields.ContainsKey(fieldName) && (double)d.Fields[fieldName] >= fromValue);
@@ -52,10 +50,9 @@ namespace SmartSearch.LuceneNet.Tests
             var toValue = 1000d;
 
             var env = TestEnvironment.Build();
-            var results = env.Search(new SearchRequest
-            {
-                Filters = new[] { new Filter(fieldName, null, toValue) }
-            });
+            var results = env.Search(new SearchRequestBuilder()
+                .FilterBy(fieldName, null, toValue)
+                .Build());
 
             var expectedCount = env.Documents.Count(d =>
                 d.Fields.ContainsKey(fieldName) && (double)d.Fields[fieldName] <= toValue);

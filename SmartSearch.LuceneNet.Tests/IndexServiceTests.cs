@@ -26,7 +26,7 @@ namespace SmartSearch.LuceneNet.Tests
             // Create a new index.
             env.IndexService.CreateIndex(env.IndexContext, env.SearchDomain, new DocumentProvider(new IDocumentOperation[]
             {
-                new DocumentOperation(aId, new Dictionary<string, object>
+                DocumentOperation.AddOrUpdate(aId, new Dictionary<string, object>
                 {
                     { "Name", "A" },
                     { "Age", 30 }
@@ -43,12 +43,12 @@ namespace SmartSearch.LuceneNet.Tests
             // Update a document and add another.
             env.IndexService.CreateIndex(env.IndexContext, env.SearchDomain, new DocumentProvider(new IDocumentOperation[]
             {
-                new DocumentOperation(aId, new Dictionary<string, object> // should be updated
+                DocumentOperation.AddOrUpdate(aId, new Dictionary<string, object> // should be updated
                 {
                     { "Name", "A" },
                     { "Age", 35 }
                 }),
-                new DocumentOperation(bId, new Dictionary<string, object> // should be added
+                DocumentOperation.AddOrUpdate(bId, new Dictionary<string, object> // should be added
                 {
                     { "Name", "B" },
                     { "Age", 40 }

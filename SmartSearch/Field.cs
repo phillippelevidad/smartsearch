@@ -6,18 +6,12 @@ namespace SmartSearch
     [DebuggerDisplay("{Name}, Type: {Type}, Relevance: {Relevance}")]
     public class Field : IField
     {
-        public bool EnableFaceting { get; set; }
-        public bool EnableSearching { get; set; }
-        public bool EnableSorting { get; set; }
-        public string Name { get; set; }
-
-        public FieldRelevance Relevance { get; set; }
-
-        public FieldType Type { get; set; }
-
-        public Field()
-        {
-        }
+        public bool EnableFaceting { get; }
+        public bool EnableSearching { get; }
+        public bool EnableSorting { get; }
+        public string Name { get; }
+        public FieldRelevance Relevance { get; }
+        public FieldType Type { get; }
 
         public Field(string name, FieldType type) : this(name, type, FieldRelevance.Normal)
         {

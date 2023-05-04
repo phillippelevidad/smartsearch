@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SmartSearch.Abstractions;
 using SmartSearch.LuceneNet.Tests.Mocks;
 using System.Collections.Generic;
@@ -15,10 +16,9 @@ namespace SmartSearch.LuceneNet.Tests
             var fieldName = "IsInPromotion";
 
             var env = TestEnvironment.Build();
-            var results = env.Search(new SearchRequest
-            {
-                Filters = new[] { new Filter(fieldName, false) }
-            });
+            var results = env.Search(new SearchRequestBuilder()
+                .FilterBy(fieldName, false)
+                .Build());
 
             var expectedCount = env.Documents.Count(d =>
                 d.Fields.ContainsKey(fieldName) && (bool)d.Fields[fieldName] == false);
@@ -32,10 +32,9 @@ namespace SmartSearch.LuceneNet.Tests
             var fieldName = "IsInPromotion";
 
             var env = TestEnvironment.Build();
-            var results = env.Search(new SearchRequest
-            {
-                Filters = new[] { new Filter(fieldName, true) }
-            });
+            var results = env.Search(new SearchRequestBuilder()
+                .FilterBy(fieldName, true)
+                .Build());
 
             var expectedCount = env.Documents.Count(d =>
                 d.Fields.ContainsKey(fieldName) && (bool)d.Fields[fieldName] == true);
@@ -59,25 +58,25 @@ namespace SmartSearch.LuceneNet.Tests
 
             env.IndexService.CreateIndex(env.IndexContext, env.SearchDomain, new DocumentProvider(new IDocumentOperation[]
             {
-                new DocumentOperation("1", new Dictionary<string, object>
+                DocumentOperation.AddOrUpdate("1", new Dictionary<string, object>
                 {
                     { "Name", "Google" },
                     { "Categories", new[] { "Web Search" } },
                     { "Url", "https://www.google.com/" }
                 }),
-                new DocumentOperation("2", new Dictionary<string, object>
+                DocumentOperation.AddOrUpdate("2", new Dictionary<string, object>
                 {
                     { "Name", "Facebook" },
                     { "Categories", new[] { "Social Network" } },
                     { "Url", "https://www.facebook.com/" }
                 }),
-                new DocumentOperation("3", new Dictionary<string, object>
+                DocumentOperation.AddOrUpdate("3", new Dictionary<string, object>
                 {
                     { "Name", "Facebook Messenger" },
                     { "Categories", new[] { "Chat", "Social Network" } },
                     { "Url", "https://www.facebook.com/messenger/" }
                 }),
-                new DocumentOperation("4", new Dictionary<string, object>
+                DocumentOperation.AddOrUpdate("4", new Dictionary<string, object>
                 {
                     { "Name", "Instagram" },
                     { "Categories", new[] { "Social Network", "Mobile App" } },
@@ -87,20 +86,31 @@ namespace SmartSearch.LuceneNet.Tests
 
             ISearchResult results;
 
-            results = env.Search(new SearchRequest { Query = "facebook" });
+            results = env.Search(new SearchRequest("facebook"));
             Assert.AreEqual(2, results.TotalCount);
 
-            results = env.Search(new SearchRequest { Filters = new[] { new Filter("Categories", "Social Network") } });
+            results = env.Search(new SearchRequestBuilder().FilterBy("Categories", "Social Network").Build());
             Assert.AreEqual(3, results.TotalCount);
 
-            results = env.Search(new SearchRequest { Filters = new[] { new Filter("Categories", "Mobile App") } });
+            results = env.Search(new SearchRequestBuilder().FilterBy("Categories", "Mobile App").Build());
             Assert.AreEqual(1, results.TotalCount);
 
-            results = env.Search(new SearchRequest { Filters = new[] { new Filter("Url", "www.google.com") } });
+            results = env.Search(new SearchRequestBuilder().FilterBy("Url", "www.google.com").Build());
             Assert.AreEqual(0, results.TotalCount);
 
-            results = env.Search(new SearchRequest { Filters = new[] { new Filter("Url", "https://www.google.com/") } });
+            results = env.Search(new SearchRequestBuilder().FilterBy("Url", "https://www.google.com/").Build());
             Assert.AreEqual(1, results.TotalCount);
+        }
+
+        private void TestLocations(TestEnvironment environment, IFilter filterValue, params string[] locationNames)
+        {
+            var results = environment.Search(new SearchRequestBuilder()
+                .FilterBy(filterValue)
+                .Build());
+
+            var resultNames = results.Documents.Select(d => d.Fields[LocationNameField].ToString()).ToArray();
+
+            resultNames.Should().BeEquivalentTo(locationNames);
         }
     }
 }

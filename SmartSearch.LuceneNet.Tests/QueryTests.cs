@@ -10,7 +10,7 @@ namespace SmartSearch.LuceneNet.Tests
         public void EmptyQueryReturnsAllResults()
         {
             var env = TestEnvironment.Build();
-            var results = env.Search(new SearchRequest { Query = "" });
+            var results = env.Search(new SearchRequest(""));
             Assert.AreEqual(env.Documents.Length, results.TotalCount);
         }
 
@@ -18,7 +18,7 @@ namespace SmartSearch.LuceneNet.Tests
         public void WhitespaceQueryReturnsAllResults()
         {
             var env = TestEnvironment.Build();
-            var results = env.SearchService.Search(env.IndexContext, env.SearchDomain, new SearchRequest { Query = " " });
+            var results = env.SearchService.Search(env.IndexContext, env.SearchDomain, new SearchRequest(" "));
             Assert.AreEqual(env.Documents.Length, results.TotalCount);
         }
     }

@@ -8,18 +8,21 @@ namespace SmartSearch
     [DebuggerDisplay("Lat {Latitude}, Lng {Longitude}")]
     public class LatLng : ILatLng
     {
-        private readonly Regex rgxPointWkt = new Regex(@"POINT\((\-?\d+(?:\.\d+))\s(\-?\d+(?:\.\d+))\)", RegexOptions.Compiled);
-
-        public double Latitude { get; private set; }
-
-        public double Longitude { get; private set; }
+        private static readonly Regex rgxPointWkt = new Regex(@"POINT\((\-?\d+(?:\.\d+))\s(\-?\d+(?:\.\d+))\)", RegexOptions.Compiled);
 
         public LatLng(double latitude, double longitude)
         {
-            Initialize(latitude, longitude);
+            ThrowIfInvalidLat(latitude);
+            ThrowIfInvalidLng(longitude);
+
+            Latitude = latitude;
+            Longitude = longitude;
         }
 
-        public LatLng(string wellKnownText)
+        public double Latitude { get; }
+        public double Longitude { get; }
+
+        public static LatLng FromWellKnownText(string wellKnownText)
         {
             if (!rgxPointWkt.IsMatch(wellKnownText))
                 throw new MalformedPointWellKnownTextException(wellKnownText);
@@ -32,15 +35,14 @@ namespace SmartSearch
             if (!double.TryParse(m.Groups[2].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out double lat))
                 throw new MalformedPointWellKnownTextException(wellKnownText);
 
-            Initialize(lat, lng);
+            return new LatLng(lat, lng);
         }
 
         public bool Equals(ILatLng other)
         {
             if (other == null)
                 return false;
-
-            return Latitude.Equals(other.Latitude) && Longitude.Equals(other.Longitude);
+            return (Latitude, Longitude) == (other.Latitude, other.Longitude);
         }
 
         public string ToWellKnownText()
@@ -48,22 +50,13 @@ namespace SmartSearch
             return string.Format(CultureInfo.InvariantCulture, "POINT({0:N8} {1:N8})", Longitude, Latitude);
         }
 
-        private void Initialize(double lat, double lng)
-        {
-            ValidateLatitude(lat);
-            ValidateLongitude(lng);
-
-            Latitude = lat;
-            Longitude = lng;
-        }
-
-        private void ValidateLatitude(double value)
+        private void ThrowIfInvalidLat(double value)
         {
             if (value < -90 || value > 90)
                 throw new InvalidLatitudeException(value);
         }
 
-        private void ValidateLongitude(double value)
+        private void ThrowIfInvalidLng(double value)
         {
             if (value < -180 || value > 180)
                 throw new InvalidLongitudeException(value);

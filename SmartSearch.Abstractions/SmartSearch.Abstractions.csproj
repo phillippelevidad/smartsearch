@@ -41,17 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GroupingClause.cs" />
     <Compile Include="IAnalysisSettings.cs" />
     <Compile Include="IDocument.cs" />
     <Compile Include="IDocumentOperation.cs" />
     <Compile Include="IDocumentProvider.cs" />
     <Compile Include="IDocumentReader.cs" />
     <Compile Include="IFacetResult.cs" />
+    <Compile Include="IFilter.cs" />
     <Compile Include="ILatLng.cs" />
     <Compile Include="ILatLngFilterValue.cs" />
     <Compile Include="IIndexContext.cs" />
-    <Compile Include="ILatLngSortOptionReference.cs" />
-    <Compile Include="IQueryFilter.cs" />
     <Compile Include="ISearchDomain.cs" />
     <Compile Include="IField.cs" />
     <Compile Include="IIndexService.cs" />
