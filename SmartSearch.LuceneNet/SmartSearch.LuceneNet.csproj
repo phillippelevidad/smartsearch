@@ -106,7 +106,9 @@
     <Compile Include="Internals\SpecializedFields\AnalyzedField.cs" />
     <Compile Include="Internals\SpecializedFields\ISpecializedField.cs" />
     <Compile Include="Internals\SpecializedFields\ISpecializedFieldSpecification.cs" />
+    <Compile Include="Internals\SpecializedFields\HigherRelevanceLiteralField.cs" />
     <Compile Include="Internals\SpecializedFields\SortableTextField.cs" />
+    <Compile Include="Internals\SpecializedFields\SpecializedFieldSpecifications.cs" />
     <Compile Include="Internals\SpecializedFields\SynonymField.cs" />
     <Compile Include="Analysis\SynonymsAnalyzer.cs" />
     <Compile Include="LuceneIndexOptions.cs" />
