@@ -1,15 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using SmartSearch.Abstractions;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SmartSearch.LuceneNet.Internals.SpecializedFields
 {
     internal class SpecializedFieldSpecifications
     {
-        private readonly InternalSearchDomain searchDomain;
+        private readonly IAnalysisSettings analysisSettings;
 
-        public SpecializedFieldSpecifications(InternalSearchDomain searchDomain)
+        public SpecializedFieldSpecifications(IAnalysisSettings analysisSettings)
         {
-            this.searchDomain = searchDomain;
+            this.analysisSettings = analysisSettings;
         }
 
         public IEnumerable<ISpecializedFieldSpecification> ListAll()
@@ -19,7 +20,7 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
             yield return new AnalyzedFieldSpecification();
             yield return new SortableTextFieldSpecification();
 
-            if (searchDomain.AnalysisSettings != null && searchDomain.AnalysisSettings.Synonyms.Any())
+            if (analysisSettings != null && analysisSettings.Synonyms.Any())
                 yield return new SynonymFieldSpecification();
         }
     }
