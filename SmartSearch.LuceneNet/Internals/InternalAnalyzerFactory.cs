@@ -28,7 +28,8 @@ namespace SmartSearch.LuceneNet.Internals
             var fieldAnalyzers = new Dictionary<string, Analyzer>();
             var knownAnalyzers = new Dictionary<string, Analyzer>
             {
-                { typeof(SynonymsAnalyzer).FullName, new SynonymsAnalyzer(domain) }
+                { typeof(SynonymsAnalyzer).FullName, new SynonymsAnalyzer(domain) },
+                { typeof(AlmostExactMatchAnalyzer).FullName, new AlmostExactMatchAnalyzer() },
             };
 
             foreach (var field in domain.SpecializedFields)

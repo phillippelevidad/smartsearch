@@ -2,14 +2,14 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>SmartSearch.Abstractions</id>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <title>SmartSearch.Abstractions</title>
     <authors>Phillippe Santana</authors>
     <owners>phillippe.santana</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A set of abstractions for SmartSearch implementations. Support is not provided, use at your own risk.</description>
-    <releaseNotes>Added support for filter groups.</releaseNotes>
-    <tags>smart search ideianoar</tags>
+    <releaseNotes>Almost-exact matches are ranked first.</releaseNotes>
+    <tags>smartsearch smart search ideianoar inamarketplace ina marketplace</tags>
     <dependencies />
   </metadata>
 </package>

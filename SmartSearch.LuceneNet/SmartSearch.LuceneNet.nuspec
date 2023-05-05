@@ -15,8 +15,8 @@
       <dependency id="Lucene.Net.Contrib.Spatial" version="3.0.3" />
       <dependency id="Lucene.Net.Facet" version="4.8.0-beta00005" />
       <dependency id="Lucene.Net.QueryParser" version="4.8.0-beta00005" />
-      <dependency id="SmartSearch" version="1.0.5" />
-      <dependency id="SmartSearch.Abstractions" version="1.0.3" />
+      <dependency id="SmartSearch" version="1.0.6" />
+      <dependency id="SmartSearch.Abstractions" version="1.0.4" />
       <dependency id="Spatial4n.Core" version="0.4.1-beta00007" />
     </dependencies>
   </metadata>

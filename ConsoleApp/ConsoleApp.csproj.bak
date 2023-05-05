@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{77B4852D-7953-465F-B8CE-1BA682AE9EFC}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SmartSearch</RootNamespace>
-    <AssemblyName>SmartSearch</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <ProjectGuid>{F20E4F16-E80A-4D6D-94B6-0632A6E61763}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>ConsoleApp</RootNamespace>
+    <AssemblyName>ConsoleApp</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -31,11 +33,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=1.50.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.5\lib\net451\Dapper.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,31 +46,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnalysisSettings.cs" />
-    <Compile Include="Document.cs" />
-    <Compile Include="DocumentOperation.cs" />
-    <Compile Include="DocumentProvider.cs" />
-    <Compile Include="Exceptions.cs" />
-    <Compile Include="Facet.cs" />
-    <Compile Include="FieldRelevanceBoost.cs" />
-    <Compile Include="LatLng.cs" />
-    <Compile Include="LatLngFilterValues.cs" />
-    <Compile Include="Filter.cs" />
-    <Compile Include="LatLngSortOption.cs" />
-    <Compile Include="SearchDomain.cs" />
-    <Compile Include="Field.cs" />
+    <Compile Include="IDataReaderExtensions.cs" />
+    <Compile Include="MegaSoaresData.cs" />
+    <Compile Include="MockData.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="PomonetData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SearchRequest.cs" />
-    <Compile Include="SearchResult.cs" />
-    <Compile Include="SortOption.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="Searcher.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SmartSearch.Abstractions\SmartSearch.Abstractions.csproj">
       <Project>{4d011092-fdda-4175-990b-906d29dce8fd}</Project>
       <Name>SmartSearch.Abstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmartSearch.LuceneNet\SmartSearch.LuceneNet.csproj">
+      <Project>{618d0b5d-659c-4460-886c-97a4e4e516e9}</Project>
+      <Name>SmartSearch.LuceneNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmartSearch\SmartSearch.csproj">
+      <Project>{77b4852d-7953-465f-b8ce-1ba682ae9efc}</Project>
+      <Name>SmartSearch</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

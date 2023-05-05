@@ -1,22 +1,23 @@
 ﻿using SmartSearch.Abstractions;
+using SmartSearch.LuceneNet.Analysis;
 using System;
 using System.Globalization;
 using System.Text;
 
 namespace SmartSearch.LuceneNet.Internals.SpecializedFields
 {
-    internal class SortableTextField : Field, ISpecializedField
+    internal class HigherRelevanceLiteralField : Field, ISpecializedField
     {
-        private const string Suffix = "_srt";
+        private const string Suffix = "_lit";
 
-        public bool AnalyzeField => false;
+        public bool AnalyzeField => true;
         public string OriginalName { get; }
-        public float RelevanceBoostingMultiplier => 1f;
+        public new float RelevanceBoost => FieldRelevanceBoost.GetBoostValue(Relevance) * 3f;
 
-        public Type SpecialAnalyzerType => null;
+        public Type SpecialAnalyzerType => typeof(AlmostExactMatchAnalyzer);
 
-        public SortableTextField(string name, FieldType type, FieldRelevance relevance, bool enableFaceting, bool enableSearching, bool enableSorting)
-            : base(name + Suffix, type, relevance, enableFaceting, enableSearching, enableSorting)
+        public HigherRelevanceLiteralField(string name, FieldType type, FieldRelevance relevance)
+            : base(name + Suffix, type, relevance, false, true, false)
         {
             OriginalName = name;
         }
@@ -42,7 +43,10 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
         }
     }
 
-    internal class SortableTextFieldSpecification : ISpecializedFieldSpecification
+    /// <summary>
+    /// Creates a literal field with a high relevance boost.
+    /// </summary>
+    internal class HigherRelevanceLiteralFieldSpecification : ISpecializedFieldSpecification
     {
         public ISpecializedField CreateFrom(IField field)
         {
@@ -50,12 +54,13 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
                 field.Type == FieldType.Text ? FieldType.Literal :
                 field.Type == FieldType.TextArray ? FieldType.LiteralArray :
                 throw new ArgumentException();
-
-            return new SortableTextField(field.Name, newFieldType, field.Relevance,
-                field.EnableFaceting, field.EnableSearching, field.EnableSorting);
+            
+            return new HigherRelevanceLiteralField(field.Name, newFieldType, field.Relevance);
         }
 
         public bool IsEligibleForSpecialization(IField field) =>
-            field.EnableSorting && (field.Type == FieldType.Text || field.Type == FieldType.TextArray);
+            field.EnableSearching &&
+            field.Relevance == FieldRelevance.Higher &&
+            (field.Type == FieldType.Text || field.Type == FieldType.TextArray);
     }
 }

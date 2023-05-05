@@ -9,6 +9,7 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
 
         public bool AnalyzeField => true;
         public string OriginalName { get; }
+        public float RelevanceBoostingMultiplier => 1f;
 
         public Type SpecialAnalyzerType => null;
 
@@ -28,6 +29,6 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
             new ActionableLatLngField(field.Name, field.Type, field.Relevance);
 
         public bool IsEligibleForSpecialization(IField field) =>
-                    field.Type == FieldType.LatLng;
+            field.Type == FieldType.LatLng;
     }
 }

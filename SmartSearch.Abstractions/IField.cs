@@ -24,6 +24,7 @@
         string Name { get; }
 
         FieldRelevance Relevance { get; }
+        float RelevanceBoost { get; }
 
         FieldType Type { get; }
     }

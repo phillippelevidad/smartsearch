@@ -9,6 +9,7 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
 
         public bool AnalyzeField => true;
         public string OriginalName { get; }
+        public float RelevanceBoostingMultiplier => 1f;
 
         public Type SpecialAnalyzerType => null;
 

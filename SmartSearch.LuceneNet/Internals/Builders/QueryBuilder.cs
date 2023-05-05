@@ -30,7 +30,7 @@ namespace SmartSearch.LuceneNet.Internals.Builders
 
             if (string.IsNullOrEmpty(queryExpression))
                 return new MatchAllDocsQuery();
-
+            
             while (true)
             {
                 try
@@ -39,7 +39,7 @@ namespace SmartSearch.LuceneNet.Internals.Builders
                 }
                 catch (ParseException parseEx)
                 {
-                    var prevExpression = queryExpression;
+                    string prevExpression = queryExpression;
                     queryExpression = FixQueryExpression(queryExpression, parseEx);
 
                     if (queryExpression == prevExpression)
