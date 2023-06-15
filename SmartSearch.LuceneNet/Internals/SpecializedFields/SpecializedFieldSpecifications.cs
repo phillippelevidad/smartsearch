@@ -15,6 +15,7 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
 
         public IEnumerable<ISpecializedFieldSpecification> ListAll()
         {
+            yield return new PhoneticFieldSpecification();
             yield return new HigherRelevanceLiteralFieldSpecification();
             yield return new ActionableLatLngFieldSpecification();
             yield return new AnalyzedFieldSpecification();

@@ -20,7 +20,12 @@ namespace SmartSearch.LuceneNet.Internals.Builders
             if (string.IsNullOrWhiteSpace(request.Query))
                 return "";
 
-            if (Definitions.MatchAllDocsQuery.Equals(request.Query, StringComparison.OrdinalIgnoreCase))
+            if (
+                Definitions.MatchAllDocsQuery.Equals(
+                    request.Query,
+                    StringComparison.OrdinalIgnoreCase
+                )
+            )
                 return new MatchAllDocsQuery().ToString();
 
             return BuildInternal(request);
@@ -42,14 +47,16 @@ namespace SmartSearch.LuceneNet.Internals.Builders
 
                 foreach (var field in searchFields)
                 {
-                    if (field.RelevanceBoost == 1f)
+                    if (field.RelevanceModifier == 1f)
                     {
                         fieldExpressions.Add($"{field.Name}:{word}");
-
                     }
                     else
                     {
-                        var boostExpression = field.RelevanceBoost.ToString("0.0", CultureInfo.InvariantCulture);
+                        var boostExpression = field.RelevanceModifier.ToString(
+                            "0.0",
+                            CultureInfo.InvariantCulture
+                        );
                         fieldExpressions.Add($"({field.Name}:{word})^{boostExpression}");
                     }
                 }

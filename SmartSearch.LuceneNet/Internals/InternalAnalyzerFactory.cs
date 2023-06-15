@@ -10,7 +10,10 @@ namespace SmartSearch.LuceneNet.Internals
         private readonly IAnalyzerFactory defaultAnalyzerFactory;
         private readonly InternalSearchDomain domain;
 
-        public InternalAnalyzerFactory(InternalSearchDomain domain, IAnalyzerFactory defaultAnalyzerFactory)
+        public InternalAnalyzerFactory(
+            InternalSearchDomain domain,
+            IAnalyzerFactory defaultAnalyzerFactory
+        )
         {
             this.domain = domain;
             this.defaultAnalyzerFactory = defaultAnalyzerFactory;
@@ -30,6 +33,7 @@ namespace SmartSearch.LuceneNet.Internals
             {
                 { typeof(SynonymsAnalyzer).FullName, new SynonymsAnalyzer(domain) },
                 { typeof(AlmostExactMatchAnalyzer).FullName, new AlmostExactMatchAnalyzer() },
+                { typeof(PhoneticAnalyzer).FullName, new PhoneticAnalyzer() }
             };
 
             foreach (var field in domain.SpecializedFields)

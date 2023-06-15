@@ -6,18 +6,18 @@ using System.Text;
 
 namespace SmartSearch.LuceneNet.Internals.SpecializedFields
 {
-    internal class HigherRelevanceLiteralField : Field, ISpecializedField
+    internal class PhoneticField : Field, ISpecializedField
     {
-        private const string Suffix = "_lit";
+        private const string Suffix = "_phon";
 
         public bool AnalyzeField => true;
         public string OriginalName { get; }
-        public new float RelevanceModifier => FieldRelevanceBoost.GetBoostValue(Relevance) * 3f;
+        public new float RelevanceModifier => FieldRelevanceBoost.GetBoostValue(Relevance) * 0.1f;
 
-        public Type SpecialAnalyzerType => typeof(AlmostExactMatchAnalyzer);
+        public Type SpecialAnalyzerType => typeof(PhoneticAnalyzer);
 
-        public HigherRelevanceLiteralField(string name, FieldType type, FieldRelevance relevance)
-            : base(name + Suffix, type, relevance, false, true, false)
+        public PhoneticField(string name, FieldType type, FieldRelevance relevance)
+            : base(name + Suffix, type, relevance, false, true, true, false)
         {
             OriginalName = name;
         }
@@ -43,10 +43,7 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
         }
     }
 
-    /// <summary>
-    /// Creates a literal field with a high relevance boost.
-    /// </summary>
-    internal class HigherRelevanceLiteralFieldSpecification : ISpecializedFieldSpecification
+    internal class PhoneticFieldSpecification : ISpecializedFieldSpecification
     {
         public ISpecializedField CreateFrom(IField field)
         {
@@ -57,12 +54,12 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
                         ? FieldType.LiteralArray
                         : throw new ArgumentException();
 
-            return new HigherRelevanceLiteralField(field.Name, newFieldType, field.Relevance);
+            return new PhoneticField(field.Name, newFieldType, field.Relevance);
         }
 
         public bool IsEligibleForSpecialization(IField field) =>
             field.EnableSearching
-            && field.Relevance == FieldRelevance.Higher
+            && field.EnablePhoneticSearch
             && (field.Type == FieldType.Text || field.Type == FieldType.TextArray);
     }
 }

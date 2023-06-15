@@ -32,7 +32,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
         ) =>
             new Int32Field(field.Name, BoolConverter.ConvertToInt(value), GetFieldStore(field))
             {
-                Boost = field.RelevanceBoost
+                Boost = field.RelevanceModifier
             };
     }
 
@@ -47,7 +47,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
         ) =>
             new Int64Field(field.Name, DateTimeConverter.ConvertToLong(value), GetFieldStore(field))
             {
-                Boost = field.RelevanceBoost
+                Boost = field.RelevanceModifier
             };
     }
 
@@ -62,7 +62,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
         ) =>
             new DoubleField(field.Name, DoubleConverter.Convert(value), GetFieldStore(field))
             {
-                Boost = field.RelevanceBoost
+                Boost = field.RelevanceModifier
             };
     }
 
@@ -77,7 +77,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
         ) =>
             new Int64Field(field.Name, LongConverter.Convert(value), GetFieldStore(field))
             {
-                Boost = field.RelevanceBoost
+                Boost = field.RelevanceModifier
             };
     }
 
@@ -142,7 +142,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
                 ? new TextField(field.Name, StringConverter.Convert(value), store)
                 : new StringField(field.Name, StringConverter.Convert(value), store) as LuceneField;
 
-            luceneField.Boost = field.RelevanceBoost;
+            luceneField.Boost = field.RelevanceModifier;
             return luceneField;
         }
     }
@@ -158,7 +158,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
         ) =>
             new TextField(field.Name, StringConverter.Convert(value), GetFieldStore(field))
             {
-                Boost = field.RelevanceBoost
+                Boost = field.RelevanceModifier
             };
     }
 
