@@ -15,7 +15,10 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             var luceneDocument = new LuceneDocument();
 
             luceneDocument.AddStringField(
-                Definitions.DocumentIdFieldName, sourceDocument.Id, LuceneField.Store.YES);
+                Definitions.DocumentIdFieldName,
+                sourceDocument.Id,
+                LuceneField.Store.YES
+            );
 
             foreach (var indexField in GetIndexFields(domain, sourceDocument))
                 luceneDocument.Add(indexField);
@@ -23,14 +26,21 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             return luceneDocument;
         }
 
-        private IEnumerable<IIndexableField> GetIndexFields(InternalSearchDomain domain, InternalDocument document)
+        private IEnumerable<IIndexableField> GetIndexFields(
+            InternalSearchDomain domain,
+            InternalDocument document
+        )
         {
             foreach (var field in domain.AllFields)
                 foreach (var f in GetIndexFields(domain, document, field))
                     yield return f;
         }
 
-        private IEnumerable<IIndexableField> GetIndexFields(InternalSearchDomain domain, InternalDocument document, IField field)
+        private IEnumerable<IIndexableField> GetIndexFields(
+            InternalSearchDomain domain,
+            InternalDocument document,
+            IField field
+        )
         {
             switch (field.Type)
             {

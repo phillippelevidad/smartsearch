@@ -83,7 +83,7 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             if (value.GetType() == stringType)
                 return (string)value;
 
-            return System.Convert.ToString(value);
+            return System.Convert.ToString(value) ?? "";
         }
     }
 }

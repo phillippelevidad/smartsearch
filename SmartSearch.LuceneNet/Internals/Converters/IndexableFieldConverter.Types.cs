@@ -136,14 +136,25 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             object value
         )
         {
-            var store = GetFieldStore(field);
+            var stringValue = StringConverter.Convert(value);
 
-            var luceneField = field.EnableSearching
-                ? new TextField(field.Name, StringConverter.Convert(value), store)
-                : new StringField(field.Name, StringConverter.Convert(value), store) as LuceneField;
-
-            luceneField.Boost = field.RelevanceModifier;
-            return luceneField;
+            // Ugly hack, but this is now the best way to id a field built for sorting.
+            // See Internals/SpecializedFields/SortableTextField.cs
+            var isForSorting = field.Name.EndsWith("_srt");
+            if (isForSorting)
+            {
+                return new SortedDocValuesField(
+                    field.Name,
+                    new Lucene.Net.Util.BytesRef(stringValue)
+                );
+            }
+            else
+            {
+                var store = GetFieldStore(field);
+                var luceneField = new TextField(field.Name, stringValue, store);
+                luceneField.Boost = field.RelevanceModifier;
+                return luceneField;
+            }
         }
     }
 

@@ -15,30 +15,68 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
 
         public Type SpecialAnalyzerType => null;
 
-        public SortableTextField(string name, FieldType type, FieldRelevance relevance, bool enableFaceting, bool enableSearching, bool enableSorting)
-            : base(name + Suffix, type, relevance, enableFaceting, enableSearching, enableSorting)
+        public SortableTextField(string name, FieldType type, FieldRelevance relevance)
+            : base(
+                name + Suffix,
+                type,
+                relevance,
+                enableFaceting: false,
+                enableSearching: false,
+                enableSorting: true
+            )
         {
             OriginalName = name;
         }
 
-        public object PrepareFieldValueForIndexing(object value) => value == null
-            ? null : Normalize(value.ToString());
-
-        private string Normalize(string text)
+        public object PrepareFieldValueForIndexing(object value)
         {
-            text = text.ToLowerInvariant();
+            if (value == null)
+                return null;
+            return Normalize(value.ToString());
+        }
 
-            var normalizedString = text.Normalize(NormalizationForm.FormD);
+        private string Normalize(string input)
+        {
+            var normalizedText = RemoveDiacritics(input);
+            normalizedText = RemoveNonAlphanumeric(normalizedText);
+            normalizedText = normalizedText.ToLowerInvariant();
+            return normalizedText;
+        }
+
+        private string RemoveDiacritics(string input)
+        {
+            var normalizedText = input.Normalize(NormalizationForm.FormD);
             var stringBuilder = new StringBuilder();
 
-            foreach (var c in normalizedString)
+            foreach (char c in normalizedText)
             {
-                var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
-                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+                if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+                {
                     stringBuilder.Append(c);
+                }
             }
 
-            return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+            return stringBuilder.ToString();
+        }
+
+        private string RemoveNonAlphanumeric(string input)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            foreach (char c in input)
+            {
+                if (IsAlphanumeric(c))
+                {
+                    stringBuilder.Append(c);
+                }
+            }
+
+            return stringBuilder.ToString();
+        }
+
+        private bool IsAlphanumeric(char c)
+        {
+            return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9');
         }
     }
 
@@ -47,15 +85,17 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
         public ISpecializedField CreateFrom(IField field)
         {
             var newFieldType =
-                field.Type == FieldType.Text ? FieldType.Literal :
-                field.Type == FieldType.TextArray ? FieldType.LiteralArray :
-                throw new ArgumentException();
+                field.Type == FieldType.Text
+                    ? FieldType.Literal
+                    : field.Type == FieldType.TextArray
+                        ? FieldType.LiteralArray
+                        : throw new ArgumentException();
 
-            return new SortableTextField(field.Name, newFieldType, field.Relevance,
-                field.EnableFaceting, field.EnableSearching, field.EnableSorting);
+            return new SortableTextField(field.Name, newFieldType, field.Relevance);
         }
 
         public bool IsEligibleForSpecialization(IField field) =>
-            field.EnableSorting && (field.Type == FieldType.Text || field.Type == FieldType.TextArray);
+            field.EnableSorting
+            && (field.Type == FieldType.Text || field.Type == FieldType.TextArray);
     }
 }

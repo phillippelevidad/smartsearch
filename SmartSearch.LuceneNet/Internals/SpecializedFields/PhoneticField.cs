@@ -1,8 +1,6 @@
 ﻿using SmartSearch.Abstractions;
 using SmartSearch.LuceneNet.Analysis;
 using System;
-using System.Globalization;
-using System.Text;
 
 namespace SmartSearch.LuceneNet.Internals.SpecializedFields
 {
@@ -17,29 +15,22 @@ namespace SmartSearch.LuceneNet.Internals.SpecializedFields
         public Type SpecialAnalyzerType => typeof(PhoneticAnalyzer);
 
         public PhoneticField(string name, FieldType type, FieldRelevance relevance)
-            : base(name + Suffix, type, relevance, false, true, true, false)
+            : base(
+                name + Suffix,
+                type,
+                relevance,
+                enableFaceting: false,
+                enableSearching: true,
+                enablePhoneticSearch: true,
+                enableSorting: false
+            )
         {
             OriginalName = name;
         }
 
-        public object PrepareFieldValueForIndexing(object value) =>
-            value == null ? null : Normalize(value.ToString());
-
-        private string Normalize(string text)
+        public object PrepareFieldValueForIndexing(object value)
         {
-            text = text.ToLowerInvariant();
-
-            var normalizedString = text.Normalize(NormalizationForm.FormD);
-            var stringBuilder = new StringBuilder();
-
-            foreach (var c in normalizedString)
-            {
-                var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
-                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
-                    stringBuilder.Append(c);
-            }
-
-            return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+            return value?.ToString();
         }
     }
 

@@ -1,5 +1,6 @@
 ﻿using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Core;
+using Lucene.Net.Analysis.Miscellaneous;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Analysis.TokenAttributes;
 using Lucene.Net.Util;
@@ -19,8 +20,7 @@ namespace SmartSearch.LuceneNet.Analysis
 
             TokenStream tokenStream = new StandardFilter(LuceneVersion.LUCENE_48, tokenizer);
             tokenStream = new LowerCaseFilter(LuceneVersion.LUCENE_48, tokenStream);
-
-            // Add the phonetic filter
+            tokenStream = new ASCIIFoldingFilter(tokenStream);
             tokenStream = new PhoneticFilter(tokenStream);
 
             return new TokenStreamComponents(tokenizer, tokenStream);

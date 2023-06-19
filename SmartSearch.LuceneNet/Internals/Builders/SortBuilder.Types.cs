@@ -27,13 +27,19 @@ namespace SmartSearch.LuceneNet.Internals.Builders
             this.indexSearcher = indexSearcher;
         }
 
-        protected override SortField BuildTypedSortField(ISearchDomain domain, ISortOption sortOption, IField field)
+        protected override SortField BuildTypedSortField(
+            ISearchDomain domain,
+            ISortOption sortOption,
+            IField field
+        )
         {
             if (sortOption.Reference == null)
                 throw new MissingLatLngReferenceForSortingException();
 
             if (!(sortOption.Reference is ILatLng latLngReference))
-                throw new ArgumentException($"Invalid sort reference for field '{sortOption.FieldName}'. Provide an implementation of '{typeof(ILatLng).FullName}'.");
+                throw new ArgumentException(
+                    $"Invalid sort reference for field '{sortOption.FieldName}'. Provide an implementation of '{typeof(ILatLng).FullName}'."
+                );
 
             var actionableCoordField = new ActionableLatLngFieldSpecification().CreateFrom(field);
             var strategy = SpatialFactory.CreatePrefixTreeStrategy(actionableCoordField.Name);
@@ -41,18 +47,22 @@ namespace SmartSearch.LuceneNet.Internals.Builders
             var point = context.MakePoint(latLngReference.Longitude, latLngReference.Latitude);
             var valueSource = strategy.MakeDistanceValueSource(point, DistanceUtils.DEG_TO_KM);
 
-            var sortField = valueSource.GetSortField(sortOption.Direction == SortDirection.Descending);
+            var sortField = valueSource.GetSortField(
+                sortOption.Direction == SortDirection.Descending
+            );
             return sortField.Rewrite(indexSearcher);
         }
     }
 
     internal class LiteralSortBuilder : TypedSortBuilderBase
     {
-        public LiteralSortBuilder() : base(FieldType.Literal, FieldType.LiteralArray)
-        {
-        }
+        public LiteralSortBuilder() : base(FieldType.Literal, FieldType.LiteralArray) { }
 
-        protected override SortField BuildTypedSortField(ISearchDomain domain, ISortOption sortOption, IField field)
+        protected override SortField BuildTypedSortField(
+            ISearchDomain domain,
+            ISortOption sortOption,
+            IField field
+        )
         {
             var sortDescending = sortOption.Direction == SortDirection.Descending;
             return new SortField(field.Name, SortFieldType.STRING, sortDescending);
@@ -61,14 +71,23 @@ namespace SmartSearch.LuceneNet.Internals.Builders
 
     internal class NumericSortBuilder : TypedSortBuilderBase
     {
-        public NumericSortBuilder() : base(
-            FieldType.Bool, FieldType.BoolArray,
-            FieldType.Date, FieldType.DateArray,
-            FieldType.Double, FieldType.DoubleArray,
-            FieldType.Int, FieldType.IntArray)
-        { }
+        public NumericSortBuilder()
+            : base(
+                FieldType.Bool,
+                FieldType.BoolArray,
+                FieldType.Date,
+                FieldType.DateArray,
+                FieldType.Double,
+                FieldType.DoubleArray,
+                FieldType.Int,
+                FieldType.IntArray
+            ) { }
 
-        protected override SortField BuildTypedSortField(ISearchDomain domain, ISortOption sortOption, IField field)
+        protected override SortField BuildTypedSortField(
+            ISearchDomain domain,
+            ISortOption sortOption,
+            IField field
+        )
         {
             var type = GetSortFieldType(field);
             var sortDescending = sortOption.Direction == SortDirection.Descending;
@@ -101,11 +120,13 @@ namespace SmartSearch.LuceneNet.Internals.Builders
 
     internal class TextSortBuilder : TypedSortBuilderBase
     {
-        public TextSortBuilder() : base(FieldType.Text, FieldType.TextArray)
-        {
-        }
+        public TextSortBuilder() : base(FieldType.Text, FieldType.TextArray) { }
 
-        protected override SortField BuildTypedSortField(ISearchDomain domain, ISortOption sortOption, IField field)
+        protected override SortField BuildTypedSortField(
+            ISearchDomain domain,
+            ISortOption sortOption,
+            IField field
+        )
         {
             var sortableTextField = new SortableTextFieldSpecification().CreateFrom(field);
             var sortDescending = sortOption.Direction == SortDirection.Descending;
@@ -135,7 +156,11 @@ namespace SmartSearch.LuceneNet.Internals.Builders
             return BuildTypedSortField(domain, sortOption, field);
         }
 
-        protected abstract SortField BuildTypedSortField(ISearchDomain domain, ISortOption sortOption, IField field);
+        protected abstract SortField BuildTypedSortField(
+            ISearchDomain domain,
+            ISortOption sortOption,
+            IField field
+        );
 
         protected virtual bool IsValidFieldType(IField field) => types.Any(t => t == field.Type);
     }
