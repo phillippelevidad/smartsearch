@@ -15,16 +15,18 @@ namespace SmartSearch.LuceneNet
         private readonly LuceneIndexOptions options;
         private FacetsConfig facetsConfig;
 
-        public LuceneIndexService() : this(new LuceneIndexOptions())
-        {
-        }
+        public LuceneIndexService() : this(new LuceneIndexOptions()) { }
 
         public LuceneIndexService(LuceneIndexOptions options)
         {
             this.options = options ?? throw new ArgumentNullException(nameof(options));
         }
 
-        public void CreateIndex(IIndexContext context, ISearchDomain domain, IDocumentProvider documentProvider)
+        public void CreateIndex(
+            IIndexContext context,
+            ISearchDomain domain,
+            IDocumentProvider documentProvider
+        )
         {
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
@@ -46,16 +48,34 @@ namespace SmartSearch.LuceneNet
 
                     SetFacetsConfig(internalDomain);
 
-                    using (var facetWriter = IndexWriterFactory.CreateFacetWriter(contextWrapper, internalDomain, options))
-                    using (var indexWriter = IndexWriterFactory.CreateIndexWriter(contextWrapper, internalDomain, options))
+                    using (
+                        var facetWriter = IndexWriterFactory.CreateFacetWriter(
+                            contextWrapper,
+                            internalDomain,
+                            options
+                        )
+                    )
+                    using (
+                        var indexWriter = IndexWriterFactory.CreateIndexWriter(
+                            contextWrapper,
+                            internalDomain,
+                            options
+                        )
+                    )
                     using (var documentReader = documentProvider.GetDocumentReader())
                     {
-                        var documentBuilder = new IndexDocumentBuilder(internalDomain, facetsConfig, facetWriter);
+                        var documentBuilder = new IndexDocumentBuilder(
+                            internalDomain,
+                            facetsConfig,
+                            facetWriter
+                        );
 
                         while (documentReader.ReadNext())
                             HandleDocument(
-                                indexWriter, documentBuilder,
-                                documentReader.CurrentDocument);
+                                indexWriter,
+                                documentBuilder,
+                                documentReader.CurrentDocument
+                            );
                     }
                 }
             }
@@ -65,9 +85,14 @@ namespace SmartSearch.LuceneNet
             }
         }
 
-        private Term GetUpdateOrDeleteDocumentClause(string documentId) => new Term(Definitions.DocumentIdFieldName, documentId);
+        private Term GetUpdateOrDeleteDocumentClause(string documentId) =>
+            new Term(Definitions.DocumentIdFieldName, documentId);
 
-        private void HandleDocument(IndexWriter writer, IndexDocumentBuilder builder, IDocumentOperation document)
+        private void HandleDocument(
+            IndexWriter writer,
+            IndexDocumentBuilder builder,
+            IDocumentOperation document
+        )
         {
             switch (document.OperationType)
             {
@@ -84,20 +109,32 @@ namespace SmartSearch.LuceneNet
             }
         }
 
-        private void HandleDocumentAddOrUpdate(IndexWriter writer, IndexDocumentBuilder builder, IDocumentOperation document)
+        private void HandleDocumentAddOrUpdate(
+            IndexWriter writer,
+            IndexDocumentBuilder builder,
+            IDocumentOperation document
+        )
         {
-            var indexDocument = builder.Build(document);
-
-            if (writer.Config.OpenMode == OpenMode.CREATE)
-                writer.AddDocument(indexDocument);
-            else
+            try
             {
-                var updateClause = GetUpdateOrDeleteDocumentClause(document.Id);
-                writer.UpdateDocument(updateClause, indexDocument);
+                var indexDocument = builder.Build(document);
+
+                if (writer.Config.OpenMode == OpenMode.CREATE)
+                    writer.AddDocument(indexDocument);
+                else
+                {
+                    var updateClause = GetUpdateOrDeleteDocumentClause(document.Id);
+                    writer.UpdateDocument(updateClause, indexDocument);
+                }
             }
+            catch (Exception) { }
         }
 
-        private void HandleDocumentDelete(IndexWriter writer, IndexDocumentBuilder builder, IDocumentOperation document)
+        private void HandleDocumentDelete(
+            IndexWriter writer,
+            IndexDocumentBuilder builder,
+            IDocumentOperation document
+        )
         {
             if (writer.Config.OpenMode != OpenMode.CREATE)
             {

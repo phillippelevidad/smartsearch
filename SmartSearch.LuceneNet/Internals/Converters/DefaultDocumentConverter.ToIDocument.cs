@@ -11,7 +11,8 @@ namespace SmartSearch.LuceneNet.Internals.Converters
         {
             var builder = new DocumentBuilder(
                 luceneDocument.Get(Definitions.DocumentIdFieldName),
-                domain.Fields.Count);
+                domain.Fields.Count
+            );
 
             foreach (var field in domain.Fields)
             {
@@ -33,6 +34,12 @@ namespace SmartSearch.LuceneNet.Internals.Converters
                 values[i] = ParseFieldInternal(field, luceneFields[i]);
 
             return values;
+        }
+
+        private object ParseSingleValuedField(IField field, LuceneDocument luceneDocument)
+        {
+            var luceneField = luceneDocument.GetField(field.Name);
+            return luceneField == null ? null : ParseFieldInternal(field, luceneField);
         }
 
         private object ParseFieldInternal(IField field, IIndexableField luceneField)
@@ -67,12 +74,6 @@ namespace SmartSearch.LuceneNet.Internals.Converters
                 default:
                     throw new UnknownFieldTypeException(field.Type);
             }
-        }
-
-        private object ParseSingleValuedField(IField field, LuceneDocument luceneDocument)
-        {
-            var luceneField = luceneDocument.GetField(field.Name);
-            return luceneField == null ? null : ParseFieldInternal(field, luceneField);
         }
     }
 }

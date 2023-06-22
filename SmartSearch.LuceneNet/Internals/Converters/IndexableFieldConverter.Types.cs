@@ -250,7 +250,18 @@ namespace SmartSearch.LuceneNet.Internals.Converters
                 || !(document.Fields[field.Name] is Array array)
                 || array.Length == 0
             )
+            {
                 return new IIndexableField[0];
+            }
+
+            // Ugly hack, but this is now the best way to id a field built for sorting.
+            // See Internals/SpecializedFields/SortableTextField.cs
+            var isForSorting = field.Name.EndsWith("_srt");
+            if (isForSorting)
+            {
+                // A DocValuesField cannot be multi-valued, so we need to create one for each value.
+                array = new string[] { string.Join(" ", array.OfType<string>()) };
+            }
 
             var indexFields = new IIndexableField[array.Length];
             for (int i = 0; i < array.Length; i++)
