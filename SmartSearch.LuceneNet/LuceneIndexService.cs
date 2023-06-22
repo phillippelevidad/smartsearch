@@ -115,19 +115,15 @@ namespace SmartSearch.LuceneNet
             IDocumentOperation document
         )
         {
-            try
-            {
-                var indexDocument = builder.Build(document);
+            var indexDocument = builder.Build(document);
 
-                if (writer.Config.OpenMode == OpenMode.CREATE)
-                    writer.AddDocument(indexDocument);
-                else
-                {
-                    var updateClause = GetUpdateOrDeleteDocumentClause(document.Id);
-                    writer.UpdateDocument(updateClause, indexDocument);
-                }
+            if (writer.Config.OpenMode == OpenMode.CREATE)
+                writer.AddDocument(indexDocument);
+            else
+            {
+                var updateClause = GetUpdateOrDeleteDocumentClause(document.Id);
+                writer.UpdateDocument(updateClause, indexDocument);
             }
-            catch (Exception) { }
         }
 
         private void HandleDocumentDelete(
