@@ -141,6 +141,11 @@ namespace SmartSearch.LuceneNet.Internals.Converters
             // Ugly hack, but this is now the best way to id a field built for sorting.
             // See Internals/SpecializedFields/SortableTextField.cs
             var isForSorting = field.Name.EndsWith("_srt");
+
+            var isSpecialized = field is ISpecializedField;
+
+            var store = GetFieldStore(field);
+
             if (isForSorting)
             {
                 return new SortedDocValuesField(
@@ -148,12 +153,15 @@ namespace SmartSearch.LuceneNet.Internals.Converters
                     new Lucene.Net.Util.BytesRef(stringValue)
                 );
             }
+            else if (isSpecialized)
+            {
+                var phoneticField = new TextField(field.Name, stringValue, store);
+                phoneticField.Boost = field.RelevanceModifier;
+                return phoneticField;
+            }
             else
             {
-                var store = GetFieldStore(field);
-                var luceneField = new TextField(field.Name, stringValue, store);
-                luceneField.Boost = field.RelevanceModifier;
-                return luceneField;
+                return new StringField(field.Name, stringValue, store);
             }
         }
     }
